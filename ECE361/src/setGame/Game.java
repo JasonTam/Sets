@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Random;
 
 
-//TODO need to add set submission
-//TODO remove submitted sets from arraylist etc..
+//TODO need to detect if there are no sets on the field
+// and auto deal 3 new cards if so...
 
 public class Game {
 	ArrayList<Card> deck = new ArrayList<Card>();
