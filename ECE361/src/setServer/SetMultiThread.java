@@ -32,7 +32,9 @@ public class SetMultiThread extends Thread {
 	        );
 	 
 	        String inputLine, outputLine;
-	        SetProtocol sp = new SetProtocol();
+	        
+	        SetProtocol sp = new SetProtocol(this);
+	        
 	        outputLine = sp.processInput(null, this);
 	        
 //	   		This very first line that is printed actually
@@ -55,6 +57,7 @@ public class SetMultiThread extends Thread {
 	        
 	        
 //	        Simply closing out all of the made connnections.
+	        System.out.println("quiting out of app");
 	        this.currentRoom.leave(this);
 	        out.close();
 	        in.close();
