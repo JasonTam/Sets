@@ -19,27 +19,34 @@ public class Game {
 	just have an index=15 that may sometimes change to
 	18 or 21
 	*/
-	int index = 15;
+	int cardsPerField = 15;
+	int index = cardsPerField;		// Initial field size
 	int score = 0;
 	boolean gameover = false;
 	int[] submission;
 
 	public void playGame() {
 		init();
+		validateField();
 		dispField();
 		while (deck.size()>0) {
 			submission = getSubmission();
 			 if (isSet(indextoCard(submission))) {
 				 removeSet(submission);
 				 System.out.println("SET FOUND!");
+				 score++;
 			 } else {
 				 System.out.println("INVALID SET!");
 			 }
+			 validateField();
 			 dispField();
 		}
 		gameover = true;
+		System.out.println("Game over");
 	}
 	
+
+
 	/**
 	 * Initializes the game
 	 * This will generate the deck with a randomly 
@@ -47,7 +54,7 @@ public class Game {
 	 * cards out into the field.
 	 */
 	public void init(){
-		index = 15;
+		index = cardsPerField;
 		score = 0;
 		gameover = false;
 		submission = new int[3];
@@ -145,10 +152,28 @@ public class Game {
 		}
 	}
 	
-//	Should rarely happen
-	void dealXtra(){
-		index += 3;
-		dispField();
+	boolean existSet() {
+		boolean exists = false;
+		for (int i=0; i<index-2; i++) {
+			for (int j=i+1; j<index-1; j++) {
+				for (int k=j+1; k<index; k++) {
+					if (isSet(deck.get(i),deck.get(j),deck.get(k))) {
+						exists=true;
+						System.out.println("(psst) There's a set: " + i+","+j+","+k);
+					}
+				}
+			}
+		}
+		return exists;
+	}
+	
+	private void validateField() {
+		if (!existSet()) { // Deal extra cards if no set on field
+			index += 3;
+		} else if (index>cardsPerField) {
+			index -= 3;
+		}
+		
 	}
 	
 	void dispField() {
