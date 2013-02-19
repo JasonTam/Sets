@@ -2,6 +2,8 @@ package setServer;
 import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
+
+import DBI.DBConnect;
  
 public class SetMultiThread extends Thread {
     private Socket socket = null;
@@ -10,6 +12,8 @@ public class SetMultiThread extends Thread {
 //    This variable contains what the client is sending the server
     public BufferedReader in;
     public GameRoom currentRoom;
+    
+    public static DBConnect dbc = new DBConnect();
    
  
 //    	This constructor accepts the socket as well as an integer, 

@@ -1,5 +1,9 @@
 package setServer;
 
+import java.util.Iterator;
+
+import DBI.DBConnect;
+
 public class SetProtocolAPI {
 		private SetMultiThread curThread;
 		private SetProtocol sp;
@@ -9,6 +13,8 @@ public class SetProtocolAPI {
 		public lobby lobbyAPI;
 		public generic genericAPI;
 		
+		public DBConnect dbc;
+		
 		public SetProtocolAPI(SetMultiThread spThread, SetProtocol sp) {
 			this.curThread = spThread;
 			this.sp = sp;
@@ -17,6 +23,7 @@ public class SetProtocolAPI {
 			this.gameAPI = new game();
 			this.lobbyAPI = new lobby();
 			this.genericAPI = new generic();
+			this.dbc = spThread.dbc;
 		}
 		
 		public class generic {
@@ -32,8 +39,20 @@ public class SetProtocolAPI {
 			}
 			
 			public void showRooms() {
-	        	System.out.println(SetServer.gameRooms);
-	        	sp.theOutput = "hsowed rooms";
+				System.out.println(SetServer.gameRooms);
+				sp.theOutput = "";
+			    Iterator itGame = SetServer.gameRooms.keySet().iterator();
+			    while (itGame.hasNext()) {	
+			        String roomName = (String) itGame.next();
+			        if (roomName.equals("lobby")) {continue;}
+			        sp.theOutput = sp.theOutput.concat("|" + roomName);
+				    Iterator itUser = SetServer.gameRooms.get(roomName).keySet().iterator();
+				    while (itUser.hasNext()) {
+				    	String userName = (String) itUser.next();
+				    	sp.theOutput = sp.theOutput.concat("-" + userName );
+				    }
+				    //			        it.remove(); // avoids a ConcurrentModificationException
+			    }
 			}
 			
 			public void showUsers() {
@@ -50,20 +69,37 @@ public class SetProtocolAPI {
 		public class login {
 			
 			public void loginStart (String theInput) {
-	        	if (theInput.toLowerCase().startsWith("name")) {
-	        		validateUser(theInput);
+	        	if (theInput.toLowerCase().startsWith("login")) {
+	        		String [] userInfo = theInput.split("\\|");
+	        		System.out.println(userInfo[0]);
+	        		String username = userInfo[1];
+	        		String password = userInfo[2];
+	        		
+	        		validateUser(username, password);
 	        	}
 	        	else {
 	        		invalidUser(theInput);
 	        	}
 			}
 			
-			private void validateUser(String theInput) {
-				curThread.setName(theInput.substring(5, theInput.length()));
+			private void validateUser(String username, String password) {
 //	        	Once you get logged in, you autommatically are entered into the lobby.
-				SetServer.lobby.join(curThread);
-				sp.theOutput = "Entering Lobby";
-				sp.state = SetProtocol.LOBBY;
+				try {
+	        		if (dbc.validateUser(username, password)) {
+	        			curThread.setName(username);
+	        			SetServer.lobby.join(curThread);
+	        			sp.theOutput = "Entering Lobby";
+	        			sp.state = SetProtocol.LOBBY;
+	        		}
+	        		else {
+	        			sp.theOutput = "Bad login information";
+	        		}
+        		}
+        		catch (Exception e){
+        			e.printStackTrace();
+        		}
+				
+				
 			}
 			
 			private void invalidUser(String theInput) {
