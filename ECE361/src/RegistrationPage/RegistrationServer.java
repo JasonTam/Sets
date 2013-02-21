@@ -1,6 +1,6 @@
 // example code from http://wiki.eclipse.org/Jetty/Tutorial/Jetty_HelloWorld
 
-package setServer;
+package RegistrationPage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -15,6 +15,8 @@ public class SetProtocolAPI {
 		
 		public DBConnect dbc;
 		
+		public SetProtocolAPI outer = SetProtocolAPI.this;
+		
 		public SetProtocolAPI(SetMultiThread spThread, SetProtocol sp) {
 			this.curThread = spThread;
 			this.sp = sp;
@@ -24,6 +26,12 @@ public class SetProtocolAPI {
 			this.lobbyAPI = new lobby();
 			this.genericAPI = new generic();
 			this.dbc = spThread.dbc;
+		}
+		
+		public String[] splitString(String theInput) {
+			String[] stringArray = theInput.split("\\|");
+			
+			return stringArray;
 		}
 		
 		public class generic {
@@ -56,9 +64,14 @@ public class SetProtocolAPI {
 			}
 			
 			public void showUsers() {
-	        	System.out.println(SetServer.allThreads);
-	        	sp.theOutput = "showed users";
-			}
+				sp.theOutput = "";
+			    Iterator itUsers = SetServer.allThreads.keySet().iterator();
+			    while (itUsers.hasNext()) {	
+			        String user = (String) itUsers.next();
+			        sp.theOutput = sp.theOutput.concat(user+"|");
+				    //			        it.remove(); // avoids a ConcurrentModificationException
+			    }
+		    }
 			
 			public void quitApp() {
 	        	sp.theOutput = "Bye.";
@@ -70,23 +83,34 @@ public class SetProtocolAPI {
 			
 			public void loginStart (String theInput) {
 	        	if (theInput.toLowerCase().startsWith("login")) {
-	        		String [] userInfo = theInput.split("\\|");
-	        		System.out.println(userInfo[0]);
-	        		String username = userInfo[1];
-	        		String password = userInfo[2];
-	        		
-	        		validateUser(username, password);
+	        		validateUser(theInput);
 	        	}
 	        	else {
 	        		invalidUser(theInput);
 	        	}
 			}
 			
-			private void validateUser(String username, String password) {
+			private void validateUser(String theInput) {
+        		String [] userInfo = outer.splitString(theInput);
+        		String username = userInfo[1];
+        		String password = userInfo[2];
+				
+//        		First of all, check if anyone else with your acct is logged in:
+        		if (SetServer.allThreads.containsKey(username)) {
+        			sp.theOutput = "error|fail";
+        			System.out.println("Already logged in");
+        			return;
+        		}
+        		
 //	        	Once you get logged in, you autommatically are entered into the lobby.
 				try {
 	        		if (dbc.validateUser(username, password)) {
 	        			curThread.setName(username);
+	        			
+	        			SetServer.allThreads.remove(Integer.toString(curThread.default_name));
+	        			SetServer.allThreads.put(curThread.getName(), curThread);
+	        			
+	        			
 	        			SetServer.lobby.join(curThread);
 	        			sp.theOutput = "Entering Lobby";
 	        			sp.state = SetProtocol.LOBBY;
@@ -111,7 +135,7 @@ public class SetProtocolAPI {
 		
 		public class lobby {
 			
-			public void lobbyStart (String theInput) {
+			public void lobbyStart (String theInput) {	
 
 //		        Create / join a set room
 		        if (theInput.toLowerCase().startsWith("join")) {
@@ -131,22 +155,23 @@ public class SetProtocolAPI {
 			}
 			
 			private void joinGame(String theInput) {
-	        	String roomName = theInput.toLowerCase().substring(5);
+				String [] roomInfo = outer.splitString(theInput);
+				String roomName = roomInfo[1];
 	        	
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
 	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() == 2) {
-        			sp.theOutput = "This room is full!";
+        			sp.theOutput = "error|fail";
         		}
 //	        	If the room doesn't exist, create it and join the room
 	        	else if (!SetServer.gameRooms.containsKey(roomName)) {
 	        		new GameRoom(roomName, curThread);
-	        		sp.theOutput = "Created and Joined room";
+	        		sp.theOutput = "success|create-join";
 	        		sp.state = SetProtocol.GAME;
 	        	}
 //	        	If the room does exist and its not full, join it
 	        	else {
 	        		SetServer.gameRooms.get(roomName).join(curThread);
-	        		sp.theOutput = "Joined existing room";
+	        		sp.theOutput = "success|join";
 	        		sp.state = SetProtocol.GAME;
 	        	}
 			}
@@ -166,12 +191,12 @@ public class SetProtocolAPI {
 			private void leaveGame() {
 				curThread.currentRoom.leave(curThread);
 				SetServer.lobby.join(curThread);
-				sp.theOutput = "Leaving Game";
+				sp.theOutput = "success|leave";
 				sp.state = SetProtocol.LOBBY;
 			}
 			
 			private void gameInvalid() {
-				sp.theOutput = "Entering Game";
+				sp.theOutput = "error|fail";
 			}
 		}
 		

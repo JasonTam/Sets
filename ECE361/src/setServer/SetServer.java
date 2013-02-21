@@ -18,6 +18,7 @@ public class SetServer {
 	public static GameRoom lobby = new GameRoom("lobby");
 
 	public static void main(String[] args) throws IOException {
+		
         ServerSocket serverSocket = null;
         boolean listening = true;
         int PORT = 4444;

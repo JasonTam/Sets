@@ -13,6 +13,9 @@ public class SetMultiThread extends Thread {
     public BufferedReader in;
     public GameRoom currentRoom;
     
+    
+    public int default_name;
+    
     public static DBConnect dbc = new DBConnect();
    
  
@@ -22,6 +25,7 @@ public class SetMultiThread extends Thread {
 	    super("SetMultiThread");
 	    this.socket = socket;
 	    this.setName(Integer.toString(default_name));
+	    this.default_name = default_name;
     }
  
     public void run() {
@@ -38,7 +42,7 @@ public class SetMultiThread extends Thread {
 	        String inputLine, outputLine;
 	        
 	        SetProtocol sp = new SetProtocol(this);
-	        
+	       	System.out.println(this);
 	        outputLine = sp.processInput(null, this);
 	        
 //	   		This very first line that is printed actually
@@ -63,6 +67,7 @@ public class SetMultiThread extends Thread {
 //	        Simply closing out all of the made connnections.
 	        System.out.println("quiting out of app");
 	        this.currentRoom.leave(this);
+	        SetServer.allThreads.remove(Integer.toString(this.default_name));
 	        out.close();
 	        in.close();
 	        socket.close();

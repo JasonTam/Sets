@@ -14,6 +14,8 @@ public class SetProtocol {
  
     public int state = INITIALIZE;
 
+    
+    //When the setProtocol is initiated, also initiate its API
     public SetProtocol(SetMultiThread curThread) {
     	spAPI = new SetProtocolAPI(curThread, this);
     }
@@ -28,10 +30,10 @@ public class SetProtocol {
     	else if (theInput.toLowerCase().startsWith("chat")) {
     		spAPI.genericAPI.chat(theInput);
         }
-    	else if (theInput.toLowerCase().startsWith("show rooms")) {
+    	else if (theInput.toLowerCase().startsWith("rooms")) {
     		spAPI.genericAPI.showRooms();
     	}
-    	else if (theInput.toLowerCase().startsWith("show users")) {
+    	else if (theInput.toLowerCase().startsWith("users")) {
     		spAPI.genericAPI.showUsers();
     	}
         else if (theInput.toLowerCase().startsWith("quit")) {
