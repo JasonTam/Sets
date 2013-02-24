@@ -13,14 +13,14 @@ import java.util.Random;
 // and auto deal 3 new cards if so...
 
 public class Game {
-	ArrayList<Card> deck = new ArrayList<Card>();
+	static ArrayList<Card> deck = new ArrayList<Card>();
 	/*
 	Rather than having a field, just play indexing games
 	just have an index=15 that may sometimes change to
 	18 or 21
 	*/
-	int cardsPerField = 15;
-	int index = cardsPerField;		// Initial field size
+	static int cardsPerField = 15;
+	static int index = cardsPerField;		// Initial field size
 	int score = 0;
 	boolean gameover = false;
 	int[] submission;
@@ -182,6 +182,19 @@ public class Game {
 			System.out.println(
 					"Card #" + i + ":\t" + deck.get(i));
 		}
+	}
+	
+//	Getters
+	public static ArrayList<Card> getDeck() {
+		return deck;
+	}
+
+	public static int getIndex() {
+		return index;
+	}
+
+	public int getScore() {
+		return score;
 	}
 	
 //	for troubleshooting
