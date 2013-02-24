@@ -1,4 +1,5 @@
 package setClient;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -12,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -42,11 +44,11 @@ public class GameGrid extends JFrame {
         		(int)(buttonSize.getWidth() * 2.5)+maxGap,
                 (int)(buttonSize.getHeight() * 3.5)+maxGap * 2));
         
-        Map<String, JButton> cardButtons = new HashMap<String, JButton>();
+        Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
         //Add buttons to experiment with Grid Layout      
         for (int i = 0; i<Game.getIndex(); i++){
 			final Card c = Game.getDeck().get(i);
-			JButton bC = new JButton(c.toString());
+			JToggleButton bC = new JToggleButton(c.toString());
 //		    b.addActionListener(someAction);
 			compsToExperiment.add(bC);
 			cardButtons.put(c.toString(), bC);
