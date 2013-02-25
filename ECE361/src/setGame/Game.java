@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 
@@ -106,30 +106,43 @@ public class Game {
 		return cardSet;
 	}
 	
-	boolean isSet(Card[] cardSet) {
+	public static boolean isSet(Card a, Card b, Card c) {
+		boolean valid = true;
+		for (int i=0; i<Card.nAtts; i++) {
+			if (!(allDiff(i,a,b,c)||allSame(i,a,b,c)))
+				valid = false;
+		}
+		return valid;
+	}
+	
+	public static boolean isSet(Card[] cardSet) {
 		Card a = cardSet[0];
 		Card b = cardSet[1];
 		Card c = cardSet[2];
-		boolean valid = true;
-		for (int i=0; i<Card.nAtts; i++) {
-			if (!(allDiff(i,a,b,c)||allSame(i,a,b,c)))
-				valid = false;
-		}
-		return valid;
+		return isSet(a,b,c);
 	}
 	
-	boolean isSet(Card a, Card b, Card c) {
-		boolean valid = true;
-		for (int i=0; i<Card.nAtts; i++) {
-			if (!(allDiff(i,a,b,c)||allSame(i,a,b,c)))
-				valid = false;
+	public static boolean isSet(Collection<Card> selectedCards) {
+		if (selectedCards.size()!=3)
+			return false;
+		else {
+//			// I don't know why I'm not allowed to do this! (below)
+//			Card[] cardSet = (Card[]) selectedCards.toArray();
+//			return isSet(cardSet);
+			Card[] cardSet = new Card[3];
+			int i = 0;
+			for (Card c : selectedCards) {
+				cardSet[i++] = c;
+			}
+			return isSet(cardSet);
+			
 		}
-		return valid;
 	}
+	
 	
 //	for computational efficiency, may want to combine
 //	these two boolean methods
-	private boolean allDiff(int i, Card a, Card b, Card c) {
+	private static boolean allDiff(int i, Card a, Card b, Card c) {
 		if (a.attributes.get(i)!=b.attributes.get(i)&&
 				a.attributes.get(i)!=c.attributes.get(i)&&
 				b.attributes.get(i)!=c.attributes.get(i))
@@ -138,7 +151,7 @@ public class Game {
 			return false;
 	}
 
-	private boolean allSame(int i, Card a, Card b, Card c) {
+	private static boolean allSame(int i, Card a, Card b, Card c) {
 		if (a.attributes.get(i)==b.attributes.get(i)&&
 				a.attributes.get(i)==c.attributes.get(i))
 			return true;

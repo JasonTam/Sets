@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -19,6 +21,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import setGame.Card;
 import setGame.Game;
+
+// TODO 
+// Need to go through game flow 
 
 @SuppressWarnings("serial")
 public class GameGrid extends JFrame {
@@ -45,17 +50,25 @@ public class GameGrid extends JFrame {
                 (int)(buttonSize.getHeight() * 3.5)+maxGap * 2));
         
         Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
+        final Collection<Card> selectedCards = new HashSet<Card>();
         //Add buttons to experiment with Grid Layout      
         for (int i = 0; i<Game.getIndex(); i++){
 			final Card c = Game.getDeck().get(i);
-			JToggleButton bC = new JToggleButton(c.toString());
+			final JToggleButton bC = new JToggleButton(c.toString());
 //		    b.addActionListener(someAction);
 			compsToExperiment.add(bC);
 			cardButtons.put(c.toString(), bC);
 			bC.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                System.out.println(c.toString() + " clicked");
+//	                System.out.println(c.toString() + " clicked");
+	            	if(bC.isSelected()){
+	            	    System.out.println(c.toString() +" selected");
+	            	    selectedCards.add(c);
+	            	} else {
+	            	    System.out.println(c.toString() +" unselected");
+	            	    selectedCards.remove(c);
+	            	}
 	            }
 	        });
 		}
@@ -67,6 +80,18 @@ public class GameGrid extends JFrame {
         //Process submit button
         submitButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+            	System.out.println("Selected Cards: ");
+            	for (Card c : selectedCards) {
+            		System.out.println(c);
+            	}
+            	if (selectedCards.size()==3) {
+            		if (Game.isSet(selectedCards))
+            			System.out.println("SET FOUND");
+            		else
+            			System.out.println("INVALID SET");
+            	}
+            	else
+            		System.out.println("Invalid Set! Sets must contain exactly 3 cards.");
             }
         });
         pane.add(compsToExperiment, BorderLayout.NORTH);
