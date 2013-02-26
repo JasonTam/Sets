@@ -24,6 +24,7 @@ import setGame.Game;
 
 // TODO 
 // Need to go through game flow 
+// Need event listeners to connect to state of the game
 
 @SuppressWarnings("serial")
 public class GameGrid extends JFrame {
@@ -55,13 +56,11 @@ public class GameGrid extends JFrame {
         for (int i = 0; i<Game.getIndex(); i++){
 			final Card c = Game.getDeck().get(i);
 			final JToggleButton bC = new JToggleButton(c.toString());
-//		    b.addActionListener(someAction);
 			compsToExperiment.add(bC);
 			cardButtons.put(c.toString(), bC);
 			bC.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-//	                System.out.println(c.toString() + " clicked");
 	            	if(bC.isSelected()){
 	            	    System.out.println(c.toString() +" selected");
 	            	    selectedCards.add(c);
@@ -106,7 +105,7 @@ public class GameGrid extends JFrame {
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        GameGrid frame = new GameGrid("GridLayoutDemo");
+        GameGrid frame = new GameGrid("SET GAME :O ");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Set up the content pane.
         frame.addComponentsToPane(frame.getContentPane());
@@ -119,7 +118,6 @@ public class GameGrid extends JFrame {
     }
     
     public static void main(String[] args) {
-//    	Durrr
     	Game game1 = new Game();
 		game1.init();
         /* Use an appropriate Look and Feel */
