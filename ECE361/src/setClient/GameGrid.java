@@ -6,6 +6,12 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +34,19 @@ import setGame.Game;
 @SuppressWarnings("serial")
 public class GameGrid extends JFrame {
     final static int maxGap = 100;
+    
+    
+    public static PrintWriter out;
+    public static BufferedReader in;
+    
+    public static int PORT = 4444;
+    public static String HOST = "localhost";
+    public static String inputLine = null;
+    
+    private static Socket socket = null;
+    
+    private static boolean isConnected = true;
+    
     JButton submitButton = new JButton("Submit Set");
     GridLayout experimentLayout = new GridLayout(3,5);
     
@@ -90,8 +109,17 @@ public class GameGrid extends JFrame {
             		else
             			System.out.println("INVALID SET");
             	}
-            	else
+            	else {
             		System.out.println("Invalid Set! Sets must contain exactly 3 cards.");
+            	}
+            	out.println("login|Andrew|andrew");
+            	try {
+            	    System.out.println("This was recieved in the client");
+                    System.out.println(in.readLine());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            	
             }
         });
         pane.add(compsToExperiment, BorderLayout.NORTH);
@@ -105,6 +133,7 @@ public class GameGrid extends JFrame {
      * event dispatch thread.
      */
     private static void createAndShowGUI() {
+        
         //Create and set up the window.
         GameGrid frame = new GameGrid("GridLayoutDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,6 +145,27 @@ public class GameGrid extends JFrame {
         int frameHeight = 600;
         frame.setSize(frameWidth, frameHeight);
         frame.setVisible(true);
+    }
+    
+    public static void initServerConnection()
+    {
+        try 
+        {
+	        socket = new Socket(HOST, PORT);
+	           
+	        out = new PrintWriter(socket.getOutputStream(), true);
+	           
+	        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	        
+        }
+        catch (UnknownHostException e)
+        {
+            System.err.println("Cannot resolve host "+ HOST);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Couldn't get I/O for the connection to the host "+HOST);
+        }
     }
     
     public static void main(String[] args) {
@@ -143,7 +193,22 @@ public class GameGrid extends JFrame {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
-            }
+        }
         });
+        initServerConnection();
+//        LOGIN HERE
+        out.println("login|Andrew|andrew");
+        try
+        {
+	        while ((inputLine = in.readLine()) != null)
+	        {
+	            System.out.println(inputLine);
+	        }
+	        System.out.println("Done");
+        }
+        catch (IOException e) 
+        {
+            e.printStackTrace(); 
+        }
+        }
     }
-}
