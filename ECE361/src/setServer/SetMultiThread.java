@@ -3,6 +3,10 @@ import java.net.*;
 import java.util.ArrayList;
 import java.io.*;
 
+import javax.swing.JFrame;
+
+import setClient.GameGrid;
+
 import DBI.DBConnect;
  
 public class SetMultiThread extends Thread {
@@ -11,7 +15,7 @@ public class SetMultiThread extends Thread {
     public PrintWriter out;
 //    This variable contains what the client is sending the server
     public BufferedReader in;
-    public GameRoom currentRoom;
+    public GameRoom currentRoom = null;
     
     
     public int default_name;
@@ -21,13 +25,13 @@ public class SetMultiThread extends Thread {
  
 //    	This constructor accepts the socket as well as an integer, 
 //    	which acts as its default name
-    public SetMultiThread(Socket socket, int default_name) {
+    public SetMultiThread(Socket s, int n) {
 	    super("SetMultiThread");
-	    this.socket = socket;
+	    socket = s;
 	    this.setName(Integer.toString(default_name));
-	    this.default_name = default_name;
+	    default_name = n;
     }
- 
+    
     public void run() {
  
 	    try {
@@ -56,6 +60,7 @@ public class SetMultiThread extends Thread {
 //	        	and what response to spit back out
 		        outputLine = sp.processInput(inputLine, this);
 		        out.println(outputLine);
+		        System.out.println(outputLine);
 	
 	            
 		        if (outputLine.equals("Bye."))
@@ -66,8 +71,11 @@ public class SetMultiThread extends Thread {
 	        
 //	        Simply closing out all of the made connnections.
 	        System.out.println("quiting out of app");
-	        this.currentRoom.leave(this);
-	        SetServer.allThreads.remove(Integer.toString(this.default_name));
+	        if (currentRoom != null)
+	        {
+	            this.currentRoom.leave(this);
+	        }
+	        SetServer.allThreads.remove(Integer.toString(default_name));
 	        out.close();
 	        in.close();
 	        socket.close();

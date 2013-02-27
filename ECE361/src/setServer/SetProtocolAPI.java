@@ -95,12 +95,14 @@ public class SetProtocolAPI {
         		String username = userInfo[1];
         		String password = userInfo[2];
 				
+        		/* SKIP THIS FOR TESTING PURPOSES!!!
 //        		First of all, check if anyone else with your acct is logged in:
         		if (SetServer.allThreads.containsKey(username)) {
         			sp.theOutput = "error|fail";
         			System.out.println("Already logged in");
         			return;
         		}
+        		*/
         		
 //	        	Once you get logged in, you autommatically are entered into the lobby.
 				try {
