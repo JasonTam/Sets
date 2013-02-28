@@ -51,7 +51,7 @@ public class SetServer {
 	    Iterator it = gameRooms.get(roomName).keySet().iterator();
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
-	        gameRooms.get(roomName).get(key).out.println(thread.getName() + ": " + message);
+	        gameRooms.get(roomName).get(key).out.println("CHAT|" + thread.getName() + ": " + message);
 //	        it.remove(); // avoids a ConcurrentModificationException
 	    }
     }
