@@ -44,6 +44,7 @@ public class InitGame {
     private static boolean isConnected = true;
     
     public static ChatPanel chatPanel  = new ChatPanel();
+    public static GamePanel gamePanel  = new GamePanel();
     
     /**
      * Create the GUI and show it.  For thread safety,
@@ -58,6 +59,7 @@ public class InitGame {
         frame.setLayout(new BorderLayout());
         
         frame.add(chatPanel, BorderLayout.CENTER);
+        frame.add(gamePanel, BorderLayout.NORTH);
         
         //Set up the content pane.
         //frame.addComponentsToPane(frame.getContentPane());

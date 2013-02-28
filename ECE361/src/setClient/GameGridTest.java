@@ -33,7 +33,7 @@ import setGame.Game;
 // Need event listeners to connect to state of the game
 
 @SuppressWarnings("serial")
-public class GameGrid extends JFrame {
+public class GameGridTest extends JFrame {
     final static int maxGap = 100;
     
     
@@ -51,7 +51,7 @@ public class GameGrid extends JFrame {
     JButton submitButton = new JButton("Submit Set");
     GridLayout experimentLayout = new GridLayout(3,5);
     
-    public GameGrid(String name) {
+    public GameGridTest(String name) {
         super(name);
         setResizable(false);
     }
@@ -134,7 +134,7 @@ public class GameGrid extends JFrame {
     private static void createAndShowGUI() {
         
         //Create and set up the window.
-        GameGrid frame = new GameGrid("SET GAME :O ");
+        GameGridTest frame = new GameGridTest("SET GAME :O ");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Set up the content pane.
         frame.addComponentsToPane(frame.getContentPane());
@@ -151,11 +151,11 @@ public class GameGrid extends JFrame {
         try 
         {
 	        socket = new Socket(HOST, PORT);
-	           
+
 	        out = new PrintWriter(socket.getOutputStream(), true);
-	           
+
 	        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	        
+
         }
         catch (UnknownHostException e)
         {
