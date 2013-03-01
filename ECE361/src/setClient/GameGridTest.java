@@ -1,8 +1,6 @@
-
 package setClient;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -30,8 +28,14 @@ import javax.swing.UnsupportedLookAndFeelException;
 import setGame.Card;
 import setGame.Game;
 
+// TODO 
+// Need to go through game flow 
+// Need event listeners to connect to state of the game
+
 @SuppressWarnings("serial")
-public class InitGame {
+public class GameGridTest extends JFrame {
+    final static int maxGap = 100;
+    
     
     public static PrintWriter out;
     public static BufferedReader in;
@@ -44,10 +48,83 @@ public class InitGame {
     
     private static boolean isConnected = true;
     
-    public static JPanel cardLayout = new JPanel();
-    public static ChatPanel chatPanel  = new ChatPanel();
-    public static Lobby lobbyPanel = new Lobby();
-    public static GamePanel gamePanel  = new GamePanel();
+    JButton submitButton = new JButton("Submit Set");
+    GridLayout experimentLayout = new GridLayout(3,5);
+    
+    public GameGridTest(String name) {
+        super(name);
+        setResizable(false);
+    }
+    
+    public void addComponentsToPane(final Container pane) {
+        final JPanel compsToExperiment = new JPanel();
+        compsToExperiment.setLayout(experimentLayout);
+        JPanel controls = new JPanel();
+        controls.setLayout(new GridLayout(2,3));
+        
+        //Set up components preferred size
+        JButton b = new JButton("Just fake button");
+        Dimension buttonSize = b.getPreferredSize();
+        compsToExperiment.setPreferredSize(new Dimension(
+        		(int)(buttonSize.getWidth() * 2.5)+maxGap,
+                (int)(buttonSize.getHeight() * 3.5)+maxGap * 2));
+        
+        Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
+        final Collection<Card> selectedCards = new HashSet<Card>();
+        //Add buttons to experiment with Grid Layout      
+        for (int i = 0; i<Game.getIndex(); i++){
+			final Card c = Game.getDeck().get(i);
+			final JToggleButton bC = new JToggleButton(c.toString());
+			compsToExperiment.add(bC);
+			cardButtons.put(c.toString(), bC);
+			bC.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	            	if(bC.isSelected()){
+	            	    System.out.println(c.toString() +" selected");
+	            	    selectedCards.add(c);
+	            	} else {
+	            	    System.out.println(c.toString() +" unselected");
+	            	    selectedCards.remove(c);
+	            	}
+	            }
+	        });
+		}
+        
+        //Add submit
+        controls.add(submitButton);
+        submitButton.setPreferredSize(new Dimension(50, 80));
+        
+        //Process submit button
+        submitButton.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+            	System.out.println("Selected Cards: ");
+            	for (Card c : selectedCards) {
+            		System.out.println(c);
+            	}
+            	if (selectedCards.size()==3) {
+            		if (Game.isSet(selectedCards))
+            			System.out.println("SET FOUND");
+            		else
+            			System.out.println("INVALID SET");
+            	}
+            	else {
+            		System.out.println("Invalid Set! Sets must contain exactly 3 cards.");
+            	}
+            	out.println("login|Andrew|andrew");
+            	try {
+            	    System.out.println("This was recieved in the client");
+                    System.out.println(in.readLine());
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            	
+            }
+        });
+        pane.add(compsToExperiment, BorderLayout.NORTH);
+        pane.add(new JSeparator(), BorderLayout.CENTER);
+        pane.add(controls, BorderLayout.SOUTH);
+    }
     
     /**
      * Create the GUI and show it.  For thread safety,
@@ -57,21 +134,10 @@ public class InitGame {
     private static void createAndShowGUI() {
         
         //Create and set up the window.
-        JFrame frame = new JFrame("SET GAME :O ");
+        GameGridTest frame = new GameGridTest("SET GAME :O ");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-        
-        cardLayout.setLayout(new CardLayout());
-        cardLayout.add(lobbyPanel, "LOBBY");
-        cardLayout.add(chatPanel, "CHAT");
-        cardLayout.add(gamePanel, "GAME");
-        
-        ((CardLayout)cardLayout.getLayout()).show(cardLayout, "LOBBY");
-        
-        frame.add(cardLayout, BorderLayout.CENTER);
-        
         //Set up the content pane.
-        //frame.addComponentsToPane(frame.getContentPane());
+        frame.addComponentsToPane(frame.getContentPane());
         //Display the window.
 //        frame.pack();
         int frameWidth = 800;
@@ -80,21 +146,16 @@ public class InitGame {
         frame.setVisible(true);
     }
     
-    public static void changeCards(String cardName) {
-        ((CardLayout)cardLayout.getLayout()).show(cardLayout, cardName);
-    }
-    
-    
     public static void initServerConnection()
     {
         try 
         {
 	        socket = new Socket(HOST, PORT);
-	           
+
 	        out = new PrintWriter(socket.getOutputStream(), true);
-	           
+
 	        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	        
+
         }
         catch (UnknownHostException e)
         {
@@ -107,6 +168,8 @@ public class InitGame {
     }
     
     public static void main(String[] args) {
+    	Game game1 = new Game();
+		game1.init();
         /* Use an appropriate Look and Feel */
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -132,33 +195,12 @@ public class InitGame {
         });
         initServerConnection();
 //        LOGIN HERE
-        //Initialization- login, get users, and get rooms
         out.println("login|Andrew|andrew");
-        out.println("rooms");
-        out.println("users");
         try
         {
 	        while ((inputLine = in.readLine()) != null)
 	        {
-	            if (inputLine.startsWith("CHAT|"))
-	            {
-	                chatPanel.displayMessage(inputLine.substring(5));
-	            }
-//	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
-	            else if (inputLine.matches("^ROOMS\\|.*$"))
-	            {
-	                Rooms.getRoomData(inputLine);
-	                Rooms.createRoomHash();
-	                lobbyPanel.updateLobbyPanel();
-	            }
-	            else if (inputLine.startsWith("USERS|"))
-                {
-                
-                }
-	            else {
-	                System.out.println(inputLine);
-	            }
-	            
+	            System.out.println(inputLine);
 	        }
 	        System.out.println("Done");
         }
