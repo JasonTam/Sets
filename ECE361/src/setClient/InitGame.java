@@ -2,6 +2,7 @@
 package setClient;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -43,7 +44,9 @@ public class InitGame {
     
     private static boolean isConnected = true;
     
+    public static JPanel cardLayout = new JPanel();
     public static ChatPanel chatPanel  = new ChatPanel();
+    public static Lobby lobbyPanel = new Lobby();
     
     /**
      * Create the GUI and show it.  For thread safety,
@@ -57,7 +60,13 @@ public class InitGame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         
-        frame.add(chatPanel, BorderLayout.CENTER);
+        cardLayout.setLayout(new CardLayout());
+        cardLayout.add(lobbyPanel, "LOBBY");
+        cardLayout.add(chatPanel, "CHAT");
+        
+        ((CardLayout)cardLayout.getLayout()).show(cardLayout, "LOBBY");
+        
+        frame.add(cardLayout, BorderLayout.CENTER);
         
         //Set up the content pane.
         //frame.addComponentsToPane(frame.getContentPane());
@@ -68,6 +77,11 @@ public class InitGame {
         frame.setSize(frameWidth, frameHeight);
         frame.setVisible(true);
     }
+    
+    public static void changeCards(String cardName) {
+        ((CardLayout)cardLayout.getLayout()).show(cardLayout, cardName);
+    }
+    
     
     public static void initServerConnection()
     {
@@ -116,17 +130,33 @@ public class InitGame {
         });
         initServerConnection();
 //        LOGIN HERE
+        //Initialization- login, get users, and get rooms
         out.println("login|Andrew|andrew");
+        out.println("rooms");
+        out.println("users");
         try
         {
 	        while ((inputLine = in.readLine()) != null)
 	        {
-	            if (inputLine.startsWith("CHAT|")) {
+	            if (inputLine.startsWith("CHAT|"))
+	            {
 	                chatPanel.displayMessage(inputLine.substring(5));
 	            }
+//	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
+	            else if (inputLine.matches("^ROOMS\\|.*$"))
+	            {
+	                Rooms.getRoomData(inputLine);
+	                Rooms.createRoomHash();
+	                lobbyPanel.updateLobbyPanel();
+	            }
+	            else if (inputLine.startsWith("USERS|"))
+                {
+                
+                }
 	            else {
 	                System.out.println(inputLine);
 	            }
+	            
 	        }
 	        System.out.println("Done");
         }

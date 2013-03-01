@@ -7,15 +7,15 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	
 //	Create and join a game room
 	public GameRoom (String name, SetMultiThread thread) {
-		this.room_name = name;
-		this.join(thread);
-		SetServer.gameRooms.put(this.room_name, this);
+		room_name = name;
+		join(thread);
+		SetServer.gameRooms.put(room_name, this);
 	}
 	
 //	Create a game room
 	public GameRoom (String name) {
-		this.room_name = name;
-		SetServer.gameRooms.put(this.room_name, this);
+		room_name = name;
+		SetServer.gameRooms.put(room_name, this);
 	}
 	
 //	Join a game room
@@ -23,21 +23,26 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 		if (thread.currentRoom != null) {
 			thread.currentRoom.leave(thread);
 		}
-		this.put(thread.getName(), thread);
+		put(thread.getName(), thread);
 		thread.currentRoom = this;
 	}
 
 //	Leave a game room
 	public void leave(SetMultiThread thread) {
 		this.remove(thread.getName());
-		if (this.isEmpty() & !this.getName().equals(SetServer.lobby.getName())) {
-			SetServer.gameRooms.remove(this.getName());
+		if (isEmpty() & !getName().equals(SetServer.lobby.getName())) {
+			SetServer.gameRooms.remove(getName());
 		}
 	}
 	
 //	Get room's name
 	public String getName() {
-		return this.room_name;
+		return room_name;
+	}
+	
+	
+	public String toString() {
+	    return getName();
 	}
 	
 }

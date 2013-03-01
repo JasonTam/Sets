@@ -47,12 +47,81 @@ public class SetServer {
     
 //	This will be used to send a message to all specified threads.
     public static void broadcast(String roomName, SetMultiThread thread, String message) {
-//    	Get the first thread in the list, and say "hello";
 	    Iterator it = gameRooms.get(roomName).keySet().iterator();
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
 	        gameRooms.get(roomName).get(key).out.println("CHAT|" + thread.getName() + ": " + message);
 //	        it.remove(); // avoids a ConcurrentModificationException
 	    }
+    }
+    
+    
+    public static void sendRoomLeave(SetMultiThread curThread, SetProtocol sp)
+    {
+		sp.theOutput = "ROOMLEAVE|" + curThread.currentRoom;
+		curThread.currentRoom.leave(curThread);
+		SetServer.lobby.join(curThread);
+	    sp.state = SetProtocol.LOBBY;
+        
+	    Iterator itThread = SetServer.allThreads.keySet().iterator();
+	    
+	    while (itThread.hasNext())
+	    {
+	        String key = (String) itThread.next();
+	        allThreads.get(key).out.println(sp.theOutput);
+	    }
+	    
+	    sendRooms();
+	        
+        
+    }
+    
+    public static void sendRoomCreate(String roomName, SetMultiThread curThread, SetProtocol sp)
+    {
+		new GameRoom(roomName, curThread);
+		sp.theOutput = "ROOMCREATE|" + roomName;
+	    sp.state = SetProtocol.GAME;
+        
+	    Iterator itThread = SetServer.allThreads.keySet().iterator();
+	    
+	    while (itThread.hasNext())
+	    {
+	        String key = (String) itThread.next();
+	        allThreads.get(key).out.println(sp.theOutput);
+	    }
+	    
+	    sendRooms();
+			    
+        
+    }
+    
+    public static void sendRooms()
+    {
+        System.out.println(gameRooms);
+        
+        String outputString = "ROOMS|";
+	    Iterator itGame = SetServer.gameRooms.keySet().iterator();
+	    while (itGame.hasNext()) {	
+	        String roomName = (String) itGame.next();
+	        if (roomName.equals("lobby")) {continue;}
+	        outputString = outputString.concat(roomName);
+		    Iterator itUser = SetServer.gameRooms.get(roomName).keySet().iterator();
+		    while (itUser.hasNext()) {
+		    	String userName = (String) itUser.next();
+		    	outputString = outputString.concat("-" + userName);
+		    }
+		    outputString = outputString.concat("|");
+		    //			        it.remove(); // avoids a ConcurrentModificationException
+	    }
+	    
+	    Iterator itThread = SetServer.allThreads.keySet().iterator();
+	    
+	    while (itThread.hasNext())
+	    {
+	        String key = (String) itThread.next();
+	        allThreads.get(key).out.println(outputString);
+	    }
+			    
+        
     }
 }

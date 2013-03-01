@@ -34,6 +34,7 @@ public class ChatPanel extends JPanel {
         
         recievedText.setEditable(false);
         
+        
         setLayout(new GridLayout(3,1));
         
         add(inputText);

@@ -48,12 +48,12 @@ public class SetProtocolAPI {
 			
 			public void showRooms() {
 				System.out.println(SetServer.gameRooms);
-				sp.theOutput = "";
+				sp.theOutput = "ROOMS|";
 			    Iterator itGame = SetServer.gameRooms.keySet().iterator();
 			    while (itGame.hasNext()) {	
 			        String roomName = (String) itGame.next();
 			        if (roomName.equals("lobby")) {continue;}
-			        sp.theOutput = sp.theOutput.concat("|" + roomName);
+			        sp.theOutput = sp.theOutput.concat(roomName + "|");
 				    Iterator itUser = SetServer.gameRooms.get(roomName).keySet().iterator();
 				    while (itUser.hasNext()) {
 				    	String userName = (String) itUser.next();
@@ -64,11 +64,11 @@ public class SetProtocolAPI {
 			}
 			
 			public void showUsers() {
-				sp.theOutput = "";
+				sp.theOutput = "USERS|";
 			    Iterator itUsers = SetServer.allThreads.keySet().iterator();
 			    while (itUsers.hasNext()) {	
 			        String user = (String) itUsers.next();
-			        sp.theOutput = sp.theOutput.concat(user+"|");
+			        sp.theOutput = sp.theOutput.concat(user + "|");
 				    //			        it.remove(); // avoids a ConcurrentModificationException
 			    }
 		    }
@@ -153,7 +153,7 @@ public class SetProtocolAPI {
 			}
 			
 			private void lobbyInvalid(String theInput) {
-				sp.theOutput = "InvalidResponse";
+				sp.theOutput = "In Lobby";
 			}
 			
 			private void joinGame(String theInput) {
@@ -166,9 +166,7 @@ public class SetProtocolAPI {
         		}
 //	        	If the room doesn't exist, create it and join the room
 	        	else if (!SetServer.gameRooms.containsKey(roomName)) {
-	        		new GameRoom(roomName, curThread);
-	        		sp.theOutput = "success|create-join";
-	        		sp.state = SetProtocol.GAME;
+	        	    SetServer.sendRoomCreate(roomName, curThread, sp);
 	        	}
 //	        	If the room does exist and its not full, join it
 	        	else {
@@ -183,7 +181,9 @@ public class SetProtocolAPI {
 			
 			public void gameStart(String theInput) {
 				if (theInput.toLowerCase().startsWith("leave")) {
-					leaveGame();
+//				    System.out.println(curThread.currentRoom);
+//					leaveGame();
+				    SetServer.sendRoomLeave(curThread, sp);
 				}
 				else {
 					gameInvalid();
@@ -191,17 +191,14 @@ public class SetProtocolAPI {
 			}
 			
 			private void leaveGame() {
+				sp.theOutput = "ROOMLEAVE|" + curThread.currentRoom;
 				curThread.currentRoom.leave(curThread);
 				SetServer.lobby.join(curThread);
-				sp.theOutput = "success|leave";
 				sp.state = SetProtocol.LOBBY;
 			}
 			
 			private void gameInvalid() {
-				sp.theOutput = "error|fail";
+				sp.theOutput = "In Game";
 			}
 		}
-		
-
-
 }

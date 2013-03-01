@@ -31,7 +31,9 @@ public class SetProtocol {
     		spAPI.genericAPI.chat(theInput);
         }
     	else if (theInput.toLowerCase().startsWith("rooms")) {
-    		spAPI.genericAPI.showRooms();
+    	    SetServer.sendRooms();
+    	    theOutput = "rooms shown";
+//    		spAPI.genericAPI.showRooms();
     	}
     	else if (theInput.toLowerCase().startsWith("users")) {
     		spAPI.genericAPI.showUsers();

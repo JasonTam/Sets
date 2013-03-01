@@ -111,14 +111,7 @@ public class GameGrid extends JFrame {
             	else {
             		System.out.println("Invalid Set! Sets must contain exactly 3 cards.");
             	}
-            	out.println("login|Andrew|andrew");
-            	try {
-            	    System.out.println("This was recieved in the client");
-                    System.out.println(in.readLine());
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            	
+            	out.println("chat hi i am testing chat");
             }
         });
         pane.add(compsToExperiment, BorderLayout.NORTH);
