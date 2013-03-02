@@ -42,28 +42,17 @@ public class SetProtocolAPI {
 			
 			public void chat(String theInput) {
 				String message = theInput.toLowerCase().substring(5);
-				SetServer.broadcast(curThread.currentRoom.getName(), curThread, message);
+				SetServer.sendChat(curThread.currentRoom.getName(), curThread, message);
 				sp.theOutput = "You just broadcasted a message";
 			}
 			
 			public void showRooms() {
-				System.out.println(SetServer.gameRooms);
-				sp.theOutput = "ROOMS|";
-			    Iterator itGame = SetServer.gameRooms.keySet().iterator();
-			    while (itGame.hasNext()) {	
-			        String roomName = (String) itGame.next();
-			        if (roomName.equals("lobby")) {continue;}
-			        sp.theOutput = sp.theOutput.concat(roomName + "|");
-				    Iterator itUser = SetServer.gameRooms.get(roomName).keySet().iterator();
-				    while (itUser.hasNext()) {
-				    	String userName = (String) itUser.next();
-				    	sp.theOutput = sp.theOutput.concat("-" + userName );
-				    }
-				    //			        it.remove(); // avoids a ConcurrentModificationException
-			    }
+			    SetServer.sendRooms(sp);
 			}
 			
 			public void showUsers() {
+			    SetServer.sendUsers(sp);
+			    /*
 				sp.theOutput = "USERS|";
 			    Iterator itUsers = SetServer.allThreads.keySet().iterator();
 			    while (itUsers.hasNext()) {	
@@ -71,9 +60,11 @@ public class SetProtocolAPI {
 			        sp.theOutput = sp.theOutput.concat(user + "|");
 				    //			        it.remove(); // avoids a ConcurrentModificationException
 			    }
+			    */
 		    }
 			
 			public void quitApp() {
+			    SetServer.sendLogout(curThread.getName(), sp);
 	        	sp.theOutput = "Bye.";
 			}
 			
@@ -111,10 +102,10 @@ public class SetProtocolAPI {
 	        			
 	        			SetServer.allThreads.remove(Integer.toString(curThread.default_name));
 	        			SetServer.allThreads.put(curThread.getName(), curThread);
-	        			
-	        			
 	        			SetServer.lobby.join(curThread);
-	        			sp.theOutput = "Entering Lobby";
+	        			
+	        			SetServer.sendLogin(curThread.getName(), sp);
+	        			
 	        			sp.state = SetProtocol.LOBBY;
 	        		}
 	        		else {

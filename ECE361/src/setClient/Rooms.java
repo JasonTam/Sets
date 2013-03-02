@@ -29,11 +29,9 @@ public class Rooms {
         roomString = roomString.substring(roomString.indexOf("|") + 1);
         
         String[] tmp = roomString.split("\\|");
-        System.out.println(roomString);
         if (roomString.length() == 0)
         {
             roomData = null;
-            System.out.println("here");
         }
         else
         {

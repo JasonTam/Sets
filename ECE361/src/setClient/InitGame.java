@@ -45,7 +45,6 @@ public class InitGame {
     private static boolean isConnected = true;
     
     public static JPanel cardLayout = new JPanel();
-    public static ChatPanel chatPanel  = new ChatPanel();
     public static Lobby lobbyPanel = new Lobby();
     public static GamePanel gamePanel  = new GamePanel();
     
@@ -63,7 +62,6 @@ public class InitGame {
         
         cardLayout.setLayout(new CardLayout());
         cardLayout.add(lobbyPanel, "LOBBY");
-        cardLayout.add(chatPanel, "CHAT");
         cardLayout.add(gamePanel, "GAME");
         
         ((CardLayout)cardLayout.getLayout()).show(cardLayout, "LOBBY");
@@ -107,6 +105,13 @@ public class InitGame {
     }
     
     public static void main(String[] args) {
+        initServerConnection();
+//        LOGIN HERE
+        //Initialization- login, get users, and get rooms
+        out.println("login|Andrew|andrew");
+        out.println("rooms");
+        out.println("users");
+        
         /* Use an appropriate Look and Feel */
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -130,19 +135,14 @@ public class InitGame {
                 createAndShowGUI();
         }
         });
-        initServerConnection();
-//        LOGIN HERE
-        //Initialization- login, get users, and get rooms
-        out.println("login|Andrew|andrew");
-        out.println("rooms");
-        out.println("users");
         try
         {
 	        while ((inputLine = in.readLine()) != null)
 	        {
+	            System.out.println(inputLine);
 	            if (inputLine.startsWith("CHAT|"))
 	            {
-	                chatPanel.displayMessage(inputLine.substring(5));
+	                lobbyPanel.chat.displayMessage(inputLine.substring(5));
 	            }
 //	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
 	            else if (inputLine.matches("^ROOMS\\|.*$"))
@@ -151,10 +151,23 @@ public class InitGame {
 	                Rooms.createRoomHash();
 	                lobbyPanel.updateLobbyPanel();
 	            }
-	            else if (inputLine.startsWith("USERS|"))
+	            else if (inputLine.matches("^USERS\\|.*$"))
                 {
+	                User.getUserData(inputLine);
+	                System.out.println(User.userList);
                 
                 }
+	            else if (inputLine.matches("^LOGIN\\|.*$"))
+	            {
+	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
+	                User.addUser(inputLine);
+	                
+	            }
+	            else if (inputLine.matches("^LOGOUT\\|.*$"))
+	            {
+	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
+	                User.removeUser(inputLine);
+	            }
 	            else {
 	                System.out.println(inputLine);
 	            }

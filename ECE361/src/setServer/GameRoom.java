@@ -40,9 +40,10 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 		return room_name;
 	}
 	
-	
+/*	
 	public String toString() {
 	    return getName();
 	}
+	*/
 	
 }

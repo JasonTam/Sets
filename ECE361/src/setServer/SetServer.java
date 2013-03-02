@@ -46,7 +46,7 @@ public class SetServer {
     }
     
 //	This will be used to send a message to all specified threads.
-    public static void broadcast(String roomName, SetMultiThread thread, String message) {
+    public static void sendChat(String roomName, SetMultiThread thread, String message) {
 	    Iterator it = gameRooms.get(roomName).keySet().iterator();
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
@@ -56,24 +56,42 @@ public class SetServer {
     }
     
     
+    public static void sendUsers(SetProtocol sp)
+    {
+		sp.theOutput = "USERS|";
+	    Iterator itUsers = SetServer.allThreads.keySet().iterator();
+	    while (itUsers.hasNext()) {	
+	        String user = (String) itUsers.next();
+	        sp.theOutput = sp.theOutput.concat(user + "|");
+		    //			        it.remove(); // avoids a ConcurrentModificationException
+	    }
+	    broadcastToAllThreads(sp);
+    }
+    
+    public static void sendLogin(String name, SetProtocol sp)
+    {
+        System.out.println(name + " logged in");
+        sp.theOutput = "LOGIN|" + name;
+	    broadcastToAllThreads(sp);
+        
+    }
+    
+    public static void sendLogout(String name, SetProtocol sp)
+    {
+        System.out.println(name + " logged out");
+        sp.theOutput = "LOGOUT|" + name;
+	    broadcastToAllThreads(sp);
+    }
+    
     public static void sendRoomLeave(SetMultiThread curThread, SetProtocol sp)
     {
-		sp.theOutput = "ROOMLEAVE|" + curThread.currentRoom;
+		sp.theOutput = "ROOMLEAVE|" + curThread.currentRoom.getName();
 		curThread.currentRoom.leave(curThread);
 		SetServer.lobby.join(curThread);
 	    sp.state = SetProtocol.LOBBY;
         
-	    Iterator itThread = SetServer.allThreads.keySet().iterator();
-	    
-	    while (itThread.hasNext())
-	    {
-	        String key = (String) itThread.next();
-	        allThreads.get(key).out.println(sp.theOutput);
-	    }
-	    
-	    sendRooms();
-	        
-        
+	    broadcastToAllThreads(sp);
+	    sendRooms(sp);
     }
     
     public static void sendRoomCreate(String roomName, SetMultiThread curThread, SetProtocol sp)
@@ -82,6 +100,14 @@ public class SetServer {
 		sp.theOutput = "ROOMCREATE|" + roomName;
 	    sp.state = SetProtocol.GAME;
         
+	    
+	    broadcastToAllThreads(sp);
+	    sendRooms(sp);
+			    
+        
+    }
+    public static void broadcastToAllThreads(SetProtocol sp)
+    {
 	    Iterator itThread = SetServer.allThreads.keySet().iterator();
 	    
 	    while (itThread.hasNext())
@@ -89,39 +115,28 @@ public class SetServer {
 	        String key = (String) itThread.next();
 	        allThreads.get(key).out.println(sp.theOutput);
 	    }
-	    
-	    sendRooms();
-			    
-        
     }
     
-    public static void sendRooms()
+    public static void sendRooms(SetProtocol sp)
     {
         System.out.println(gameRooms);
         
-        String outputString = "ROOMS|";
+        sp.theOutput = "ROOMS|";
 	    Iterator itGame = SetServer.gameRooms.keySet().iterator();
 	    while (itGame.hasNext()) {	
 	        String roomName = (String) itGame.next();
-	        if (roomName.equals("lobby")) {continue;}
-	        outputString = outputString.concat(roomName);
+	        sp.theOutput = sp.theOutput.concat(roomName);
 		    Iterator itUser = SetServer.gameRooms.get(roomName).keySet().iterator();
 		    while (itUser.hasNext()) {
 		    	String userName = (String) itUser.next();
-		    	outputString = outputString.concat("-" + userName);
+		    	sp.theOutput = sp.theOutput.concat("-" + userName);
 		    }
-		    outputString = outputString.concat("|");
+		    sp.theOutput = sp.theOutput.concat("|");
 		    //			        it.remove(); // avoids a ConcurrentModificationException
 	    }
 	    
-	    Iterator itThread = SetServer.allThreads.keySet().iterator();
-	    
-	    while (itThread.hasNext())
-	    {
-	        String key = (String) itThread.next();
-	        allThreads.get(key).out.println(outputString);
-	    }
-			    
+	    broadcastToAllThreads(sp);
         
     }
+    
 }

@@ -19,7 +19,7 @@ public class Lobby extends JPanel
 {
 	 private RoomsPanel lobbyRooms;
      private JButton test;
-     private ChatPanel chat;
+     public ChatPanel chat;
 	 
 	 private ConcurrentHashMap<String, Rooms> roomHash = new ConcurrentHashMap<String, Rooms>();
 	 
@@ -56,7 +56,7 @@ public class Lobby extends JPanel
 	        {
 	            public void actionPerformed(ActionEvent e)
 	            {
-	                InitGame.changeCards("CHAT");
+	                InitGame.changeCards("GAME");
 	            } 
 	        }
         );
@@ -106,12 +106,9 @@ public class Lobby extends JPanel
             for (Component C : getComponents())
             {
                 
-                    System.out.println("Showing Rooms: ");
-                    System.out.println(C);
                 if ((new JButton()).getClass() == C.getClass())
                 {
                     remove(C);
-                    System.out.println("hi!!!!");
                 }
                 
             }
