@@ -1,6 +1,8 @@
 package setClient;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,35 +20,14 @@ public class ChatPanel extends JPanel {
     
     private static JTextArea recievedText;
     private JTextField inputText;
-    public static UserList userList;
     
     private String text;
     
-    public class UserList extends JList
-    {
-        public UserList()
-        {
-            createListModel();
-        }
-        
-        private void createListModel()
-        {
-            DefaultListModel listModel = new DefaultListModel(); 
-            for (String eachUser : User.userList.keySet())
-            {
-                listModel.addElement(User.userList.get(eachUser));
-            }
-            setModel(listModel);
-            
-        }
-        
-    }
     
     public ChatPanel() 
     {
         recievedText = new JTextArea();
         inputText = new JTextField();
-        userList = new UserList();
         
 //        Cause the text area to always move down with new text
 	    DefaultCaret caret = (DefaultCaret)recievedText.getCaret();
@@ -72,14 +53,25 @@ public class ChatPanel extends JPanel {
         recievedText.setWrapStyleWord(true);
         
         
-        setLayout(new GridLayout(3,1));
+        setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
         
 	    JPanel chatScroll = new JPanel();
         JScrollPane scrollFrame = new JScrollPane(chatScroll);
     
-        add(userList);
-        add(scrollFrame);            
-        add(inputText);
+        
+        c.gridx = 0;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.BOTH;
+        
+        
+        c.gridy = 0;
+        c.weighty = 1;
+        add(scrollFrame, c);            
+        
+        c.gridy = 1;
+        c.weighty = 0.2;
+        add(inputText, c);
         
         chatScroll.setLayout(new GridLayout(1,1));
         chatScroll.setAutoscrolls(true);

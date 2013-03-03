@@ -97,7 +97,7 @@ public class SetProtocolAPI {
         		
 //	        	Once you get logged in, you autommatically are entered into the lobby.
 				try {
-	        		if (dbc.validateUser(username, password)) {
+//	        		if (dbc.validateUser(username, password)) {
 	        			curThread.setName(username);
 	        			
 	        			SetServer.allThreads.remove(Integer.toString(curThread.default_name));
@@ -107,10 +107,10 @@ public class SetProtocolAPI {
 	        			SetServer.sendLogin(curThread.getName(), sp);
 	        			
 	        			sp.state = SetProtocol.LOBBY;
-	        		}
-	        		else {
-	        			sp.theOutput = "Bad login information";
-	        		}
+//	        		}
+//	        		else {
+//	        			sp.theOutput = "Bad login information";
+//	        		}
         		}
         		catch (Exception e){
         			e.printStackTrace();

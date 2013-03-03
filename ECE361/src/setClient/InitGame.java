@@ -8,6 +8,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,15 +50,23 @@ public class InitGame {
     public static Lobby lobbyPanel = new Lobby();
     public static GamePanel gamePanel  = new GamePanel();
     
+    public static ChatPanel chatPanel = new ChatPanel();
+    public static UserJList userJList = new UserJList();
+    
+    public static String userName = "Andrew";
+    
+    private static JFrame frame;
     /**
      * Create the GUI and show it.  For thread safety,
      * this method is invoked from the
      * event dispatch thread.
      */
     private static void createAndShowGUI() {
+        userJList.setPreferredSize(new Dimension(100,0));
+        chatPanel.setPreferredSize(new Dimension(0, 150));
         
         //Create and set up the window.
-        JFrame frame = new JFrame("SET GAME :O ");
+        frame = new JFrame("SET GAME :O ");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         
@@ -67,6 +77,8 @@ public class InitGame {
         ((CardLayout)cardLayout.getLayout()).show(cardLayout, "LOBBY");
         
         frame.add(cardLayout, BorderLayout.CENTER);
+        frame.add(userJList, BorderLayout.EAST);
+        frame.add(chatPanel, BorderLayout.SOUTH);
         
         //Set up the content pane.
         //frame.addComponentsToPane(frame.getContentPane());
@@ -76,6 +88,7 @@ public class InitGame {
         int frameHeight = 600;
         frame.setSize(frameWidth, frameHeight);
         frame.setVisible(true);
+        
     }
     
     public static void changeCards(String cardName) {
@@ -92,6 +105,7 @@ public class InitGame {
 	        out = new PrintWriter(socket.getOutputStream(), true);
 	           
 	        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	        
 	        
         }
         catch (UnknownHostException e)
@@ -133,8 +147,17 @@ public class InitGame {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
+                
+//              Notify the server that you have quit.
+		        frame.addWindowListener(new WindowAdapter() {
+		            public void windowClosing(WindowEvent e) {
+		                out.println("quit");
+		                System.exit(0);
+		            }
+		        });
         }
         });
+        
         try
         {
 	        while ((inputLine = in.readLine()) != null)
@@ -154,30 +177,40 @@ public class InitGame {
 	            else if (inputLine.matches("^USERS\\|.*$"))
                 {
 	                User.getUserData(inputLine);
-	                System.out.println(User.userList);
-                
+	                userJList.createListModel();
                 }
 	            else if (inputLine.matches("^LOGIN\\|.*$"))
 	            {
 	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
+	                if (inputLine.equals("Andrew"))
+	                {
+	                    debug("same name inside");
+	                    continue;
+	                }
 	                User.addUser(inputLine);
-	                
+	                userJList.refreshJList();
 	            }
 	            else if (inputLine.matches("^LOGOUT\\|.*$"))
 	            {
 	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
 	                User.removeUser(inputLine);
+	                userJList.refreshJList();
 	            }
 	            else {
-	                System.out.println(inputLine);
+	                debug("Nothing done");
 	            }
 	            
 	        }
-	        System.out.println("Done");
+	        debug("Done");
         }
         catch (IOException e) 
         {
             e.printStackTrace(); 
         }
+        }
+    
+        public static void debug(Object msg)
+        {
+           System.out.println(msg);
         }
     }
