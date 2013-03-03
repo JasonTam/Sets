@@ -52,7 +52,7 @@ public class SetMultiThread extends Thread {
 //	   		This very first line that is printed actually
 //	      	gets taken and is stored as the thread's name
 	        out.println(outputLine);
-	 
+	        
 //	        Waiting for input from the client
 	        while ((inputLine = in.readLine()) != null) {
 //	        	Whatever the client says is automatically piped into the SetProtocol.
