@@ -28,7 +28,7 @@ public class SetMultiThread extends Thread {
     public SetMultiThread(Socket s, int n) {
 	    super("SetMultiThread");
 	    socket = s;
-	    this.setName(Integer.toString(default_name));
+	    setName(Integer.toString(default_name));
 	    default_name = n;
     }
     
@@ -75,7 +75,7 @@ public class SetMultiThread extends Thread {
 	        {
 	            this.currentRoom.leave(this);
 	        }
-	        SetServer.allThreads.remove(Integer.toString(default_name));
+	        SetServer.allThreads.remove(getName());
 	        out.close();
 	        in.close();
 	        socket.close();

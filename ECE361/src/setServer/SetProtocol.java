@@ -21,7 +21,7 @@ public class SetProtocol {
     }
  
     public String processInput(String theInput, SetMultiThread curThread) {
-    	
+        
 // 		Each condition must always assign a value to theOutput.
 //      Initialization of the server
     	if (state == INITIALIZE) {
@@ -31,9 +31,7 @@ public class SetProtocol {
     		spAPI.genericAPI.chat(theInput);
         }
     	else if (theInput.toLowerCase().startsWith("rooms")) {
-    	    SetServer.sendRooms();
-    	    theOutput = "rooms shown";
-//    		spAPI.genericAPI.showRooms();
+    		spAPI.genericAPI.showRooms();
     	}
     	else if (theInput.toLowerCase().startsWith("users")) {
     		spAPI.genericAPI.showUsers();
