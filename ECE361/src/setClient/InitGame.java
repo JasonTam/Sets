@@ -43,7 +43,7 @@ public class InitGame {
     public static String inputLine = null;
     
     private static Socket socket = null;
-    
+
     private static boolean isConnected = true;
     
     public static JPanel cardLayout = new JPanel();
@@ -51,7 +51,7 @@ public class InitGame {
     public static GamePanel gamePanel  = new GamePanel();
     
     public static ChatPanel chatPanel = new ChatPanel();
-    public static UserJList userJList = new UserJList();
+    //public static UserJList userJList = new UserJList();
     
     public static String userName = "Andrew";
     
@@ -61,8 +61,13 @@ public class InitGame {
      * this method is invoked from the
      * event dispatch thread.
      */
+    //used in Login to show lobby panel
+    public static void showGame()
+    {
+    	frame.setVisible(true);
+    }
     private static void createAndShowGUI() {
-        userJList.setPreferredSize(new Dimension(100,0));
+        //userJList.setPreferredSize(new Dimension(100,0));
         chatPanel.setPreferredSize(new Dimension(0, 150));
         
         //Create and set up the window.
@@ -77,7 +82,7 @@ public class InitGame {
         ((CardLayout)cardLayout.getLayout()).show(cardLayout, "LOBBY");
         
         frame.add(cardLayout, BorderLayout.CENTER);
-        frame.add(userJList, BorderLayout.EAST);
+        //frame.add(userJList, BorderLayout.EAST);
         frame.add(chatPanel, BorderLayout.SOUTH);
         
         //Set up the content pane.
@@ -87,7 +92,7 @@ public class InitGame {
         int frameWidth = 800;
         int frameHeight = 600;
         frame.setSize(frameWidth, frameHeight);
-        frame.setVisible(true);
+        frame.setVisible(false);
         
     }
     
@@ -119,12 +124,19 @@ public class InitGame {
     }
     
     public static void main(String[] args) {
-        initServerConnection();
-//        LOGIN HERE
-        //Initialization- login, get users, and get rooms
-        out.println("login|Andrew|andrew");
-        out.println("rooms");
-        out.println("users");
+    	initServerConnection();
+    	Login login = new Login();
+    	login.pack();
+		login.addWindowListener(new WindowAdapter() {
+
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
+		
+		login.setVisible(true);
+		
+
         
         /* Use an appropriate Look and Feel */
         try {
@@ -144,9 +156,10 @@ public class InitGame {
         
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
+        
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
+            public void run() {            	
+            	createAndShowGUI();
                 
 //              Notify the server that you have quit.
 		        frame.addWindowListener(new WindowAdapter() {
@@ -177,7 +190,7 @@ public class InitGame {
 	            else if (inputLine.matches("^USERS\\|.*$"))
                 {
 	                User.getUserData(inputLine);
-	                userJList.createListModel();
+	                //userJList.createListModel();
                 }
 	            else if (inputLine.matches("^LOGIN\\|.*$"))
 	            {
@@ -188,13 +201,13 @@ public class InitGame {
 	                    continue;
 	                }
 	                User.addUser(inputLine);
-	                userJList.refreshJList();
+	               // userJList.refreshJList();
 	            }
 	            else if (inputLine.matches("^LOGOUT\\|.*$"))
 	            {
 	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
 	                User.removeUser(inputLine);
-	                userJList.refreshJList();
+	               // userJList.refreshJList();
 	            }
 	            else {
 	                debug("Nothing done");
