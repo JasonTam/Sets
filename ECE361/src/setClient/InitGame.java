@@ -51,7 +51,7 @@ public class InitGame {
     public static GamePanel gamePanel  = new GamePanel();
     
     public static ChatPanel chatPanel = new ChatPanel();
-    //public static UserJList userJList = new UserJList();
+    public static UserJList userJList = new UserJList();
     
     public static String userName = "Andrew";
     
@@ -82,13 +82,13 @@ public class InitGame {
         ((CardLayout)cardLayout.getLayout()).show(cardLayout, "LOBBY");
         
         frame.add(cardLayout, BorderLayout.CENTER);
-        //frame.add(userJList, BorderLayout.EAST);
+        frame.add(userJList, BorderLayout.EAST);
         frame.add(chatPanel, BorderLayout.SOUTH);
         
         //Set up the content pane.
         //frame.addComponentsToPane(frame.getContentPane());
         //Display the window.
-//        frame.pack();
+        frame.pack();
         int frameWidth = 800;
         int frameHeight = 600;
         frame.setSize(frameWidth, frameHeight);
@@ -190,7 +190,7 @@ public class InitGame {
 	            else if (inputLine.matches("^USERS\\|.*$"))
                 {
 	                User.getUserData(inputLine);
-	                //userJList.createListModel();
+	                userJList.createListModel();
                 }
 	            else if (inputLine.matches("^LOGIN\\|.*$"))
 	            {
@@ -201,13 +201,13 @@ public class InitGame {
 	                    continue;
 	                }
 	                User.addUser(inputLine);
-	               // userJList.refreshJList();
+	                userJList.refreshJList();
 	            }
 	            else if (inputLine.matches("^LOGOUT\\|.*$"))
 	            {
 	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
 	                User.removeUser(inputLine);
-	               // userJList.refreshJList();
+	                userJList.refreshJList();
 	            }
 	            else {
 	                debug("Nothing done");

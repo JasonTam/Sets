@@ -3,6 +3,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	private String room_name;
+	private ConcurrentHashMap<Integer, Boolean> cards;
+	
+	public void startGame()
+	{
+//	    Ill expect the set game to send me an INDEX for every card.
+//	    The default hash value will be false.
+//	    If someone sends me a correct set, the value will cahnge to TRUE.
+//	    When a cards hash value is true, anyone else that submits a set using that
+//	    card will not be able to use it.
+	    
+	}
 	
 	
 //	Create and join a game room
