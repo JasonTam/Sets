@@ -40,6 +40,7 @@ public class GamePanel extends JPanel {
 	public static BufferedReader in;
 
 	JButton submitButton = new JButton("Submit Set");
+	JButton clearButton = new JButton("Clear Selection");
 	GridLayout boardLayout = new GridLayout(3, 5);
 
 	public GamePanel() {
@@ -58,7 +59,7 @@ public class GamePanel extends JPanel {
 				.getWidth() * 2.5) + maxGap,
 				(int) (buttonSize.getHeight() * 3.5) + maxGap * 2));
 
-		Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
+		final Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
 		final Collection<Card> selectedCards = new HashSet<Card>();
 		// Add buttons to experiment with Grid Layout
 		for (int i = 0; i < Game.getIndex(); i++) {
@@ -83,6 +84,8 @@ public class GamePanel extends JPanel {
 		// Add submit
 		controls.add(submitButton);
 		submitButton.setPreferredSize(new Dimension(50, 80));
+		controls.add(clearButton);
+		clearButton.setPreferredSize(new Dimension(50, 80));
 
 		// Process submit button
 		submitButton.addActionListener(new ActionListener() {
@@ -110,11 +113,23 @@ public class GamePanel extends JPanel {
 
 			}
 		});
+		
+		// Process clear button
+				clearButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						selectedCards.removeAll(selectedCards);
+						for (JToggleButton bC : cardButtons.values())
+							bC.setSelected(false);
+					}
+				});
+				
 //		add(compsToExperiment, BorderLayout.NORTH);
 		add(new JSeparator(), BorderLayout.CENTER);
 		add(controls, BorderLayout.SOUTH);
 	}
 	
+//	What is this?? vvv
+	/*
 	public void addComponentsToPane(final Container pane) {
 		final JPanel compsToExperiment = new JPanel();
 		compsToExperiment.setLayout(boardLayout);
@@ -184,5 +199,5 @@ public class GamePanel extends JPanel {
 		pane.add(new JSeparator(), BorderLayout.CENTER);
 		pane.add(controls, BorderLayout.SOUTH);
 	}
-
+*/
 }
