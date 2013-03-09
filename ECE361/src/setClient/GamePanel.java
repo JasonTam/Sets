@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -64,7 +65,11 @@ public class GamePanel extends JPanel {
 		// Add buttons to experiment with Grid Layout
 		for (int i = 0; i < Game.getIndex(); i++) {
 			final Card c = Game.getDeck().get(i);
-			final JToggleButton bC = new JToggleButton(c.toString());
+			System.out.println(c.getStrId());
+			ImageIcon card_img = new ImageIcon
+                    ("src/resources/images_cards/"+c.getStrId()+".gif");
+			final JToggleButton bC = new JToggleButton(card_img);
+//			final JToggleButton bC = new JToggleButton(c.toString());
 			add(bC);
 			cardButtons.put(c.toString(), bC);
 			bC.addActionListener(new ActionListener() {

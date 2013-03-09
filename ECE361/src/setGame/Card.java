@@ -33,6 +33,19 @@ public class Card {
 		}
 	}
 
+	public int getIntId() {
+		int id = 0;
+		for (int att:attributes)
+			id = id*3+att;
+		return id;
+	}
+	
+	public String getStrId() {
+		String strId = Integer.toString(getIntId());
+		strId = (strId.length()<2)?"0"+strId:strId;
+		return strId;
+	}
+	
 	@Override public String toString() {
 		String ret = "";
 		for (Integer i : attributes) {
