@@ -32,7 +32,7 @@ public class Card {
 			i/=nVals;
 		}
 	}
-
+/*
 	public int getIntId() {
 		int id = 0;
 		for (int att:attributes)
@@ -45,7 +45,7 @@ public class Card {
 		strId = (strId.length()<2)?"0"+strId:strId;
 		return strId;
 	}
-	
+	*/
 	@Override public String toString() {
 		String ret = "";
 		for (Integer i : attributes) {

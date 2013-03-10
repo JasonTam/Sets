@@ -65,9 +65,8 @@ public class GamePanel extends JPanel {
 		// Add buttons to experiment with Grid Layout
 		for (int i = 0; i < Game.getIndex(); i++) {
 			final Card c = Game.getDeck().get(i);
-			System.out.println(c.getStrId());
 			ImageIcon card_img = new ImageIcon
-                    ("src/resources/images_cards/"+c.getStrId()+".gif");
+                    ("src/resources/images_cards/"+c.toString()+".gif");
 			final JToggleButton bC = new JToggleButton(card_img);
 //			final JToggleButton bC = new JToggleButton(c.toString());
 			add(bC);
