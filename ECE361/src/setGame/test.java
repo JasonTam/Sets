@@ -21,8 +21,7 @@ public class test {
         boolean setfound;
         setfound = GameLogic.isSet(a, b, c);
         System.out.println("a,b,c form a set? " + setfound);
-        
-        
+             
 //      game1.existSet();
         game1.playGame();
         

@@ -10,29 +10,28 @@ import java.util.Random;
 
 public class Game {
 	Deck deck;
-	ArrayList<Card> field = new ArrayList<Card>();
-
+	ArrayList<Card> field;
+	
 	int cardsPerField = 12;
-	int index = cardsPerField; // Initial field size
-	int setsFound = 0;
-	boolean gameover = false;
+	int setsFound;
+	boolean gameover;
 	int[] submission;
 
 	/*
 	 * Constructor. This will generate the deck with a randomly permuted order.
-	 * It will then deal out 15 cards out into the field.
+	 * It will then deal out 12 cards out into the field.
 	 */
 	public Game() {
-		index = cardsPerField;
 		setsFound = 0;
 		gameover = false;
 		submission = new int[3];
 		deck = new Deck();
+		field = new ArrayList<Card>(cardsPerField);
 		fillField();
 	}
 
 	public void playGame() {
-		while (deck.size() > 0 || existSet()) {
+		while (deck.size() > 0 || GameLogic.existSet(field)) {
 			validateField();
 			printField();
 			submission = getSubmission();
@@ -71,27 +70,16 @@ public class Game {
 		}
 	}
 
-	private boolean existSet() {
-		boolean exists = false;
-		for (int i = 0; i < field.size() - 2; i++) {
-			for (int j = i + 1; j < field.size() - 1; j++) {
-				for (int k = j + 1; k < field.size(); k++) {
-					if (GameLogic.isSet(field.get(i), field.get(j),
-							field.get(k))) {
-						exists = true;
-						System.out.println("(psst) There's a set: " + i + ","
-								+ j + "," + k);
-					}
-				}
-			}
-		}
-		return exists;
-	}
-
 	private void validateField() {
 		// Deal extra cards if no set on field
-		if (!existSet()) {
+		if (!GameLogic.existSet(field)) {
 			dealMoreCardsToField(3);
+		}
+		
+		
+		ArrayList<String> sets = GameLogic.findSets(field);
+		for (String set : sets) {   
+		    System.out.println(set);
 		}
 		/*
 		 * else if (index > cardsPerField) { index -= 3; }
@@ -125,7 +113,7 @@ public class Game {
 			validInput = true;
 			for (int i = 0; i < 3; i++) {
 				int num = Integer.valueOf(data[i]);
-				if (indexList.contains(num) || num > index || num < 0)
+				if (indexList.contains(num) || num > field.size() || num < 0)
 					validInput = false;
 				indexList.add(num);
 			}
@@ -150,10 +138,6 @@ public class Game {
 		for (int i = 0; i < field.size(); i++) {
 			System.out.println("Card #" + i + ":\t" + field.get(i));
 		}
-	}
-
-	public int getIndex() {
-		return index;
 	}
 
 	public int getSetsFound() {
