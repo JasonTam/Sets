@@ -37,7 +37,7 @@ public class Card {
 		attributes.add(i);
 		attributes.add(j);
 		attributes.add(k);
-		attributes.add(i);
+		attributes.add(l);
 	}
 
 /*

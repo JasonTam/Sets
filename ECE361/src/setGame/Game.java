@@ -31,13 +31,12 @@ public class Game {
 		dealer = new Dealer(deck, field);
 	}
 
-	public void playGame() {
-		dealer.deal();
-		field.print();
-
-		while (deck.size() > 0 || GameLogic.existSet(field.getCards())) {
-			dealer.validateField();
+	public void play() {
+		while (deck.size() > 0 || field.existSet()) {
+			dealer.deal();
+			//dealer.validateField();
 			field.print();
+			field.printSets();
 			submission = getSubmission();
 			if (GameLogic.isSet(indextoCard(submission))) {
 				System.out.println("SET FOUND!");
