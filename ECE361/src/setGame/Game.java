@@ -8,88 +8,128 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 
-
-//TODO need to detect if there are no sets on the field
-// and auto deal 3 new cards if so...
-
 public class Game {
-	ArrayList<Card> deck = new ArrayList<Card>(); 
+	ArrayList<Card> deck = new ArrayList<Card>();
 	ArrayList<Card> field = new ArrayList<Card>();
-	/*
-	Rather than having a field, just play indexing games
-	just have an index=15 that may sometimes change to
-	18 or 21.
-	EDIT: I made the field explicit to improve code readability. -Nick
-	*/
-	int cardsPerField = 15;
-	int index = cardsPerField;		// Initial field size
-	int score = 0;
+
+	int cardsPerField = 12;
+	int index = cardsPerField; // Initial field size
+	int setsFound = 0;
 	boolean gameover = false;
 	int[] submission;
 
 	/*
-	 * Constructor.
-	 * This will generate the deck with a randomly 
-	 * permuted order. It will then deal out 15
-	 * cards out into the field.
+	 * Constructor. This will generate the deck with a randomly permuted order.
+	 * It will then deal out 15 cards out into the field.
 	 */
 	public Game() {
 		index = cardsPerField;
-		score = 0;
+		setsFound = 0;
 		gameover = false;
 		submission = new int[3];
 		fillDeck();
 		shuffleDeck();
-		//fillField();
+		fillField();
 	}
-	
-	public void init(){
-		index = cardsPerField;
-		score = 0;
-		gameover = false;
-		submission = new int[3];
-		fillDeck();
-		shuffleDeck();
-	//	fillField();
-	}
-	
-	
+
 	public void playGame() {
-		validateField();
-		dispField();
-		while (deck.size()>0) {
+		while (deck.size() > 0 || existSet()) {
+			validateField();
+			printField();
 			submission = getSubmission();
-			 if (GameLogic.isSet(indextoCard(submission))) {
-				 removeSet(submission);
-				 System.out.println("SET FOUND!");
-				 score++;
-			 } else {
-				 System.out.println("INVALID SET!");
-			 }
-			 validateField();
-			 dispField();
+			if (GameLogic.isSet(indextoCard(submission))) {
+				System.out.println("SET FOUND!");
+				removeCardsFromField(submission);
+				setsFound++;
+			} else {
+				System.out.println("INVALID SET!");
+			}
 		}
 		gameover = true;
 		System.out.println("Game over");
 	}
-	
+
 	private void fillDeck() {
-		for (int i=0; i<(int)Math.pow(Card.nVals, Card.nAtts); i++) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				for (int k = 0; k < 3; k++) {
+					for (int l = 0; l < 3; l++) {
+						deck.add(new Card(i, j, k, l));
+					}
+				}
+			}
+		}
+		
+		/*
+		for (int i = 0; i < (int) Math.pow(Card.nVals, Card.nAtts); i++) {
 			deck.add(new Card(i));
 		}
+		*/
 	}
-	
+
 	private void shuffleDeck() {
 		long seed = System.nanoTime();
 		Collections.shuffle(deck, new Random(seed));
 	}
-	
+
 	private void fillField() {
-		while (field.size() <= cardsPerField) {
+		while (field.size() < cardsPerField) {
 			field.add(deck.remove(0));
 		}
 	}
-	
+
+	private void removeCardsFromField(int[] indices) {
+		for (int i : indices) {
+			if (field.size() <= cardsPerField) {
+				replaceCard(i);
+			} else {
+				field.remove(i);
+			}
+		}
+	}
+
+	private void replaceCard(int index) {
+		if (deck.size() > 0) {
+			field.set(index, deck.remove(0));
+		} else {
+		}
+	}
+
+	private boolean existSet() {
+		boolean exists = false;
+		for (int i = 0; i < field.size() - 2; i++) {
+			for (int j = i + 1; j < field.size() - 1; j++) {
+				for (int k = j + 1; k < field.size(); k++) {
+					if (GameLogic.isSet(field.get(i), field.get(j),
+							field.get(k))) {
+						exists = true;
+						System.out.println("(psst) There's a set: " + i + ","
+								+ j + "," + k);
+					}
+				}
+			}
+		}
+		return exists;
+	}
+
+	private void validateField() {
+		// Deal extra cards if no set on field
+		if (!existSet()) {
+			dealMoreCardsToField(3);
+		}
+		/*
+		 * else if (index > cardsPerField) { index -= 3; }
+		 */
+	}
+
+	private void dealMoreCardsToField(int numCards) {
+		for (int i = 0; i < numCards; i++) {
+			if (deck.size() > 0) {
+				field.add(deck.remove(0));
+			}
+		}
+	}
+
 	private int[] getSubmission() {
 		String userIn = null;
 		int[] indexSet = new int[3];
@@ -97,8 +137,8 @@ public class Game {
 		boolean validInput = false;
 		BufferedReader reader;
 		reader = new BufferedReader(new InputStreamReader(System.in));
-		
-		while(!validInput) {
+
+		while (!validInput) {
 			System.out.print("Enter space delimited card indices: ");
 			try {
 				userIn = reader.readLine();
@@ -106,69 +146,37 @@ public class Game {
 				e.printStackTrace();
 			}
 			String data[] = userIn.split(" ");
-	        validInput = true;
-	        for (int i=0; i<3; i++) {
-	        	int num = Integer.valueOf(data[i]);
-	        	if (indexList.contains(num)||num>index||num<0)
-	        		validInput = false;
-	        	indexList.add(num);
-	        }
-	        if (!validInput)
-	        	System.out.println("Must select 3 distinct valid cards");
+			validInput = true;
+			for (int i = 0; i < 3; i++) {
+				int num = Integer.valueOf(data[i]);
+				if (indexList.contains(num) || num > index || num < 0)
+					validInput = false;
+				indexList.add(num);
+			}
+			if (!validInput)
+				System.out.println("Must select 3 distinct valid cards");
 		}
-		for (int i=0;i<3;i++)
+		for (int i = 0; i < 3; i++)
 			indexSet[i] = indexList.get(i);
 		return indexSet;
 	}
-	
+
 	private Card[] indextoCard(int[] indexSet) {
 		Card[] cardSet = new Card[indexSet.length];
-		for (int i=0; i<indexSet.length; i++) {
-			cardSet[i] = deck.get(indexSet[i]);
+		for (int i = 0; i < indexSet.length; i++) {
+			cardSet[i] = field.get(indexSet[i]);
 		}
-			
 		return cardSet;
 	}
-	
-	void removeSet(int[] indexSet) {
-		for (int i:indexSet) {
-			deck.remove(i);
-		}
-	}
-	
-	boolean existSet() {
-		boolean exists = false;
-		for (int i=0; i<index-2; i++) {
-			for (int j=i+1; j<index-1; j++) {
-				for (int k=j+1; k<index; k++) {
-					if (GameLogic.isSet(deck.get(i),deck.get(j),deck.get(k))) {
-						exists=true;
-						System.out.println("(psst) There's a set: " + i+","+j+","+k);
-					}
-				}
-			}
-		}
-		return exists;
-	}
-	
-	private void validateField() {
-		if (!existSet()) { // Deal extra cards if no set on field
-			index += 3;
-		} else if (index>cardsPerField) {
-			index -= 3;
-		}
-		
-	}
-	
-	void dispField() {
+
+	private void printField() {
 		System.out.println("------[Playing Field]------");
-		for (int i = 0; i<index; i++){
-			System.out.println(
-					"Card #" + i + ":\t" + deck.get(i));
+		for (int i = 0; i < field.size(); i++) {
+			System.out.println("Card #" + i + ":\t" + field.get(i));
 		}
 	}
-	
-//	Getters
+
+	// Getters
 	public ArrayList<Card> getDeck() {
 		return deck;
 	}
@@ -177,13 +185,13 @@ public class Game {
 		return index;
 	}
 
-	public int getScore() {
-		return score;
+	public int getSetsFound() {
+		return setsFound;
 	}
-	
-//	for troubleshooting
-	void printDeck() { 
-		for (int i = 0; i<81; i++){
+
+	// for troubleshooting
+	private void printDeck() {
+		for (int i = 0; i < 81; i++) {
 			System.out.println(deck.get(i));
 		}
 	}

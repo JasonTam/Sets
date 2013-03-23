@@ -32,6 +32,14 @@ public class Card {
 			i/=nVals;
 		}
 	}
+	
+	public Card(int i, int j, int k, int l) {
+		attributes.add(i);
+		attributes.add(j);
+		attributes.add(k);
+		attributes.add(i);
+	}
+
 /*
 	public int getIntId() {
 		int id = 0;
