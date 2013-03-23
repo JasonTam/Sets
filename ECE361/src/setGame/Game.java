@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Game {
-	ArrayList<Card> deck = new ArrayList<Card>();
+	Deck deck;
 	ArrayList<Card> field = new ArrayList<Card>();
 
 	int cardsPerField = 12;
@@ -27,8 +27,7 @@ public class Game {
 		setsFound = 0;
 		gameover = false;
 		submission = new int[3];
-		fillDeck();
-		shuffleDeck();
+		deck = new Deck();
 		fillField();
 	}
 
@@ -49,32 +48,9 @@ public class Game {
 		System.out.println("Game over");
 	}
 
-	private void fillDeck() {
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				for (int k = 0; k < 3; k++) {
-					for (int l = 0; l < 3; l++) {
-						deck.add(new Card(i, j, k, l));
-					}
-				}
-			}
-		}
-		
-		/*
-		for (int i = 0; i < (int) Math.pow(Card.nVals, Card.nAtts); i++) {
-			deck.add(new Card(i));
-		}
-		*/
-	}
-
-	private void shuffleDeck() {
-		long seed = System.nanoTime();
-		Collections.shuffle(deck, new Random(seed));
-	}
-
 	private void fillField() {
 		while (field.size() < cardsPerField) {
-			field.add(deck.remove(0));
+			field.add(deck.deal());
 		}
 	}
 
@@ -90,7 +66,7 @@ public class Game {
 
 	private void replaceCard(int index) {
 		if (deck.size() > 0) {
-			field.set(index, deck.remove(0));
+			field.set(index, deck.deal());
 		} else {
 		}
 	}
@@ -125,7 +101,7 @@ public class Game {
 	private void dealMoreCardsToField(int numCards) {
 		for (int i = 0; i < numCards; i++) {
 			if (deck.size() > 0) {
-				field.add(deck.remove(0));
+				field.add(deck.deal());
 			}
 		}
 	}
@@ -176,23 +152,11 @@ public class Game {
 		}
 	}
 
-	// Getters
-	public ArrayList<Card> getDeck() {
-		return deck;
-	}
-
 	public int getIndex() {
 		return index;
 	}
 
 	public int getSetsFound() {
 		return setsFound;
-	}
-
-	// for troubleshooting
-	private void printDeck() {
-		for (int i = 0; i < 81; i++) {
-			System.out.println(deck.get(i));
-		}
 	}
 }
