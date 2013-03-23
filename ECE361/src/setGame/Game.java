@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Game {
-	Deck deck;
-	Field field;
-	Dealer dealer;
+	private Deck deck;
+	private Field field;
+	private Dealer dealer;
 
 	int baseSize = 12;
 	boolean gameover;
@@ -28,24 +28,16 @@ public class Game {
 		dealer = new Dealer(deck, field);
 	}
 
-	public void play() {
+	public void start() {
 		String command = "";
-		while (deck.size() > 0 || field.existSet()) {
-			dealer.deal();
-			// dealer.validateField();
-			field.print();
-			field.printSets();
-			readCommand();
-		}
-		gameover = true;
-		System.out.println("Game over");
+		dealer.deal();
 	}
 
-	private void readCommand() {
+	public void readCommand() {
 		String userIn = null;
 		BufferedReader reader;
 		reader = new BufferedReader(new InputStreamReader(System.in));
-		System.out.print("Enter space delimited card indices: ");
+		System.out.print("Enter command: ");
 		try {
 			userIn = reader.readLine();
 			parseInput(userIn);
@@ -63,8 +55,10 @@ public class Game {
 
 	private void routeCommand(String command, String[] values) {
 		if (command.equals("s")) {
-			System.out.println("check");
 			submitSet(values);
+		}
+		if (command.equals("v")) {
+			validateField();
 		}
 	}
 
@@ -73,19 +67,17 @@ public class Game {
 		int[] indexSet = new int[3];
 		int expectedValues = 3;
 		ArrayList<Integer> indexList = new ArrayList<Integer>();
-
 		if (values.length == expectedValues) {
 			validInput = true;
 			for (int i = 0; i < expectedValues; i++) {
 				int num = Integer.valueOf(values[i]);
-				if (indexList.contains(num) || num > field.size() || num < 0) {
+				if (indexList.contains(num) || num > field.getCapacity() || num < 0 || field.get(num) == null) {
 					validInput = false;
 					break;
 				}
 				indexList.add(num);
 			}
 		}
-		
 		if (!validInput) {
 			System.out.println("Must select 3 distinct valid cards.");
 			return;
@@ -94,21 +86,32 @@ public class Game {
 			for (int i = 0; i < 3; i++) {
 				indexSet[i] = indexList.get(i);
 			}
-			if (GameLogic.isSet(indextoCard(indexSet))) {
+			if (GameLogic.isSet(field.getCards(indexSet))) {
 				System.out.println("SET FOUND!");
 				dealer.removeCardsFromField(indexSet);
+				dealer.deal();
 			} else {
 				System.out.println("INVALID SET!");
 			}
 		}
 	}
-
-	private Card[] indextoCard(int[] indexSet) {
-		Card[] cardSet = new Card[indexSet.length];
-		for (int i = 0; i < indexSet.length; i++) {
-			cardSet[i] = field.get(indexSet[i]);
-		}
-		return cardSet;
+	
+	private void validateField() {
+		dealer.validateField();
 	}
-
+	
+	public boolean isGameOver() {
+		if (deck.size() > 0 || field.existSet()) {
+			gameover = false;
+		}
+		else {
+			gameover = true;
+		}
+		return gameover;
+	}
+	
+	public void print() {
+		field.print();
+		field.printSets();
+	}
 }

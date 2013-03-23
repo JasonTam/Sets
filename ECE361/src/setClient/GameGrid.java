@@ -73,7 +73,7 @@ public class GameGrid extends JFrame {
         Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
         final Collection<Card> selectedCards = new HashSet<Card>();
         //Add buttons to experiment with Grid Layout      
-        for (int i = 0; i<Game.getIndex(); i++){
+        for (int i = 0; i < Game.getIndex(); i++){
 			final Card c = Game.getDeck().get(i);
 			final JToggleButton bC = new JToggleButton(c.toString());
 			compsToExperiment.add(bC);
@@ -163,7 +163,7 @@ public class GameGrid extends JFrame {
     
     public static void main(String[] args) {
     	Game game1 = new Game();
-		game1.init();
+		game1.play();
         /* Use an appropriate Look and Feel */
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
