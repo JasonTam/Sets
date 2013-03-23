@@ -27,6 +27,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import setGame.Card;
 import setGame.Game;
+import setGame.GameLogic;
 
 // TODO 
 // Need to go through game flow 
@@ -103,7 +104,7 @@ public class GameGrid extends JFrame {
             		System.out.println(c);
             	}
             	if (selectedCards.size()==3) {
-            		if (Game.isSet(selectedCards))
+            		if (GameLogic.isSet(selectedCards))
             			System.out.println("SET FOUND");
             		else
             			System.out.println("INVALID SET");

@@ -13,11 +13,13 @@ import java.util.Random;
 // and auto deal 3 new cards if so...
 
 public class Game {
-	static ArrayList<Card> deck = new ArrayList<Card>();
+	static ArrayList<Card> deck = new ArrayList<Card>(); 
+	static ArrayList<Card> field = new ArrayList<Card>();
 	/*
 	Rather than having a field, just play indexing games
 	just have an index=15 that may sometimes change to
-	18 or 21
+	18 or 21.
+	EDIT: I made the field explicit to improve code readability. -Nick
 	*/
 	static int cardsPerField = 15;
 	static int index = cardsPerField;		// Initial field size
@@ -31,7 +33,7 @@ public class Game {
 		dispField();
 		while (deck.size()>0) {
 			submission = getSubmission();
-			 if (isSet(indextoCard(submission))) {
+			 if (GameLogic.isSet(indextoCard(submission))) {
 				 removeSet(submission);
 				 System.out.println("SET FOUND!");
 				 score++;
@@ -45,8 +47,6 @@ public class Game {
 		System.out.println("Game over");
 	}
 	
-
-
 	/**
 	 * Initializes the game
 	 * This will generate the deck with a randomly 
@@ -106,59 +106,6 @@ public class Game {
 		return cardSet;
 	}
 	
-	public static boolean isSet(Card a, Card b, Card c) {
-		boolean valid = true;
-		for (int i=0; i<Card.nAtts; i++) {
-			if (!(allDiff(i,a,b,c)||allSame(i,a,b,c)))
-				valid = false;
-		}
-		return valid;
-	}
-	
-	public static boolean isSet(Card[] cardSet) {
-		Card a = cardSet[0];
-		Card b = cardSet[1];
-		Card c = cardSet[2];
-		return isSet(a,b,c);
-	}
-	
-	public static boolean isSet(Collection<Card> selectedCards) {
-		if (selectedCards.size()!=3)
-			return false;
-		else {
-//			// I don't know why I'm not allowed to do this! (below)
-//			Card[] cardSet = (Card[]) selectedCards.toArray();
-//			return isSet(cardSet);
-			Card[] cardSet = new Card[3];
-			int i = 0;
-			for (Card c : selectedCards) {
-				cardSet[i++] = c;
-			}
-			return isSet(cardSet);
-			
-		}
-	}
-	
-	
-//	for computational efficiency, may want to combine
-//	these two boolean methods
-	private static boolean allDiff(int i, Card a, Card b, Card c) {
-		if (a.attributes.get(i)!=b.attributes.get(i)&&
-				a.attributes.get(i)!=c.attributes.get(i)&&
-				b.attributes.get(i)!=c.attributes.get(i))
-			return true;
-		else
-			return false;
-	}
-
-	private static boolean allSame(int i, Card a, Card b, Card c) {
-		if (a.attributes.get(i)==b.attributes.get(i)&&
-				a.attributes.get(i)==c.attributes.get(i))
-			return true;
-		else
-			return false;
-	}
-
 	void removeSet(int[] indexSet) {
 		for (int i:indexSet) {
 			deck.remove(i);
@@ -170,7 +117,7 @@ public class Game {
 		for (int i=0; i<index-2; i++) {
 			for (int j=i+1; j<index-1; j++) {
 				for (int k=j+1; k<index; k++) {
-					if (isSet(deck.get(i),deck.get(j),deck.get(k))) {
+					if (GameLogic.isSet(deck.get(i),deck.get(j),deck.get(k))) {
 						exists=true;
 						System.out.println("(psst) There's a set: " + i+","+j+","+k);
 					}
