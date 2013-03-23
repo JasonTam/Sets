@@ -5,6 +5,8 @@ import java.util.ArrayList;
 /**
  * Card.java 
  * Purpose: Represents a Set card and attributes.
+ * @author Jason
+ * @author Nick
  */
 
 public class Card {

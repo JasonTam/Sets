@@ -96,7 +96,10 @@ public class Game {
 	}
 	
 	private void validateField() {
-		dealer.validateField();
+		// Deal extra cards if no set on field
+		if (!field.existSet()) {
+			dealer.dealExtra(3);
+		}
 	}
 	
 	public boolean isGameOver() {
