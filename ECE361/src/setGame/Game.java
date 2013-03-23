@@ -10,9 +10,10 @@ import java.util.Random;
 
 public class Game {
 	Deck deck;
-	ArrayList<Card> field;
+	Field field;
+	Dealer dealer;
 	
-	int cardsPerField = 12;
+	int baseSize = 12;
 	int setsFound;
 	boolean gameover;
 	int[] submission;
@@ -26,18 +27,21 @@ public class Game {
 		gameover = false;
 		submission = new int[3];
 		deck = new Deck();
-		field = new ArrayList<Card>(cardsPerField);
-		fillField();
+		field = new Field(baseSize);
+		dealer = new Dealer(deck, field);
 	}
 
 	public void playGame() {
-		while (deck.size() > 0 || GameLogic.existSet(field)) {
-			validateField();
-			printField();
+		dealer.deal();
+		field.print();
+
+		while (deck.size() > 0 || GameLogic.existSet(field.getCards())) {
+			dealer.validateField();
+			field.print();
 			submission = getSubmission();
 			if (GameLogic.isSet(indextoCard(submission))) {
 				System.out.println("SET FOUND!");
-				removeCardsFromField(submission);
+				dealer.removeCardsFromField(submission);
 				setsFound++;
 			} else {
 				System.out.println("INVALID SET!");
@@ -45,53 +49,6 @@ public class Game {
 		}
 		gameover = true;
 		System.out.println("Game over");
-	}
-
-	private void fillField() {
-		while (field.size() < cardsPerField) {
-			field.add(deck.deal());
-		}
-	}
-
-	private void removeCardsFromField(int[] indices) {
-		for (int i : indices) {
-			if (field.size() <= cardsPerField) {
-				replaceCard(i);
-			} else {
-				field.remove(i);
-			}
-		}
-	}
-
-	private void replaceCard(int index) {
-		if (deck.size() > 0) {
-			field.set(index, deck.deal());
-		} else {
-		}
-	}
-
-	private void validateField() {
-		// Deal extra cards if no set on field
-		if (!GameLogic.existSet(field)) {
-			dealMoreCardsToField(3);
-		}
-		
-		
-		ArrayList<String> sets = GameLogic.findSets(field);
-		for (String set : sets) {   
-		    System.out.println(set);
-		}
-		/*
-		 * else if (index > cardsPerField) { index -= 3; }
-		 */
-	}
-
-	private void dealMoreCardsToField(int numCards) {
-		for (int i = 0; i < numCards; i++) {
-			if (deck.size() > 0) {
-				field.add(deck.deal());
-			}
-		}
 	}
 
 	private int[] getSubmission() {
@@ -124,20 +81,13 @@ public class Game {
 			indexSet[i] = indexList.get(i);
 		return indexSet;
 	}
-
+	
 	private Card[] indextoCard(int[] indexSet) {
 		Card[] cardSet = new Card[indexSet.length];
 		for (int i = 0; i < indexSet.length; i++) {
 			cardSet[i] = field.get(indexSet[i]);
 		}
 		return cardSet;
-	}
-
-	private void printField() {
-		System.out.println("------[Playing Field]------");
-		for (int i = 0; i < field.size(); i++) {
-			System.out.println("Card #" + i + ":\t" + field.get(i));
-		}
 	}
 
 	public int getSetsFound() {
