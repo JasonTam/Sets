@@ -13,22 +13,48 @@ import java.util.Random;
 // and auto deal 3 new cards if so...
 
 public class Game {
-	static ArrayList<Card> deck = new ArrayList<Card>(); 
-	static ArrayList<Card> field = new ArrayList<Card>();
+	ArrayList<Card> deck = new ArrayList<Card>(); 
+	ArrayList<Card> field = new ArrayList<Card>();
 	/*
 	Rather than having a field, just play indexing games
 	just have an index=15 that may sometimes change to
 	18 or 21.
 	EDIT: I made the field explicit to improve code readability. -Nick
 	*/
-	static int cardsPerField = 15;
-	static int index = cardsPerField;		// Initial field size
+	int cardsPerField = 15;
+	int index = cardsPerField;		// Initial field size
 	int score = 0;
 	boolean gameover = false;
 	int[] submission;
 
+	/*
+	 * Constructor.
+	 * This will generate the deck with a randomly 
+	 * permuted order. It will then deal out 15
+	 * cards out into the field.
+	 */
+	public Game() {
+		index = cardsPerField;
+		score = 0;
+		gameover = false;
+		submission = new int[3];
+		fillDeck();
+		shuffleDeck();
+		//fillField();
+	}
+	
+	public void init(){
+		index = cardsPerField;
+		score = 0;
+		gameover = false;
+		submission = new int[3];
+		fillDeck();
+		shuffleDeck();
+	//	fillField();
+	}
+	
+	
 	public void playGame() {
-		init();
 		validateField();
 		dispField();
 		while (deck.size()>0) {
@@ -47,23 +73,21 @@ public class Game {
 		System.out.println("Game over");
 	}
 	
-	/**
-	 * Initializes the game
-	 * This will generate the deck with a randomly 
-	 * permuted order. It will then deal out 15
-	 * cards out into the field.
-	 */
-	public void init(){
-		index = cardsPerField;
-		score = 0;
-		gameover = false;
-		submission = new int[3];
+	private void fillDeck() {
 		for (int i=0; i<(int)Math.pow(Card.nVals, Card.nAtts); i++) {
 			deck.add(new Card(i));
 		}
-//		printDeck();
+	}
+	
+	private void shuffleDeck() {
 		long seed = System.nanoTime();
 		Collections.shuffle(deck, new Random(seed));
+	}
+	
+	private void fillField() {
+		while (field.size() <= cardsPerField) {
+			field.add(deck.remove(0));
+		}
 	}
 	
 	private int[] getSubmission() {
@@ -145,11 +169,11 @@ public class Game {
 	}
 	
 //	Getters
-	public static ArrayList<Card> getDeck() {
+	public ArrayList<Card> getDeck() {
 		return deck;
 	}
 
-	public static int getIndex() {
+	public int getIndex() {
 		return index;
 	}
 

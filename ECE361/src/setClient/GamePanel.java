@@ -64,8 +64,8 @@ public class GamePanel extends JPanel {
 		final Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
 		final Collection<Card> selectedCards = new HashSet<Card>();
 		// Add buttons to experiment with Grid Layout
-		for (int i = 0; i < Game.getIndex(); i++) {
-			final Card c = Game.getDeck().get(i);
+		for (int i = 0; i < game1.getIndex(); i++) {
+			final Card c = game1.getDeck().get(i);
 			ImageIcon card_img = new ImageIcon
                     ("src/resources/images_cards/"+c.toString()+".gif");
 			final JToggleButton bC = new JToggleButton(card_img);

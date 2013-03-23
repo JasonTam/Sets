@@ -1,6 +1,7 @@
 package setGame;
 
 public class test {
+	
 	public static void main(String[] args) {
         System.out.println("Testing lots of fail");
         System.out.println(
@@ -22,7 +23,7 @@ public class test {
         System.out.println("a,b,c form a set? " + setfound);
         
         
-//        game1.existSet();
+//      game1.existSet();
         game1.playGame();
         
         
