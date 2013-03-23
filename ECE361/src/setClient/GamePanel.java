@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
 	public GamePanel() {
 //		TODO The game init should probably be outside
 		Game game1 = new Game();
-		game1.init();
+		game1.start();
 		
 		setLayout(boardLayout);
 		JPanel controls = new JPanel();

@@ -29,7 +29,6 @@ public class Game {
 	}
 
 	public void start() {
-		String command = "";
 		dealer.deal();
 	}
 
