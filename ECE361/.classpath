@@ -22,7 +22,6 @@
 	<classpathentry kind="lib" path="lib/jetty-util-9.0.0.RC0.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-webapp-9.0.0.RC0.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-xml-9.0.0.RC0.jar"/>
-	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.22-bin.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/google-gson-2.2.2/gson-2.2.2-javadoc.jar"/>
