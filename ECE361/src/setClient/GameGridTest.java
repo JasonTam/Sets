@@ -28,6 +28,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import setGame.Card;
 import setGame.Game;
+import setGame.GameLogic;
 
 // TODO 
 // Need to go through game flow 
@@ -74,8 +75,8 @@ public class GameGridTest extends JFrame {
         final Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
         final Collection<Card> selectedCards = new HashSet<Card>();
         //Add buttons to experiment with Grid Layout      
-        for (int i = 0; i<Game.getIndex(); i++){
-        	final Card c = Game.getDeck().get(i);
+        for (int i = 0; i< game1.getIndex(); i++){
+        	final Card c = game1.getDeck().get(i);
 //			System.out.println(c.getStrId());
 			ImageIcon card_img = new ImageIcon
                     ("src/resources/images_cards/"+c.toString()+".gif");
@@ -111,7 +112,7 @@ public class GameGridTest extends JFrame {
     					System.out.println(c);
     				}
     				if (selectedCards.size() == 3) {
-    					if (Game.isSet(selectedCards))
+    					if (GameLogic.isSet(selectedCards))
     						System.out.println("SET FOUND");
     					else
     						System.out.println("INVALID SET");
