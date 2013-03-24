@@ -22,10 +22,10 @@ public class Game {
 	 * It will then deal out 12 cards out into the field.
 	 */
 	public Game() {
-		gameover = false;
-		deck = new Deck();
-		field = new Field(baseSize);
-		dealer = new Dealer(deck, field);
+		this.gameover = false;
+		this.deck = new Deck();
+		this.field = new Field(baseSize);
+		this.dealer = new Dealer(deck, field);
 	}
 
 	public void start() {
