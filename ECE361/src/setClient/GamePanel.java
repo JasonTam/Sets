@@ -27,6 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import setGame.Card;
+import setGame.Field;
 import setGame.Game;
 import setGame.GameLogic;
 
@@ -64,6 +65,8 @@ public class GamePanel extends JPanel {
 		final Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
 		final Collection<Card> selectedCards = new HashSet<Card>();
 		// Add buttons to experiment with Grid Layout
+		
+//		for Card c in field.getCards
 		for (int i = 0; i < game1.getIndex(); i++) {
 			final Card c = game1.getDeck().get(i);
 			ImageIcon card_img = new ImageIcon
