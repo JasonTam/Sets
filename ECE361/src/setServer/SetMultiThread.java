@@ -1,11 +1,6 @@
 package setServer;
 import java.net.*;
-import java.util.ArrayList;
 import java.io.*;
-
-import javax.swing.JFrame;
-
-import setClient.GameGrid;
 
 import DBI.DBConnect;
  
