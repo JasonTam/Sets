@@ -18,7 +18,7 @@ public class Game {
 
 	private Dealer dealer;
 
-	int baseSize = 12;
+	int baseSize = 15;
 	boolean gameover;
 
 	/*
