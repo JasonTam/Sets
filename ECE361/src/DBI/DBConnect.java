@@ -38,6 +38,15 @@ public class DBConnect {
 		return rs.next();
 	}
 	
+	public static Boolean createUser(String username, String password) throws SQLException {
+		String queryString = "INSERT into Users (username, password) VALS (?, ?)";
+		PreparedStatement ps = dbcon.prepareStatement(queryString);
+		ps.setString(1, username);
+		ps.setString(2, DigestUtils.sha1Hex(password));
+		ResultSet rs = ps.executeQuery();
+		return rs.next();
+	}
+	
 	
 	public static void main(String[] args) {
 		new DBConnect();

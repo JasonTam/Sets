@@ -1,0 +1,20 @@
+doctype 5
+html
+  head
+    title ECE361 Set Game Project
+  body
+    h1 ECE365 Set Game
+    h2 Victor, Jordan, Andrew, Nick, Jason
+    if (notify != "")
+      div(class="notify")= notify
+    if (error != "")
+      div(class="error")= error
+    form(name="register", method="POST")
+      | Username:
+      input(type="text", name="username")
+      br
+      | Password:
+      input(type="password", name="password")
+      br
+      input(type="submit")
+    hr
