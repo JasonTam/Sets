@@ -12,6 +12,10 @@ import java.util.Random;
 public class Game {
 	private Deck deck;
 	private Field field;
+	public Field getField() {
+		return field;
+	}
+
 	private Dealer dealer;
 
 	int baseSize = 12;
