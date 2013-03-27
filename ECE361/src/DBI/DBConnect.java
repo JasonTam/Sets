@@ -39,12 +39,12 @@ public class DBConnect {
 	}
 	
 	public static Boolean createUser(String username, String password) throws SQLException {
-		String queryString = "INSERT into Users (username, password) VALS (?, ?)";
+		String queryString = "INSERT into Users (username, password) VALUES (?, ?)";
 		PreparedStatement ps = dbcon.prepareStatement(queryString);
 		ps.setString(1, username);
 		ps.setString(2, DigestUtils.sha1Hex(password));
-		ResultSet rs = ps.executeQuery();
-		return rs.next();
+		int manipulated = ps.executeUpdate();
+		return manipulated==1;
 	}
 	
 	
@@ -52,6 +52,7 @@ public class DBConnect {
 		new DBConnect();
 		try {
 			validateUser("Andrew", "andrew");
+			System.out.println("yay");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
