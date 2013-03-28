@@ -68,8 +68,6 @@ public class GamePanel extends JPanel {
 		
 
 		for (final Card c : game1.getField().getCards()) {
-//		for (int i = 0; i < game1.getIndex(); i++) {
-//			final Card c = game1.getDeck().get(i);
 			ImageIcon card_img = new ImageIcon
                     ("src/resources/images_cards/"+c.toString()+".gif");
 			final JToggleButton bC = new JToggleButton(card_img);
@@ -112,11 +110,12 @@ public class GamePanel extends JPanel {
 					System.out
 							.println("Invalid Set! Sets must contain exactly 3 cards.");
 				}
-				out.println("login|Andrew|andrew");
 				try {
 					System.out.println("This was recieved in the client");
 					System.out.println(in.readLine());
 				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (NullPointerException e1) {
 					e1.printStackTrace();
 				}
 
