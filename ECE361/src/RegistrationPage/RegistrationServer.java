@@ -10,9 +10,13 @@ import javax.servlet.ServletException;
 import java.io.FileInputStream;
 import java.io.IOException;
  
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.webapp.WebAppContext;
 
 import java.io.File;
 import java.nio.MappedByteBuffer;
@@ -68,7 +72,21 @@ public class RegistrationServer extends AbstractHandler
     {
         Server server = new Server(8080);
         RegistrationServer rs = new RegistrationServer();
-        server.setHandler(new RegistrationServer());
+        //server.setHandler(new RegistrationServer());
+
+        ResourceHandler resource_handler = new ResourceHandler();
+        //resource_handler.setDirectoriesListed(false);
+        // resource_handler.setWelcomeFiles(new String[]{ "index.jade" });
+        resource_handler.setServer(server);
+        rs.setServer(server);
+        resource_handler.setResourceBase("./src/RegistrationPage/static/");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] {resource_handler,  rs });
+        
+        
+        server.setHandler(handlers);
+        
         server.start();
         server.join();
     }
