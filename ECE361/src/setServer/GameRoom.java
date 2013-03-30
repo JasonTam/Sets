@@ -1,38 +1,44 @@
 package setServer;
-import java.util.concurrent.ConcurrentHashMap;
 
-public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
-	private String room_name;
-	private ConcurrentHashMap<Integer, Boolean> cards;
+import java.util.concurrent.ConcurrentHashMap;
+import setPlayer.*;
+import java.util.ArrayList;
+import setGame.Game;
+
+public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {	
 	
+	private String roomName;
+	private ArrayList<Player> players;
+	private Game game;
+	private boolean gameStart;
+
+	//	Create and join a game room
+	public GameRoom (String name, String playerName, SetMultiThread thread) {
+		this.roomName = name;
+		Player creator = new Player(playerName);
+		this.players.add(creator);
+		this.game = new Game();
+		this.gameStart = false;
+		join(thread);
+		SetServer.gameRooms.put(roomName, this);
+	}
 	
-	
-	
+	//	Create a game room
+	public GameRoom (String name) {
+		roomName = name;
+		SetServer.gameRooms.put(roomName, this);
+	}
 	
 	public void startGame()
 	{
-//	    Ill expect the set game to send me an INDEX for every card.
-//	    The default hash value will be false.
-//	    If someone sends me a correct set, the value will cahnge to TRUE.
-//	    When a cards hash value is true, anyone else that submits a set using that
-//	    card will not be able to use it.
-	    
+		this.game.start();
+		if(this.gameStart == false) {
+			this.gameStart = true;	
+		}
+	// Send response;
 	}
 	
-//	Create and join a game room
-	public GameRoom (String name, SetMultiThread thread) {
-		room_name = name;
-		join(thread);
-		SetServer.gameRooms.put(room_name, this);
-	}
-	
-//	Create a game room
-	public GameRoom (String name) {
-		room_name = name;
-		SetServer.gameRooms.put(room_name, this);
-	}
-	
-//	Join a game room
+	//	Join a game room
 	public void join(SetMultiThread thread) {
 		if (thread.currentRoom != null) {
 			thread.currentRoom.leave(thread);
@@ -41,7 +47,7 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 		thread.currentRoom = this;
 	}
 
-//	Leave a game room
+	//	Leave a game room
 	public void leave(SetMultiThread thread) {
 		this.remove(thread.getName());
 		if (isEmpty() & !getName().equals(SetServer.lobby.getName())) {
@@ -49,9 +55,9 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 		}
 	}
 	
-//	Get room's name
+	//	Get room's name
 	public String getName() {
-		return room_name;
+		return this.roomName;
 	}
 	
 /*	

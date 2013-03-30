@@ -96,7 +96,8 @@ public class SetServer {
     
     public static void sendRoomCreate(String roomName, SetMultiThread curThread, SetProtocol sp)
     {
-		new GameRoom(roomName, curThread);
+    	String playerName = "test";
+		new GameRoom(roomName, playerName, curThread);
 		sp.theOutput = "ROOMCREATE|" + roomName;
 	    sp.state = SetProtocol.GAME;
         
