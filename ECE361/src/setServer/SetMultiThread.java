@@ -56,7 +56,8 @@ public class SetMultiThread extends Thread {
 		        outputLine = sp.processInput(inputLine, this);
 		        System.out.println("Processing Input as string:" + inputLine);
 		        out.println(outputLine);
-		        System.out.println(outputLine);
+		        
+		        System.out.println("Sending output: " + outputLine);
 	
 	            
 		        if (outputLine.equals("Bye."))

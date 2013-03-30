@@ -1,5 +1,6 @@
 package setServer;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import DBI.DBConnect;
@@ -73,7 +74,9 @@ public class SetProtocolAPI {
 		public class login {
 			
 			public void loginStart (String theInput) {
-	        	if (theInput.toLowerCase().startsWith("login")) {
+				String action = JSONinterface.jsonGetAction(theInput);
+				
+	        	if (action.equals("login")) {
 	        		validateUser(theInput);
 	        	}
 	        	else {
@@ -82,9 +85,9 @@ public class SetProtocolAPI {
 			}
 			
 			private void validateUser(String theInput) {
-        		String [] userInfo = outer.splitString(theInput);
-        		String username = userInfo[1];
-        		String password = userInfo[2];
+				ArrayList<String> data = JSONinterface.jsonGetData(theInput, ArrayList.class);
+        		String username = data.get(0);
+        		String password = data.get(1);
 				
         		/* SKIP THIS FOR TESTING PURPOSES!!!
 //        		First of all, check if anyone else with your acct is logged in:
@@ -120,7 +123,7 @@ public class SetProtocolAPI {
 			}
 			
 			private void invalidUser(String theInput) {
-				sp.theOutput = theInput;
+				sp.theOutput = "Bad login information";
 			}
 			
 		}

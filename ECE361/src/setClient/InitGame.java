@@ -175,7 +175,7 @@ public class InitGame {
         {
 	        while ((inputLine = in.readLine()) != null)
 	        {
-	            System.out.println(inputLine);
+	            System.out.println("Recieved line: " + inputLine);
 	            if (inputLine.startsWith("CHAT|"))
 	            {
 	                lobbyPanel.chat.displayMessage(inputLine.substring(5));
