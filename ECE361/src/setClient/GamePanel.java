@@ -20,6 +20,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
@@ -48,13 +49,20 @@ public class GamePanel extends JPanel {
 	GridLayout boardLayout = new GridLayout(3, 5);
 
 	public GamePanel() {
+ 
+        setLayout(new BorderLayout());
+        
+		JPanel gamePanel = new JPanel();
+		
+		
 //		TODO The game init should probably be outside
 		Game game1 = new Game();
 		game1.start();
 		
-		setLayout(boardLayout);
+		gamePanel.setLayout(boardLayout);
+		
 		JPanel controls = new JPanel();
-		controls.setLayout(new GridLayout(2, 1));
+		controls.setLayout(new GridLayout(2, 3));
 
 		// Set up components preferred size
 		JButton b = new JButton("Just fake button");
@@ -73,7 +81,7 @@ public class GamePanel extends JPanel {
                     ("src/resources/images_cards/"+c.toString()+".gif");
 			final JToggleButton bC = new JToggleButton(card_img);
 //			final JToggleButton bC = new JToggleButton(c.toString());
-			add(bC);
+			gamePanel.add(bC);
 			cardButtons.put(c.toString(), bC);
 			bC.addActionListener(new ActionListener() {
 				@Override
@@ -90,10 +98,16 @@ public class GamePanel extends JPanel {
 		}
 
 		// Add submit
+		JLabel empty = new JLabel();
+		controls.add(empty);
 		controls.add(submitButton);
-		submitButton.setPreferredSize(new Dimension(50, 80));
+		controls.add(empty);
+		
+		controls.add(empty);
 		controls.add(clearButton);
-		clearButton.setPreferredSize(new Dimension(50, 80));
+		controls.add(empty);
+		
+		clearButton.setSize(new Dimension(50, 80));
 
 		// Process submit button
 		submitButton.addActionListener(new ActionListener() {
@@ -113,6 +127,7 @@ public class GamePanel extends JPanel {
 					System.out
 							.println("Invalid Set! Sets must contain exactly 3 cards.");
 				}
+				/*
 				try {
 					System.out.println("This was recieved in the client");
 					System.out.println(InitGame.in.readLine());
@@ -121,6 +136,7 @@ public class GamePanel extends JPanel {
 				} catch (NullPointerException e1) {
 					e1.printStackTrace();
 				}
+				*/
 
 			}
 		});
@@ -135,7 +151,7 @@ public class GamePanel extends JPanel {
 				});
 				
 //		add(compsToExperiment, BorderLayout.NORTH);
-		add(new JSeparator(), BorderLayout.CENTER);
+		add(gamePanel, BorderLayout.CENTER);
 //		JPanel holder = new JPanel();
 //		holder.add(arg0)
 		add(controls, BorderLayout.SOUTH);
