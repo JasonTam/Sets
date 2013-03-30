@@ -56,7 +56,7 @@ public class RegistrationServer extends AbstractHandler
 			try {
 				String u = request.getParameter("username");
 				String p = request.getParameter("password");
-				DBConnect.createUser(u, p);
+				db.createUser(u, p);
 				view.put("notify", "Successfully Created User "+u);
 			} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e){
 				view.put("error", "User already exists!");
