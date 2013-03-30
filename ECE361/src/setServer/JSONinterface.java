@@ -29,6 +29,16 @@ public class JSONinterface {
 	    return action;
 	}
 	
+//	Example use case:
+//	int dat = jsonGetData(myJsonString, int.class);
+	public static <T> T jsonGetData (String json, Class<T> clazz) {
+		JsonParser parser = new JsonParser();
+	    JsonArray array = parser.parse(json).getAsJsonArray();
+	    Gson gson = new Gson();
+	    
+	    T data = (T)gson.fromJson(array.get(1), clazz);
+		return data;
+	}
 	
 	
 //	public static Collection jsonGetData (String json) {
