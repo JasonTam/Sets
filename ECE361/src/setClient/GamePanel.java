@@ -30,6 +30,7 @@ import setGame.Card;
 import setGame.Field;
 import setGame.Game;
 import setGame.GameLogic;
+import setGame.JSONinterface;
 
 // TODO 
 // Need to go through game flow 
@@ -39,8 +40,8 @@ import setGame.GameLogic;
 public class GamePanel extends JPanel {
 	final static int maxGap = 100;
 
-	public static PrintWriter out;
-	public static BufferedReader in;
+//	public static PrintWriter out;
+//	public static BufferedReader in;
 
 	JButton submitButton = new JButton("Submit Set");
 	JButton clearButton = new JButton("Clear Selection");
@@ -102,6 +103,8 @@ public class GamePanel extends JPanel {
 					System.out.println(c);
 				}
 				if (selectedCards.size() == 3) {
+					String jsonSubmitSet = JSONinterface.colToJson("submit", selectedCards);
+					InitGame.out.println(jsonSubmitSet);
 					if (GameLogic.isSet(selectedCards))
 						System.out.println("SET FOUND");
 					else
@@ -112,7 +115,7 @@ public class GamePanel extends JPanel {
 				}
 				try {
 					System.out.println("This was recieved in the client");
-					System.out.println(in.readLine());
+					System.out.println(InitGame.in.readLine());
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				} catch (NullPointerException e1) {
@@ -133,6 +136,8 @@ public class GamePanel extends JPanel {
 				
 //		add(compsToExperiment, BorderLayout.NORTH);
 		add(new JSeparator(), BorderLayout.CENTER);
+//		JPanel holder = new JPanel();
+//		holder.add(arg0)
 		add(controls, BorderLayout.SOUTH);
 	}
 	
