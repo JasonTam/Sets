@@ -42,6 +42,9 @@ public class RegistrationServer extends AbstractHandler
     public void handle(String target, Request baseRequest, HttpServletRequest request, HttpServletResponse response) 
         throws IOException, ServletException
     {
+    	if(!request.getRequestURI().equals("/")){
+    		return;
+    	}
     	response.setContentType("text/html;charset=utf-8");
 		response.setStatus(HttpServletResponse.SC_OK);
 		baseRequest.setHandled(true);
@@ -64,6 +67,7 @@ public class RegistrationServer extends AbstractHandler
 				view.put("error", "Error Creating User");
 			}
 		}
+		baseRequest.setHandled(true);
 		String html = Jade4J.render("src/RegistrationPage/templates/index.jade", view);
 		response.getWriter().println(html);
     }
@@ -79,10 +83,10 @@ public class RegistrationServer extends AbstractHandler
         // resource_handler.setWelcomeFiles(new String[]{ "index.jade" });
         resource_handler.setServer(server);
         rs.setServer(server);
-        resource_handler.setResourceBase("./src/RegistrationPage/static/");
+        resource_handler.setResourceBase("./src/RegistrationPage");
 
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] {resource_handler,  rs });
+        handlers.setHandlers(new Handler[] {rs , resource_handler});
         
         
         server.setHandler(handlers);
