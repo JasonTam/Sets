@@ -30,7 +30,7 @@ import setGame.Card;
 import setGame.Field;
 import setGame.Game;
 import setGame.GameLogic;
-import setGame.JSONinterface;
+import setServer.JSONinterface;
 
 // TODO 
 // Need to go through game flow 

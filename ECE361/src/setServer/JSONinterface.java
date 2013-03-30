@@ -1,7 +1,9 @@
-package setGame;
+package setServer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import setGame.Game;
 
 import com.google.gson.*;
 
