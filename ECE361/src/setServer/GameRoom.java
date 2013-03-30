@@ -5,6 +5,10 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	private String room_name;
 	private ConcurrentHashMap<Integer, Boolean> cards;
 	
+	
+	
+	
+	
 	public void startGame()
 	{
 //	    Ill expect the set game to send me an INDEX for every card.
