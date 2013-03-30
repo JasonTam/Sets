@@ -103,7 +103,7 @@ public class GamePanel extends JPanel {
 					System.out.println(c);
 				}
 				if (selectedCards.size() == 3) {
-					String jsonSubmitSet = JSONinterface.colToJson("submit", selectedCards);
+					String jsonSubmitSet = JSONinterface.genericToJson("submit", selectedCards);
 					InitGame.out.println(jsonSubmitSet);
 					if (GameLogic.isSet(selectedCards))
 						System.out.println("SET FOUND");
