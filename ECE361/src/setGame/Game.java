@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Random;
 
 public class Game {
 	private Deck deck;
@@ -65,7 +62,7 @@ public class Game {
 		}
 	}
 
-	private void submitSet(String[] values) {		
+	private int submitSet(String[] values) {
 		boolean validInput = false;
 		int[] indexSet = new int[3];
 		int expectedValues = 3;
@@ -83,7 +80,7 @@ public class Game {
 		}
 		if (!validInput) {
 			System.out.println("Must select 3 distinct valid cards.");
-			return;
+			return 2;
 		}
 		else {
 			for (int i = 0; i < 3; i++) {
@@ -93,8 +90,10 @@ public class Game {
 				System.out.println("SET FOUND!");
 				dealer.removeCardsFromField(indexSet);
 				dealer.deal();
+				return 0;
 			} else {
 				System.out.println("INVALID SET!");
+				return 1;
 			}
 		}
 	}

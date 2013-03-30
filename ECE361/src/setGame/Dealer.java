@@ -1,7 +1,5 @@
 package setGame;
 
-import java.util.ArrayList;
-
 /**
  * Dealer.java Purpose: Handles interactions between deck and field.
  * 
