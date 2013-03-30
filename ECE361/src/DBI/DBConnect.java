@@ -11,7 +11,7 @@ public class DBConnect {
 	private static String DBUSERNAME = "root";
 	private static String DBPASSWORD = "password";
 	
-	private static Connection dbcon;
+	private Connection dbcon;
 	private static Statement st;
 	
 	public DBConnect() {
@@ -25,7 +25,7 @@ public class DBConnect {
 		}
 	}
 	
-	public static Boolean validateUser(String username, String password) throws SQLException {
+	public Boolean validateUser(String username, String password) throws SQLException {
 		String queryString =
 			    "SELECT U.username " +
 			    "FROM Users U " +
@@ -38,7 +38,7 @@ public class DBConnect {
 		return rs.next();
 	}
 	
-	public static Boolean createUser(String username, String password) throws SQLException {
+	public Boolean createUser(String username, String password) throws SQLException {
 		String queryString = "INSERT into Users (username, password) VALUES (?, ?)";
 		PreparedStatement ps = dbcon.prepareStatement(queryString);
 		ps.setString(1, username);
@@ -49,9 +49,9 @@ public class DBConnect {
 	
 	
 	public static void main(String[] args) {
-		new DBConnect();
+		DBConnect  a = new DBConnect();
 		try {
-			validateUser("Andrew", "andrew");
+			a.validateUser("Andrew", "andrew");
 			System.out.println("yay");
 		}
 		catch (Exception e) {
