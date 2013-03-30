@@ -15,7 +15,6 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	    
 	}
 	
-	
 //	Create and join a game room
 	public GameRoom (String name, SetMultiThread thread) {
 		room_name = name;
