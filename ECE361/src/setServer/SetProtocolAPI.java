@@ -1,7 +1,12 @@
 package setServer;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+
+import setGame.Card;
+import setGame.GameLogic;
 
 import DBI.DBConnect;
 
@@ -153,7 +158,7 @@ public class SetProtocolAPI {
 			private void joinGame(String theInput) {
 				String [] roomInfo = outer.splitString(theInput);
 				String roomName = roomInfo[1];
-	        	
+				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
 	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() == 2) {
         			sp.theOutput = "error|fail";
@@ -174,14 +179,24 @@ public class SetProtocolAPI {
 		public class game {
 			
 			public void gameStart(String theInput) {
-				if (theInput.toLowerCase().startsWith("leave")) {
-//				    System.out.println(curThread.currentRoom);
+				
+				String action = JSONinterface.jsonGetAction(theInput);
+				System.out.println("WEVE GOT AN ACTION GUYS: " + action);
+	        	if (action.equals("leave")) {
+	        		System.out.println(curThread.currentRoom);
 //					leaveGame();
 				    SetServer.sendRoomLeave(curThread, sp);
-				}
-				else {
-					gameInvalid();
-				}
+	        	}
+	        	else if (action.equals("submit")) {
+	        		System.out.println("Recieved a submit action");
+	        		Collection<Card> selectedCards = 
+	        				JSONinterface.jsonGetData(theInput, Collection.class);
+	        		boolean isSet = GameLogic.isSet(selectedCards);
+	        	}
+	        	else {
+	        		gameInvalid();
+	        	}
+	        	
 			}
 			
 			private void leaveGame() {
