@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public class Game {
 	private Deck deck;
@@ -62,7 +63,7 @@ public class Game {
 		}
 	}
 
-	public int submitSet(String[] values) {
+	public boolean submitSet(String[] values) {
 		boolean validInput = false;
 		int[] indexSet = new int[3];
 		int expectedValues = 3;
@@ -80,7 +81,7 @@ public class Game {
 		}
 		if (!validInput) {
 			System.out.println("Must select 3 distinct valid cards.");
-			return 2;
+			return false;
 		}
 		else {
 			for (int i = 0; i < 3; i++) {
@@ -90,12 +91,29 @@ public class Game {
 				System.out.println("SET FOUND!");
 				dealer.removeCardsFromField(indexSet);
 				dealer.deal();
-				return 0;
+				return true;
 			} else {
 				System.out.println("INVALID SET!");
-				return 1;
+				return false;
 			}
 		}
+	}
+	
+	public boolean submitSet(Collection<Card> cards) {
+		if (cards.size()!=3 ||
+				this.field.getCards().containsAll(cards)) {
+			if (GameLogic.isSet(cards)) {
+//				System.out.println("SET FOUND!");
+				dealer.removeCardsFromField(cards);
+				dealer.deal();
+				return true;
+			} else {
+				System.out.println("INVALID SET!");
+				return false;
+			}
+		}
+		else
+			return false;
 	}
 	
 	private void validateField() {

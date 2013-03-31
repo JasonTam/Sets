@@ -1,5 +1,7 @@
 package setGame;
 
+import java.util.Collection;
+
 /**
  * Dealer.java Purpose: Handles interactions between deck and field.
  * 
@@ -47,4 +49,11 @@ public class Dealer {
 			field.set(index, null);
 		}
 	}
+	
+	public void removeCardsFromField(Collection<Card> cards) {
+		for (Card c : cards)
+			field.set(field.indexOf(c), null);
+	}
+	
+	
 }

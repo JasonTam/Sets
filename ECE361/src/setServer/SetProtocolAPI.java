@@ -230,12 +230,15 @@ public class SetProtocolAPI {
 	        		Collection<Card> selectedCards =
 	        				JSONinterface.jsonGetData(theInput, collectionType);
 	        		
-//	        		for (Card c : selectedCards)
-//	        			System.out.println(c);
-	        		
+//	        		SetServer.gameRooms.get(*curThread???).
+//	        		or something
+//	        		((The game thread that the user is in)).submitSet(selectedCards);
+//	        		Below will not be used
 	        		boolean isSet = GameLogic.isSet(selectedCards);
 	        		System.out.println("SERVER SAYS SET IS : " + isSet);
 	        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
+	        		
+	        		
 	        	}
 	        	else {
 	        		gameInvalid();
