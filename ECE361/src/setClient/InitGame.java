@@ -195,9 +195,9 @@ public class InitGame {
 	                lobbyPanel.updateLobbyPanel();
 	            }
 	            
-	            else if (inputLine.matches("^USERS\\|.*$"))
+	            else if (action.equals("users"))
                 {
-	                User.getUserData(inputLine);
+	                User.createUserList(inputLine);
 	                userJList.createListModel();
                 }
 	            else if (action.equals("login"))

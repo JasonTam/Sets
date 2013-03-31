@@ -65,14 +65,17 @@ public class SetServer {
     public static void sendUsers(SetProtocol sp)
     {
 		sp.theOutput = "USERS|";
+		ArrayList<String> userList = new ArrayList<String>();
 	    Iterator itUsers = SetServer.allThreads.keySet().iterator();
 	    while (itUsers.hasNext()) {	
 	        String user = (String) itUsers.next();
-	        sp.theOutput = JSONinterface.genericToJson("login", user);
+	        userList.add(user);
 //	        sp.theOutput = sp.theOutput.concat(user + "|");
 		    //			        it.remove(); // avoids a ConcurrentModificationException
-	        broadcastToAllThreads(sp);
 	    }
+	    
+        sp.theOutput = JSONinterface.genericToJson("users", userList);
+        broadcastToAllThreads(sp);
     }
     
     public static void sendLogin(String name, SetProtocol sp)

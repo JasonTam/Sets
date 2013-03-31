@@ -47,6 +47,7 @@ public class GamePanel extends JPanel {
 
 	JButton submitButton = new JButton("Submit Set");
 	JButton clearButton = new JButton("Clear Selection");
+	JButton startButton = new JButton("Start Game!");
 	GridLayout boardLayout = new GridLayout(3, 5);
 
 	public GamePanel() {
@@ -63,7 +64,7 @@ public class GamePanel extends JPanel {
 		gamePanel.setLayout(boardLayout);
 		
 		JPanel controls = new JPanel();
-		controls.setLayout(new GridLayout(2, 3));
+		controls.setLayout(new GridLayout(3, 1));
 
 		// Set up components preferred size
 		JButton b = new JButton("Just fake button");
@@ -100,13 +101,9 @@ public class GamePanel extends JPanel {
 
 		// Add submit
 		JLabel empty = new JLabel();
-		controls.add(empty);
 		controls.add(submitButton);
-		controls.add(empty);
-		
-		controls.add(empty);
 		controls.add(clearButton);
-		controls.add(empty);
+		controls.add(startButton);
 		
 		clearButton.setSize(new Dimension(50, 80));
 
@@ -154,6 +151,14 @@ public class GamePanel extends JPanel {
 							bC.setSelected(false);
 					}
 				});
+				
+//		Process Start button
+		startButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			       System.out.println("Need to get card start here somehow...");
+			}
+		});
+				
 				
 //		add(compsToExperiment, BorderLayout.NORTH);
 		add(gamePanel, BorderLayout.CENTER);
