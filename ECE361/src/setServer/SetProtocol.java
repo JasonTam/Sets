@@ -52,7 +52,7 @@ public class SetProtocol {
     	else if (action.equals("users")) {
     		spAPI.genericAPI.showUsers();
     	}
-        else if (theInput.toLowerCase().startsWith("quit")) {
+        else if (action.equals("quit")) {
         	spAPI.genericAPI.quitApp();
         }
 //      After connecting to server, input name and validate

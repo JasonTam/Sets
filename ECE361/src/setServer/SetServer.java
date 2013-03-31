@@ -90,7 +90,7 @@ public class SetServer {
     public static void sendLogout(String name, SetProtocol sp)
     {
         System.out.println(name + " logged out");
-        sp.theOutput = "LOGOUT|" + name;
+        sp.theOutput = JSONinterface.genericToJson("logout", name);
 	    broadcastToAllThreads(sp);
     }
     

@@ -203,7 +203,7 @@ public class SetProtocolAPI {
 	        		
 	        		boolean isSet = GameLogic.isSet(selectedCards);
 	        		System.out.println("SERVER SAYS SET IS : " + isSet);
-	        		sp.theOutput = "SERVER SAYS SET IS : " + isSet;
+	        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
 	        	}
 	        	else {
 	        		gameInvalid();

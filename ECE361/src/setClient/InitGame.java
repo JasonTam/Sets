@@ -166,7 +166,7 @@ public class InitGame {
 //              Notify the server that you have quit.
 		        frame.addWindowListener(new WindowAdapter() {
 		            public void windowClosing(WindowEvent e) {
-		                out.println("quit");
+		                out.println(JSONinterface.genericToJson("quit", "quitting game"));
 		                System.exit(0);
 		            }
 		        });
@@ -211,10 +211,9 @@ public class InitGame {
 	                User.addUser(inputLine);
 	                userJList.refreshJList();
 	            }
-	            else if (inputLine.matches("^LOGOUT\\|.*$"))
+	            else if (action.equals("logout"))
 	            {
-	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
-	                User.removeUser(inputLine);
+	                User.removeUser(JSONinterface.jsonGetData(inputLine, String.class));
 	                userJList.refreshJList();
 	            }
 	            else {
