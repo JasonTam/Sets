@@ -98,7 +98,7 @@ public class SetServer {
 		
 		curThread.currentRoom.leave(curThread);
 		SetServer.lobby.join(curThread);
-	    sp.state = SetProtocol.LOBBY;
+		sp.changeState(SetProtocol.LOBBY, curThread);
         
 	    broadcastToAllThreads(sp);
 	    sendRooms(sp);
@@ -109,9 +109,7 @@ public class SetServer {
 		new GameRoom(roomName, curThread);
 		
 		sp.theOutput = JSONinterface.genericToJson("roomCreate", roomName);
-	    sp.state = SetProtocol.GAME;
-        
-	    
+		sp.changeState(SetProtocol.GAME, curThread);
 	    broadcastToAllThreads(sp);
 	    sendRooms(sp);
 			    

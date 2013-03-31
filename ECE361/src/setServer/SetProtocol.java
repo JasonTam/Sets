@@ -6,7 +6,8 @@ public class SetProtocol {
     public static final int INITIALIZE = 0;
     public static final int LOGIN = 1;
     public static final int LOBBY = 2;
-    public static final int GAME = 3;
+    public static final int ROOM = 3;
+    public static final int GAME = 4;
     
     private SetProtocolAPI spAPI;
  
@@ -64,10 +65,19 @@ public class SetProtocol {
         else if (state == LOBBY) {
         	spAPI.lobbyAPI.lobbyStart(theInput);
         }
+        else if (state == ROOM) {
+        	spAPI.lobbyAPI.lobbyStart(theInput);
+        }
         else if (state == GAME) {
         	spAPI.gameAPI.gameStart(theInput);
         }
 
         return theOutput;
+    }
+    
+    public void changeState(Integer fstate, SetMultiThread curThread)
+    {
+        state = fstate;
+        curThread.out.println(JSONinterface.genericToJson("gameState", state));
     }
 }

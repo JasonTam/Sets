@@ -154,6 +154,9 @@ public class Lobby extends JPanel
 			            {
 			                String roomName = ((JButton)(e.getSource())).getText();
 			                InitGame.out.println(JSONinterface.genericToJson("join", roomName));
+			                InitGame.gamePanel = new GamePanel(roomName);
+		                    InitGame.cardLayout.add(InitGame.gamePanel, "GAME");
+			                InitGame.out.println(JSONinterface.genericToJson("join", roomName));
 			                InitGame.changeCards("GAME");
 			                
 			            } 

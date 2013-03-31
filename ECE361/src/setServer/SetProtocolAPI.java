@@ -43,7 +43,7 @@ public class SetProtocolAPI {
 		public class generic {
 			public void initialization() {
 	        	//sp.theOutput = "Please enter a valid username.";
-	    		sp.state = SetProtocol.LOGIN;
+			    sp.changeState(SetProtocol.LOGIN, curThread);
 			}
 			
 			public void chat(String theInput) {
@@ -115,11 +115,10 @@ public class SetProtocolAPI {
 	        			SetServer.lobby.join(curThread);
 	        			
 	        			SetServer.sendLogin(curThread.getName(), sp);
-	        			
-	        			sp.state = SetProtocol.LOBBY;
+	        			sp.changeState(SetProtocol.LOBBY, curThread);
 	        		}
 	        		else {
-	        			sp.theOutput = "Bad login information";
+	        			sp.theOutput = JSONinterface.genericToJson("null", "Bad login information");
 	        		}
         		}
         		catch (Exception e){
@@ -130,7 +129,7 @@ public class SetProtocolAPI {
 			}
 			
 			private void invalidUser(String theInput) {
-				sp.theOutput = "Bad login information";
+			    sp.theOutput = JSONinterface.genericToJson("null", "Bad login information");
 			}
 			
 		}
@@ -174,14 +173,14 @@ public class SetProtocolAPI {
 	        	else {
 	        		SetServer.gameRooms.get(roomName).join(curThread);
 	        		sp.theOutput = JSONinterface.genericToJson("null", "Sucessfully join room");
-	        		sp.state = SetProtocol.GAME;
+	        		sp.changeState(SetProtocol.GAME, curThread);
 	        	}
 			}
 		}
-
-		public class game {
+		
+		public class room {
 			
-			public void gameStart(String theInput) {
+			public void roomStart(String theInput) {
 				
 				String action = JSONinterface.jsonGetAction(theInput);
 
@@ -190,7 +189,24 @@ public class SetProtocolAPI {
 //					leaveGame();
 				    SetServer.sendRoomLeave(curThread, sp);
 	        	}
-	        	else if (action.equals("submit")) {
+	        	else {
+	        		roomInvalid();
+	        	}
+			}
+	        	
+			private void roomInvalid() {
+				sp.theOutput = JSONinterface.genericToJson("null", "Not a valid room command");
+			}
+	        	
+		}
+
+		public class game {
+			
+			public void gameStart(String theInput) {
+				
+				String action = JSONinterface.jsonGetAction(theInput);
+
+	        	if (action.equals("submit")) {
 	        		System.out.println("Recieved a submit action");
 	        		
 	        		java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
@@ -211,15 +227,19 @@ public class SetProtocolAPI {
 	        	
 			}
 			
+			
+			/* This is a command the server has to send everyone.
 			private void leaveGame() {
 				sp.theOutput = "ROOMLEAVE|" + curThread.currentRoom;
 				curThread.currentRoom.leave(curThread);
 				SetServer.lobby.join(curThread);
 				sp.state = SetProtocol.LOBBY;
 			}
+			*/
 			
 			private void gameInvalid() {
-				sp.theOutput = "In Game";
+				sp.theOutput = JSONinterface.genericToJson("null", "Invalid game state command");
+				
 			}
 		}
 }

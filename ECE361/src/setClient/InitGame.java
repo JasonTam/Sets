@@ -58,6 +58,8 @@ public class InitGame {
     public static String userName = "Andrew";
     
     private static JFrame frame;
+    
+    public static int gameState = 0;
     /**
      * Create the GUI and show it.  For thread safety,
      * this method is invoked from the
@@ -214,6 +216,10 @@ public class InitGame {
 	            {
 	                User.removeUser(JSONinterface.jsonGetData(inputLine, String.class));
 	                userJList.refreshJList();
+	            }
+	            else if (action.equals("gameState"))
+	            {
+	                gameState = JSONinterface.jsonGetData(inputLine, Integer.class);
 	            }
 	            else {
 	                debug("Nothing done");
