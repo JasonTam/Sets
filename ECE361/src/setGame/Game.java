@@ -62,7 +62,7 @@ public class Game {
 		}
 	}
 
-	private int submitSet(String[] values) {
+	public int submitSet(String[] values) {
 		boolean validInput = false;
 		int[] indexSet = new int[3];
 		int expectedValues = 3;
