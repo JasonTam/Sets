@@ -76,24 +76,7 @@ public class Login extends JFrame  {
 					String loginString  = JSONinterface.genericToJson("login", data);
 					
 					InitGame.out.println(loginString);
-			    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
-			    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
 					
-						try {
-							if(!InitGame.in.readLine().equals("Bad login information"))
-							{
-								jlbOutMessage.setText("welcome");
-								setVisible(false);
-								InitGame.showGame();
-							}else
-				    		{
-								jlbOutMessage.setText("nope");
-				    		}
-				
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
 
 
 			    	

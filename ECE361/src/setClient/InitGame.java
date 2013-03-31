@@ -58,6 +58,7 @@ public class InitGame {
     public static String userName = "Andrew";
     
     private static JFrame frame;
+    private static Login login;
     
     public static int gameState = 0;
     /**
@@ -128,7 +129,7 @@ public class InitGame {
     
     public static void main(String[] args) {
     	initServerConnection();
-    	Login login = new Login();
+    	login = new Login();
     	login.pack();
 		login.addWindowListener(new WindowAdapter() {
 
@@ -226,6 +227,21 @@ public class InitGame {
 	            else if (action.equals("gameState"))
 	            {
 	                gameState = JSONinterface.jsonGetData(inputLine, Integer.class);
+	            }
+	            else if (action.equals("condition"))
+	            {
+	                if (JSONinterface.jsonGetData(inputLine, String.class).equals("bad login"))
+	                {
+	                    login.jlbOutMessage.setText("Invalid login information");
+	                    
+	                }
+	                else if (JSONinterface.jsonGetData(inputLine, String.class).equals("good login"))
+	                {
+				    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
+				    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
+						login.setVisible(false);
+						InitGame.showGame();
+	                }
 	            }
 	            else {
 	                debug("Nothing done");
