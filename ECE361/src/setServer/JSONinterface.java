@@ -1,5 +1,6 @@
 package setServer;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -21,6 +22,14 @@ public class JSONinterface {
 		return gson.toJson(col);
 	}
 	
+	public static <T> String genericToJson(String action, T data, Type clazz) {
+		Collection col = new ArrayList();
+		col.add(action);
+		col.add(data);
+		Gson gson = new Gson();
+		return gson.toJson(col, (Type) clazz);
+	}
+	
 	public static String jsonGetAction (String json) {
 		JsonParser parser = new JsonParser();
 	    JsonArray array = parser.parse(json).getAsJsonArray();
@@ -36,10 +45,20 @@ public class JSONinterface {
 	    JsonArray array = parser.parse(json).getAsJsonArray();
 	    Gson gson = new Gson();
 	    
-	    T data = (T)gson.fromJson(array.get(1), clazz);
+	    
+	    T data = gson.fromJson(array.get(1), clazz);
 		return data;
 	}
 	
+	public static <T> T jsonGetData (String json, Type clazz) {
+		JsonParser parser = new JsonParser();
+	    JsonArray array = parser.parse(json).getAsJsonArray();
+	    Gson gson = new Gson();
+	    
+	    
+	    T data = gson.fromJson(array.get(1), clazz);
+		return data;
+	}
 	
 //	public static Collection jsonGetData (String json) {
 //		JsonParser parser = new JsonParser();

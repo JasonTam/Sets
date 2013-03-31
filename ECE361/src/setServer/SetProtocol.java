@@ -21,19 +21,29 @@ public class SetProtocol {
     }
  
     public String processInput(String theInput, SetMultiThread curThread) {
+    	
+    	System.out.println("The state is : " + state);
+    	System.out.println("Input being processed: " + theInput);
+    	String action = JSONinterface.jsonGetAction(theInput);
         
 // 		Each condition must always assign a value to theOutput.
 //      Initialization of the server
     	if (state == INITIALIZE) {
     		spAPI.genericAPI.initialization();
+    		theOutput = JSONinterface.genericToJson("null", "sending blank line");
         } 
+    	else if (action.equals("test")) {
+    	    state = GAME;
+    	    
+    	    theOutput = JSONinterface.genericToJson("test", "changed to gaem state");
+    	}
     	else if (theInput.toLowerCase().startsWith("chat")) {
     		spAPI.genericAPI.chat(theInput);
         }
-    	else if (theInput.toLowerCase().startsWith("rooms")) {
+    	else if (action.equals("rooms")) {
     		spAPI.genericAPI.showRooms();
     	}
-    	else if (theInput.toLowerCase().startsWith("users")) {
+    	else if (action.equals("users")) {
     		spAPI.genericAPI.showUsers();
     	}
         else if (theInput.toLowerCase().startsWith("quit")) {

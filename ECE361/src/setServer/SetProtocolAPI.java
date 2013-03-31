@@ -1,6 +1,12 @@
 package setServer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+
+import setGame.Card;
+import setGame.GameLogic;
 
 import DBI.DBConnect;
 
@@ -43,15 +49,17 @@ public class SetProtocolAPI {
 			public void chat(String theInput) {
 				String message = theInput.toLowerCase().substring(5);
 				SetServer.sendChat(curThread.currentRoom.getName(), curThread, message);
-				sp.theOutput = "You just broadcasted a message";
+				sp.theOutput = JSONinterface.genericToJson("null", "broadcasting chat");
 			}
 			
 			public void showRooms() {
 			    SetServer.sendRooms(sp);
+			    sp.theOutput = JSONinterface.genericToJson("null", "broadcasting rooms");
 			}
 			
 			public void showUsers() {
 			    SetServer.sendUsers(sp);
+			    sp.theOutput = JSONinterface.genericToJson("null", "broadcasting users");
 			    /*
 				sp.theOutput = "USERS|";
 			    Iterator itUsers = SetServer.allThreads.keySet().iterator();
@@ -73,7 +81,9 @@ public class SetProtocolAPI {
 		public class login {
 			
 			public void loginStart (String theInput) {
-	        	if (theInput.toLowerCase().startsWith("login")) {
+				String action = JSONinterface.jsonGetAction(theInput);
+				
+	        	if (action.equals("login")) {
 	        		validateUser(theInput);
 	        	}
 	        	else {
@@ -82,9 +92,9 @@ public class SetProtocolAPI {
 			}
 			
 			private void validateUser(String theInput) {
-        		String [] userInfo = outer.splitString(theInput);
-        		String username = userInfo[1];
-        		String password = userInfo[2];
+				ArrayList<String> data = JSONinterface.jsonGetData(theInput, ArrayList.class);
+        		String username = data.get(0);
+        		String password = data.get(1);
 				
         		/* SKIP THIS FOR TESTING PURPOSES!!!
 //        		First of all, check if anyone else with your acct is logged in:
@@ -120,7 +130,7 @@ public class SetProtocolAPI {
 			}
 			
 			private void invalidUser(String theInput) {
-				sp.theOutput = theInput;
+				sp.theOutput = "Bad login information";
 			}
 			
 		}
@@ -129,9 +139,10 @@ public class SetProtocolAPI {
 		public class lobby {
 			
 			public void lobbyStart (String theInput) {	
+			    String action = JSONinterface.jsonGetAction(theInput);
 
 //		        Create / join a set room
-		        if (theInput.toLowerCase().startsWith("join")) {
+		        if (action.equals("join")) {
 		        	joinGame(theInput);
 		    	}
 
@@ -148,9 +159,8 @@ public class SetProtocolAPI {
 			}
 			
 			private void joinGame(String theInput) {
-				String [] roomInfo = outer.splitString(theInput);
-				String roomName = roomInfo[1];
-	        	
+				String roomName = JSONinterface.jsonGetData(theInput, String.class);
+				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
 	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() == 2) {
         			sp.theOutput = "error|fail";
@@ -171,14 +181,32 @@ public class SetProtocolAPI {
 		public class game {
 			
 			public void gameStart(String theInput) {
-				if (theInput.toLowerCase().startsWith("leave")) {
-//				    System.out.println(curThread.currentRoom);
+				
+				String action = JSONinterface.jsonGetAction(theInput);
+
+	        	if (action.equals("leave")) {
+	        		System.out.println(curThread.currentRoom);
 //					leaveGame();
 				    SetServer.sendRoomLeave(curThread, sp);
-				}
-				else {
-					gameInvalid();
-				}
+	        	}
+	        	else if (action.equals("submit")) {
+	        		System.out.println("Recieved a submit action");
+	        		
+	        		java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
+	        		
+	        		Collection<Card> selectedCards =
+	        				JSONinterface.jsonGetData(theInput, collectionType);
+	        		
+//	        		for (Card c : selectedCards)
+//	        			System.out.println(c);
+	        		
+	        		boolean isSet = GameLogic.isSet(selectedCards);
+	        		System.out.println("SERVER SAYS SET IS : " + isSet);
+	        	}
+	        	else {
+	        		gameInvalid();
+	        	}
+	        	
 			}
 			
 			private void leaveGame() {

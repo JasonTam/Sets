@@ -15,10 +15,16 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import setServer.JSONinterface;
+
 public class Lobby extends JPanel
 {
 	 private RoomsPanel lobbyRooms;
      private JButton test;
+     
+     private CreateRoomButton createRoom;
+     
+     
      public ChatPanel chat;
 	 
 	 private ConcurrentHashMap<String, Rooms> roomHash = new ConcurrentHashMap<String, Rooms>();
@@ -28,6 +34,8 @@ public class Lobby extends JPanel
         test = new JButton();
         chat = new ChatPanel();
         lobbyRooms = new RoomsPanel();
+        createRoom = new CreateRoomButton();
+        
         lobbyRooms.setBorder(BorderFactory.createLineBorder(Color.black)); 
         
         setLayout(new GridBagLayout());
@@ -47,8 +55,13 @@ public class Lobby extends JPanel
         
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 2;
+        c.gridwidth = 1;
         add(test, c);
+        
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        add(createRoom, c);
         
         test.addActionListener
         (
@@ -56,6 +69,7 @@ public class Lobby extends JPanel
 	        {
 	            public void actionPerformed(ActionEvent e)
 	            {
+	                InitGame.out.println(JSONinterface.genericToJson("test", "setting up test button. REMOVE THIS CONDITION"));
 	                InitGame.changeCards("GAME");
 	            } 
 	        }

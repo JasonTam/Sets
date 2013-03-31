@@ -42,11 +42,12 @@ public class SetMultiThread extends Thread {
 	        
 	        SetProtocol sp = new SetProtocol(this);
 	       	System.out.println(this);
-	        outputLine = sp.processInput(null, this);
+	        outputLine = sp.processInput(JSONinterface.genericToJson("null", "Initializing Game"), this);
+	        System.out.println("Sending first output: " + outputLine);
 	        
 //	   		This very first line that is printed actually
 //	      	gets taken and is stored as the thread's name
-	        //out.println(outputLine);
+	        out.println(outputLine);
 	        
 //	        Waiting for input from the client
 	        while ((inputLine = in.readLine()) != null) {
@@ -54,9 +55,9 @@ public class SetMultiThread extends Thread {
 //	        	The protocol then handles the request and decides what to do with it,
 //	        	and what response to spit back out
 		        outputLine = sp.processInput(inputLine, this);
-		        System.out.println("Processing Input as string:" + inputLine);
 		        out.println(outputLine);
-		        System.out.println(outputLine);
+		        
+		        System.out.println("Sending output from main loop: " + outputLine);
 	
 	            
 		        if (outputLine.equals("Bye."))

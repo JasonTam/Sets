@@ -7,11 +7,13 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.*;
 
+import setServer.JSONinterface;
 import setServer.SetServer;
 
 
 import java.security.MessageDigest;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import java.awt.Desktop;
 import java.io.BufferedReader;
@@ -58,18 +60,19 @@ public class Login extends JFrame  {
 			jbnLogin.addActionListener(new ActionListener() {          
 			    public void actionPerformed(ActionEvent e) {
 			    	
+			    	String userString = jtfInput.getText();;
 			    	String passString = new String(jpwPassword.getPassword());
-					String userString = jtfInput.getText();		
-					StringBuffer loginString  = new StringBuffer();
-					loginString.append("login|");
-					loginString.append(userString);
-					loginString.append("|");
-					loginString.append(passString);
+			    	
+			    	ArrayList<String> data =  new ArrayList<String>();
+			    	data.add(userString);
+			    	data.add(passString);
+
+					String loginString  = JSONinterface.genericToJson("login", data);
 					
-	
-						InitGame.out.println(loginString);
-						InitGame.out.println("rooms");
-				    	InitGame.out.println("users");
+					InitGame.out.println(loginString);
+			    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
+			    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
+					
 						try {
 							if(!InitGame.in.readLine().equals("Bad login information"))
 							{
@@ -92,18 +95,21 @@ public class Login extends JFrame  {
 			});
 			jbnTest.addActionListener(new ActionListener() {          
 			    public void actionPerformed(ActionEvent e) {
+			    	String username = "Andrew";
+			    	String password = "andrew";
+			    	
+			    	ArrayList<String> data =  new ArrayList<String>();
+			    	data.add(username);
+			    	data.add(password);
 
-					String loginString  = "login|Andrew|andrew";
-	
-						InitGame.out.println(loginString);
-						InitGame.out.println("rooms");
-				    	InitGame.out.println("users");						
-						setVisible(false);
-						InitGame.showGame();
-						
-			    		
-
-
+					String loginString  = JSONinterface.genericToJson("login", data);
+					
+					InitGame.out.println(loginString);
+			    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
+			    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
+			    	
+					setVisible(false);
+					InitGame.showGame();
 			    	
 			    }
 			});
