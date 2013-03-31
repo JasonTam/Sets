@@ -22,7 +22,7 @@ public class SetProtocol {
  
     public String processInput(String theInput, SetMultiThread curThread) {
     	
-    	
+    	System.out.println("The state is : " + state);
         
 // 		Each condition must always assign a value to theOutput.
 //      Initialization of the server
