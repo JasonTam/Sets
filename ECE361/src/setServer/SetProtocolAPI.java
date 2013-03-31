@@ -181,7 +181,7 @@ public class SetProtocolAPI {
 			public void gameStart(String theInput) {
 				
 				String action = JSONinterface.jsonGetAction(theInput);
-				System.out.println("WEVE GOT AN ACTION GUYS: " + action);
+
 	        	if (action.equals("leave")) {
 	        		System.out.println(curThread.currentRoom);
 //					leaveGame();
@@ -189,9 +189,17 @@ public class SetProtocolAPI {
 	        	}
 	        	else if (action.equals("submit")) {
 	        		System.out.println("Recieved a submit action");
-	        		Collection<Card> selectedCards = 
-	        				JSONinterface.jsonGetData(theInput, Collection.class);
+	        		
+	        		java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
+	        		
+	        		Collection<Card> selectedCards =
+	        				JSONinterface.jsonGetData(theInput, collectionType);
+	        		
+//	        		for (Card c : selectedCards)
+//	        			System.out.println(c);
+	        		
 	        		boolean isSet = GameLogic.isSet(selectedCards);
+	        		System.out.println("SERVER SAYS SET IS : " + isSet);
 	        	}
 	        	else {
 	        		gameInvalid();

@@ -33,6 +33,7 @@ import setGame.Game;
 import setGame.GameLogic;
 import setServer.JSONinterface;
 
+
 // TODO 
 // Need to go through game flow 
 // Need event listeners to connect to state of the game
@@ -117,7 +118,11 @@ public class GamePanel extends JPanel {
 					System.out.println(c);
 				}
 				if (selectedCards.size() == 3) {
-					String jsonSubmitSet = JSONinterface.genericToJson("submit", selectedCards);
+					System.out.println("Submitting: " + selectedCards);
+					
+					java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
+				    					
+					String jsonSubmitSet = JSONinterface.genericToJson("submit", selectedCards, collectionType);
 					InitGame.out.println(jsonSubmitSet);
 					if (GameLogic.isSet(selectedCards))
 						System.out.println("SET FOUND");
