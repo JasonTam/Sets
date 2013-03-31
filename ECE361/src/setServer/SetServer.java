@@ -50,7 +50,13 @@ public class SetServer {
 	    Iterator it = gameRooms.get(roomName).keySet().iterator();
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
-	        gameRooms.get(roomName).get(key).out.println("CHAT|" + thread.getName() + ": " + message);
+	        
+	        ArrayList<String> data = new ArrayList<String>(); 
+	        
+	        data.add(thread.getName());
+	        data.add(message);
+	        
+	        gameRooms.get(roomName).get(key).out.println(JSONinterface.genericToJson("chat", data));
 //	        it.remove(); // avoids a ConcurrentModificationException
 	    }
     }
@@ -71,7 +77,9 @@ public class SetServer {
     public static void sendLogin(String name, SetProtocol sp)
     {
         System.out.println(name + " logged in");
-        sp.theOutput = "LOGIN|" + name;
+        
+        sp.theOutput = JSONinterface.genericToJson("login", name);
+        
 	    broadcastToAllThreads(sp);
         
     }

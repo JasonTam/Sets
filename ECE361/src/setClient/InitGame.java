@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +32,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import setGame.Card;
 import setGame.Game;
+import setServer.JSONinterface;
 
 @SuppressWarnings("serial")
 public class InitGame {
@@ -173,12 +175,18 @@ public class InitGame {
         
         try
         {
+        	in.readLine();
 	        while ((inputLine = in.readLine()) != null)
 	        {
 	            System.out.println("Recieved line: " + inputLine);
-	            if (inputLine.startsWith("CHAT|"))
+	        	String action = JSONinterface.jsonGetAction(inputLine);
+	        	
+	            if (action.equals("chat"))
 	            {
-	                lobbyPanel.chat.displayMessage(inputLine.substring(5));
+	            	ArrayList<String> data = JSONinterface.jsonGetData(inputLine, ArrayList.class);
+	            	String username = data.get(0);
+	            	String message = data.get(1);
+	                lobbyPanel.chat.displayMessage(username + ": " + message);
 	            }
 //	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
 	            else if (inputLine.matches("^ROOMS\\|.*$"))
@@ -187,14 +195,16 @@ public class InitGame {
 	                Rooms.createRoomHash();
 	                lobbyPanel.updateLobbyPanel();
 	            }
+	            
 	            else if (inputLine.matches("^USERS\\|.*$"))
                 {
 	                User.getUserData(inputLine);
 	                userJList.createListModel();
                 }
-	            else if (inputLine.matches("^LOGIN\\|.*$"))
+	            else if (action.equals("login"))
 	            {
-	                inputLine = inputLine.substring(inputLine.indexOf("|") + 1);
+	            	inputLine = JSONinterface.jsonGetData(inputLine, String.class);
+	            	// This following if should be USERNAME, not just a static andrew 
 	                if (inputLine.equals("Andrew"))
 	                {
 	                    debug("same name inside");
