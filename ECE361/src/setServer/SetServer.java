@@ -10,6 +10,7 @@ import java.io.*;
  * keep track of the threads that are connected.
  * 
  * @author Administrator
+ * @author Nick Wong
  *
  */
 public class SetServer {
@@ -45,6 +46,17 @@ public class SetServer {
         serverSocket.close();
     }
     
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	This will be used to send a message to all specified threads.
     public static void sendChat(String roomName, SetMultiThread thread, String message) {
 	    Iterator it = gameRooms.get(roomName).keySet().iterator();
@@ -100,12 +112,8 @@ public class SetServer {
 		new GameRoom(roomName, playerName, curThread);
 		sp.theOutput = "ROOMCREATE|" + roomName;
 	    sp.state = SetProtocol.GAME;
-        
-	    
 	    broadcastToAllThreads(sp);
 	    sendRooms(sp);
-			    
-        
     }
     public static void broadcastToAllThreads(SetProtocol sp)
     {
