@@ -109,7 +109,7 @@ public class SetServer {
 		new GameRoom(roomName, curThread);
 		
 		sp.theOutput = JSONinterface.genericToJson("roomCreate", roomName);
-		sp.changeState(SetProtocol.GAME, curThread);
+		sp.changeState(SetProtocol.ROOM, curThread);
 	    broadcastToAllThreads(sp);
 	    sendRooms(sp);
 			    

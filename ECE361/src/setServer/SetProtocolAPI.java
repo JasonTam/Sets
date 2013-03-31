@@ -18,6 +18,7 @@ public class SetProtocolAPI {
 		public game gameAPI;
 		public lobby lobbyAPI;
 		public generic genericAPI;
+		public room roomAPI;
 		
 		public DBConnect dbc;
 		
@@ -31,6 +32,7 @@ public class SetProtocolAPI {
 			this.gameAPI = new game();
 			this.lobbyAPI = new lobby();
 			this.genericAPI = new generic();
+			this.roomAPI = new room();
 			this.dbc = spThread.dbc;
 		}
 		
@@ -142,7 +144,7 @@ public class SetProtocolAPI {
 
 //		        Create / join a set room
 		        if (action.equals("join")) {
-		        	joinGame(theInput);
+		        	joinRoom(theInput);
 		    	}
 
 		        else if (theInput.toLowerCase().startsWith("set")) {
@@ -154,10 +156,10 @@ public class SetProtocolAPI {
 			}
 			
 			private void lobbyInvalid(String theInput) {
-				sp.theOutput = "In Lobby";
+				sp.theOutput = JSONinterface.genericToJson("null", "Invalid Lobby command");
 			}
 			
-			private void joinGame(String theInput) {
+			private void joinRoom(String theInput) {
 				String roomName = JSONinterface.jsonGetData(theInput, String.class);
 				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
@@ -173,7 +175,7 @@ public class SetProtocolAPI {
 	        	else {
 	        		SetServer.gameRooms.get(roomName).join(curThread);
 	        		sp.theOutput = JSONinterface.genericToJson("null", "Sucessfully join room");
-	        		sp.changeState(SetProtocol.GAME, curThread);
+	        		sp.changeState(SetProtocol.ROOM, curThread);
 	        	}
 			}
 		}

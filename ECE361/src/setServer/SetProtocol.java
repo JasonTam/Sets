@@ -66,7 +66,7 @@ public class SetProtocol {
         	spAPI.lobbyAPI.lobbyStart(theInput);
         }
         else if (state == ROOM) {
-        	spAPI.lobbyAPI.lobbyStart(theInput);
+        	spAPI.roomAPI.roomStart(theInput);
         }
         else if (state == GAME) {
         	spAPI.gameAPI.gameStart(theInput);
