@@ -43,7 +43,7 @@ public class SetServer {
         	++i;
         }
         serverSocket.close();
-    }
+	}
     
 //	This will be used to send a message to all specified threads.
     public static void sendChat(String roomName, SetMultiThread thread, String message) {
@@ -68,10 +68,11 @@ public class SetServer {
 	    Iterator itUsers = SetServer.allThreads.keySet().iterator();
 	    while (itUsers.hasNext()) {	
 	        String user = (String) itUsers.next();
-	        sp.theOutput = sp.theOutput.concat(user + "|");
+	        sp.theOutput = JSONinterface.genericToJson("login", user);
+//	        sp.theOutput = sp.theOutput.concat(user + "|");
 		    //			        it.remove(); // avoids a ConcurrentModificationException
+	        broadcastToAllThreads(sp);
 	    }
-	    broadcastToAllThreads(sp);
     }
     
     public static void sendLogin(String name, SetProtocol sp)
@@ -127,6 +128,9 @@ public class SetServer {
     
     public static void sendRooms(SetProtocol sp)
     {
+        
+        
+        
         System.out.println(gameRooms);
         
         sp.theOutput = "ROOMS|";
@@ -142,7 +146,6 @@ public class SetServer {
 		    sp.theOutput = sp.theOutput.concat("|");
 		    //			        it.remove(); // avoids a ConcurrentModificationException
 	    }
-	    
 	    broadcastToAllThreads(sp);
         
     }
