@@ -72,7 +72,13 @@ public class SetMultiThread extends Thread {
 	        {
 	            this.currentRoom.leave(this);
 	        }
-	        SetServer.allThreads.remove(getName());
+	        
+	        if (SetServer.allThreads.remove(getName()) == null)
+	        {
+	            // If someone quits during the login process, this removes
+	            // the thread from the hash
+	            SetServer.allThreads.remove(Integer.toString(default_name));
+	        }
 	        out.close();
 	        in.close();
 	        socket.close();

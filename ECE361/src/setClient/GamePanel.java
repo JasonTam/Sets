@@ -38,23 +38,25 @@ public class GamePanel extends JPanel {
 	JButton submitButton = new JButton("Submit Set");
 	JButton clearButton = new JButton("Clear Selection");
 	JButton startButton = new JButton("Start Game!");
+	JButton leaveButton = new JButton("Leave room!");
 	GridLayout boardLayout = new GridLayout(3, 5);
+	public static String roomName;
 
-	public GamePanel() {
+	public GamePanel(String rName) {
+	    roomName = rName;
  
         setLayout(new BorderLayout());
         
-		JPanel gamePanel = new JPanel();
+		final JPanel gamePanel = new JPanel();
 		
 		
 //		TODO The game init should probably be outside
-		Game game1 = new Game();
-		game1.start();
+		final Game game1 = new Game();
 		
 		gamePanel.setLayout(boardLayout);
 		
 		JPanel controls = new JPanel();
-		controls.setLayout(new GridLayout(3, 1));
+		controls.setLayout(new GridLayout(4, 1));
 
 		// Set up components preferred size
 		JButton b = new JButton("Just fake button");
@@ -68,36 +70,13 @@ public class GamePanel extends JPanel {
 		// Add buttons to experiment with Grid Layout
 		
 
-		for (final Card c : game1.getField().getCards()) {
-			ImageIcon card_img = new ImageIcon
-                    ("src/resources/images_cards/"+c.toString()+".gif");
-			final JToggleButton bC = new JToggleButton(card_img);
-//			final JToggleButton bC = new JToggleButton(c.toString());
-			gamePanel.add(bC);
-			cardButtons.put(c.toString(), bC);
-			bC.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (bC.isSelected()) {
-						if (selectedCards.size()>=3) {
-							Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
-							cardButtons.get(pop.toString()).setSelected(false);
-						}
-						System.out.println(c.toString() + " selected");
-						selectedCards.add(c);
-					} else {
-						System.out.println(c.toString() + " unselected");
-						selectedCards.remove(c);
-					}
-				}
-			});
-		}
 
 		// Add submit
 		JLabel empty = new JLabel();
 		controls.add(submitButton);
 		controls.add(clearButton);
 		controls.add(startButton);
+		controls.add(leaveButton);
 		
 		clearButton.setSize(new Dimension(50, 80));
 
@@ -149,10 +128,43 @@ public class GamePanel extends JPanel {
 //		Process Start button
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			       System.out.println("Need to get card start here somehow...");
+			    game1.start();
+				for (final Card c : game1.getField().getCards()) {
+					ImageIcon card_img = new ImageIcon
+		                    ("src/resources/images_cards/"+c.toString()+".gif");
+					final JToggleButton bC = new JToggleButton(card_img);
+		//			final JToggleButton bC = new JToggleButton(c.toString());
+					gamePanel.add(bC);
+					cardButtons.put(c.toString(), bC);
+					bC.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							if (bC.isSelected()) {
+								if (selectedCards.size()>=3) {
+									Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
+									cardButtons.get(pop.toString()).setSelected(false);
+								}
+								System.out.println(c.toString() + " selected");
+								selectedCards.add(c);
+							} else {
+								System.out.println(c.toString() + " unselected");
+								selectedCards.remove(c);
+							}
+						}
+					});
+					gamePanel.revalidate();
+					((JButton)(e.getSource())).setEnabled(false);
+				}
 			}
 		});
 				
+//		Process leave button
+		leaveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    InitGame.out.println(JSONinterface.genericToJson("leave", roomName));
+			    InitGame.changeCards("LOBBY");
+			}
+		});
 				
 //		add(compsToExperiment, BorderLayout.NORTH);
 		add(gamePanel, BorderLayout.CENTER);

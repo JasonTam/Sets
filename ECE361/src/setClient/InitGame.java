@@ -50,7 +50,7 @@ public class InitGame {
     
     public static JPanel cardLayout = new JPanel();
     public static Lobby lobbyPanel = new Lobby();
-    public static GamePanel gamePanel  = new GamePanel();
+    public static GamePanel gamePanel;
     
     public static ChatPanel chatPanel = new ChatPanel();
     public static UserJList userJList = new UserJList();
@@ -79,7 +79,6 @@ public class InitGame {
         
         cardLayout.setLayout(new CardLayout());
         cardLayout.add(lobbyPanel, "LOBBY");
-        cardLayout.add(gamePanel, "GAME");
         
         ((CardLayout)cardLayout.getLayout()).show(cardLayout, "LOBBY");
         

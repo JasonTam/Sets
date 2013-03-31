@@ -52,8 +52,6 @@ public class SetServer {
 	        String key = (String) it.next();
 	        
 	        String chatMessage = thread.getName() + ": " + message;
-	        System.out.println(thread.getName());
-	        System.out.println(message);
 	        
 	        gameRooms.get(roomName).get(key).out.println(JSONinterface.genericToJson("chat", chatMessage));
 //	        it.remove(); // avoids a ConcurrentModificationException
@@ -96,7 +94,8 @@ public class SetServer {
     
     public static void sendRoomLeave(SetMultiThread curThread, SetProtocol sp)
     {
-		sp.theOutput = "ROOMLEAVE|" + curThread.currentRoom.getName();
+		sp.theOutput = JSONinterface.genericToJson("roomleave", curThread.currentRoom.getName());
+		
 		curThread.currentRoom.leave(curThread);
 		SetServer.lobby.join(curThread);
 	    sp.state = SetProtocol.LOBBY;

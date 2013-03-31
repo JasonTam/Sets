@@ -40,7 +40,8 @@ public class SetProtocol {
         } 
     	else if (action.equals("test")) {
     	    state = GAME;
-    	    
+    	    System.out.println(SetServer.allThreads);
+    	    System.out.println(SetServer.gameRooms);
     	    theOutput = JSONinterface.genericToJson("test", "changed to gaem state");
     	}
     	else if (action.equals("chat")) {

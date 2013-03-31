@@ -28,6 +28,8 @@ public class CreateRoomButton extends JPanel {
 	                if (roomName.getText() != "")
 	                {
 	                    
+	                    InitGame.gamePanel = new GamePanel(roomName.getText());
+	                    InitGame.cardLayout.add(InitGame.gamePanel, "GAME");
 		                InitGame.out.println(JSONinterface.genericToJson("join", roomName.getText()));
 		                roomName.setText("");
 		                InitGame.changeCards("GAME");

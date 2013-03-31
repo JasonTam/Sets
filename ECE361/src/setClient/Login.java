@@ -56,6 +56,12 @@ public class Login extends JFrame  {
 
 			jbnTest = new JButton("test as Andrew");
 			
+	        addWindowListener(new WindowAdapter() {
+	            public void windowClosing(WindowEvent e) {
+	                InitGame.out.println(JSONinterface.genericToJson("quit", "quitting game"));
+	                System.exit(0);
+	            }
+	        });
 
 			jbnLogin.addActionListener(new ActionListener() {          
 			    public void actionPerformed(ActionEvent e) {
