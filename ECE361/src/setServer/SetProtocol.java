@@ -36,10 +36,10 @@ public class SetProtocol {
     	else if (theInput.toLowerCase().startsWith("rooms")) {
     		spAPI.genericAPI.showRooms();
     	}
+    	*/
     	else if (theInput.toLowerCase().startsWith("users")) {
     		spAPI.genericAPI.showUsers();
     	}
-    	*/
         else if (theInput.toLowerCase().startsWith("quit")) {
         	spAPI.genericAPI.quitApp();
         }

@@ -44,7 +44,7 @@ public class SetProtocolAPI {
 			public void chat(String theInput) {
 				String message = theInput.toLowerCase().substring(5);
 				SetServer.sendChat(curThread.currentRoom.getName(), curThread, message);
-				sp.theOutput = "You just broadcasted a message";
+				sp.theOutput = JSONinterface.genericToJson("null", "Chat was sent");
 			}
 			
 			public void showRooms() {

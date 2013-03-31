@@ -5,6 +5,8 @@ import java.sql.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+
+
 public class DBConnect {
 	
 	private static String DBURL = "jdbc:mysql://199.98.20.120/SetGame";
@@ -33,7 +35,7 @@ public class DBConnect {
 
 		PreparedStatement prepareStatement = dbcon.prepareStatement(queryString);
 		prepareStatement.setString(1, username);
-		prepareStatement.setString(2, DigestUtils.sha1Hex(password));
+		prepareStatement.setString(2, DigestUtils.shaHex(password));
 		ResultSet rs = prepareStatement.executeQuery();
 		return rs.next();
 	}
@@ -42,7 +44,7 @@ public class DBConnect {
 		String queryString = "INSERT into Users (username, password) VALUES (?, ?)";
 		PreparedStatement ps = dbcon.prepareStatement(queryString);
 		ps.setString(1, username);
-		ps.setString(2, DigestUtils.sha1Hex(password));
+		ps.setString(2, DigestUtils.shaHex(password));
 		int manipulated = ps.executeUpdate();
 		return manipulated==1;
 	}

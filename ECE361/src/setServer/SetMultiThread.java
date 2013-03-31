@@ -43,10 +43,11 @@ public class SetMultiThread extends Thread {
 	        SetProtocol sp = new SetProtocol(this);
 	       	System.out.println(this);
 	        outputLine = sp.processInput(null, this);
+	        System.out.println("Sending output: " + outputLine);
 	        
 //	   		This very first line that is printed actually
 //	      	gets taken and is stored as the thread's name
-	        //out.println(outputLine);
+	        out.println(outputLine);
 	        
 //	        Waiting for input from the client
 	        while ((inputLine = in.readLine()) != null) {
