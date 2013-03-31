@@ -139,9 +139,10 @@ public class SetProtocolAPI {
 		public class lobby {
 			
 			public void lobbyStart (String theInput) {	
+			    String action = JSONinterface.jsonGetAction(theInput);
 
 //		        Create / join a set room
-		        if (theInput.toLowerCase().startsWith("join")) {
+		        if (action.equals("join")) {
 		        	joinGame(theInput);
 		    	}
 
@@ -158,8 +159,7 @@ public class SetProtocolAPI {
 			}
 			
 			private void joinGame(String theInput) {
-				String [] roomInfo = outer.splitString(theInput);
-				String roomName = roomInfo[1];
+				String roomName = JSONinterface.jsonGetData(theInput, String.class);
 				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
 	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() == 2) {

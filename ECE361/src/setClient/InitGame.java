@@ -188,10 +188,10 @@ public class InitGame {
 	                lobbyPanel.chat.displayMessage(username + ": " + message);
 	            }
 //	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
-	            else if (inputLine.matches("^ROOMS\\|.*$"))
+	            else if (action.equals("rooms"))
 	            {
-	                Rooms.getRoomData(inputLine);
-	                Rooms.createRoomHash();
+//	                Rooms.getRoomData(inputLine);
+	                Rooms.createRoomArray(inputLine);
 	                lobbyPanel.updateLobbyPanel();
 	            }
 	            

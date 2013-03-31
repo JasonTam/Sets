@@ -106,7 +106,8 @@ public class SetServer {
     public static void sendRoomCreate(String roomName, SetMultiThread curThread, SetProtocol sp)
     {
 		new GameRoom(roomName, curThread);
-		sp.theOutput = "ROOMCREATE|" + roomName;
+		
+		sp.theOutput = JSONinterface.genericToJson("roomCreate", roomName);
 	    sp.state = SetProtocol.GAME;
         
 	    
@@ -133,6 +134,19 @@ public class SetServer {
         
         System.out.println(gameRooms);
         
+        
+	    Iterator itGame = gameRooms.keySet().iterator();
+	    ArrayList<String> allRooms = new ArrayList<String>();
+	    while (itGame.hasNext()) {	
+	        String roomName = (String) itGame.next();
+	        allRooms.add(roomName);
+	    }
+	    
+        sp.theOutput = JSONinterface.genericToJson("rooms", allRooms);
+        broadcastToAllThreads(sp);
+        
+        
+        /*
         sp.theOutput = "ROOMS|";
 	    Iterator itGame = SetServer.gameRooms.keySet().iterator();
 	    while (itGame.hasNext()) {	
@@ -147,6 +161,7 @@ public class SetServer {
 		    //			        it.remove(); // avoids a ConcurrentModificationException
 	    }
 	    broadcastToAllThreads(sp);
+	    */
         
     }
     

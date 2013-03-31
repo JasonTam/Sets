@@ -68,9 +68,10 @@ public class Login extends JFrame  {
 			    	data.add(passString);
 
 					String loginString  = JSONinterface.genericToJson("login", data);
+					
 					InitGame.out.println(loginString);
 			    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
-//						InitGame.out.println("rooms");
+			    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
 					
 						try {
 							if(!InitGame.in.readLine().equals("Bad login information"))
@@ -102,14 +103,13 @@ public class Login extends JFrame  {
 			    	data.add(password);
 
 					String loginString  = JSONinterface.genericToJson("login", data);
+					
 					InitGame.out.println(loginString);
 			    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
+			    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
 			    	
-					/*
-					InitGame.out.println("rooms");
-			    	*/
-						setVisible(false);
-						InitGame.showGame();
+					setVisible(false);
+					InitGame.showGame();
 			    	
 			    }
 			});
