@@ -162,8 +162,9 @@ public class SetProtocolAPI {
 				String roomName = JSONinterface.jsonGetData(theInput, String.class);
 				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
-	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() == 2) {
-        			sp.theOutput = "error|fail";
+	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() >= 3) {
+	        	    
+        			sp.theOutput = JSONinterface.genericToJson("null", "room was full");
         		}
 //	        	If the room doesn't exist, create it and join the room
 	        	else if (!SetServer.gameRooms.containsKey(roomName)) {
@@ -172,7 +173,7 @@ public class SetProtocolAPI {
 //	        	If the room does exist and its not full, join it
 	        	else {
 	        		SetServer.gameRooms.get(roomName).join(curThread);
-	        		sp.theOutput = "success|join";
+	        		sp.theOutput = JSONinterface.genericToJson("null", "Sucessfully join room");
 	        		sp.state = SetProtocol.GAME;
 	        	}
 			}

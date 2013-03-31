@@ -152,16 +152,10 @@ public class Lobby extends JPanel
 			        {
 			            public void actionPerformed(ActionEvent e)
 			            {
-			                System.out.println(((JButton)(e.getSource())).getText()+ " Clicked !");
+			                String roomName = ((JButton)(e.getSource())).getText();
+			                InitGame.out.println(JSONinterface.genericToJson("join", roomName));
+			                InitGame.changeCards("GAME");
 			                
-			                String roomString = "ROOMCREATE|who";
-					        System.out.println("Initialsustring");
-					        System.out.println(roomString);
-					        
-					        roomString = roomString.substring(roomString.indexOf("|"));
-					        
-					        System.out.println("Room sustring");
-					        System.out.println(roomString);
 			            } 
 			        }
 		        );
