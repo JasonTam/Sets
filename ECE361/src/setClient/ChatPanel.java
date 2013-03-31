@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultCaret;
 
+import setServer.JSONinterface;
+
 public class ChatPanel extends JPanel {
     
     private static JTextArea recievedText;
@@ -40,8 +42,8 @@ public class ChatPanel extends JPanel {
             {
                 if (inputText.getText() != "")
                 {
-                    InitGame.out.println("chat " + inputText.getText());
 	                text = inputText.getText();
+                    InitGame.out.println(JSONinterface.genericToJson("chat", text));
 	                inputText.setText("");
                 }
             }

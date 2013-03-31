@@ -43,7 +43,7 @@ public class SetProtocol {
     	    
     	    theOutput = JSONinterface.genericToJson("test", "changed to gaem state");
     	}
-    	else if (theInput.toLowerCase().startsWith("chat")) {
+    	else if (action.equals("chat")) {
     		spAPI.genericAPI.chat(theInput);
         }
     	else if (action.equals("rooms")) {

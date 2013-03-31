@@ -51,12 +51,11 @@ public class SetServer {
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
 	        
-	        ArrayList<String> data = new ArrayList<String>(); 
+	        String chatMessage = thread.getName() + ": " + message;
+	        System.out.println(thread.getName());
+	        System.out.println(message);
 	        
-	        data.add(thread.getName());
-	        data.add(message);
-	        
-	        gameRooms.get(roomName).get(key).out.println(JSONinterface.genericToJson("chat", data));
+	        gameRooms.get(roomName).get(key).out.println(JSONinterface.genericToJson("chat", chatMessage));
 //	        it.remove(); // avoids a ConcurrentModificationException
 	    }
     }

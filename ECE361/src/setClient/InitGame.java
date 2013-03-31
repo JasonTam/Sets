@@ -182,10 +182,7 @@ public class InitGame {
 	        	
 	            if (action.equals("chat"))
 	            {
-	            	ArrayList<String> data = JSONinterface.jsonGetData(inputLine, ArrayList.class);
-	            	String username = data.get(0);
-	            	String message = data.get(1);
-	                lobbyPanel.chat.displayMessage(username + ": " + message);
+	                lobbyPanel.chat.displayMessage(JSONinterface.jsonGetData(inputLine, String.class));
 	            }
 //	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
 	            else if (action.equals("rooms"))
