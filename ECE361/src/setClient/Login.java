@@ -60,18 +60,18 @@ public class Login extends JFrame  {
 			jbnLogin.addActionListener(new ActionListener() {          
 			    public void actionPerformed(ActionEvent e) {
 			    	
+			    	String userString = jtfInput.getText();;
 			    	String passString = new String(jpwPassword.getPassword());
-					String userString = jtfInput.getText();		
-					StringBuffer loginString  = new StringBuffer();
-					loginString.append("login|");
-					loginString.append(userString);
-					loginString.append("|");
-					loginString.append(passString);
-					
+			    	
+			    	ArrayList<String> data =  new ArrayList<String>();
+			    	data.add(userString);
+			    	data.add(passString);
+
+					String loginString  = JSONinterface.genericToJson("login", data);
+					InitGame.out.println(loginString);
 	
-						InitGame.out.println(loginString);
-						InitGame.out.println("rooms");
-				    	InitGame.out.println("users");
+//						InitGame.out.println("rooms");
+//				    	InitGame.out.println("users");
 						try {
 							if(!InitGame.in.readLine().equals("Bad login information"))
 							{
