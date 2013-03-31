@@ -175,7 +175,6 @@ public class InitGame {
         
         try
         {
-        	in.readLine();
 	        while ((inputLine = in.readLine()) != null)
 	        {
 	            System.out.println("Recieved line: " + inputLine);
@@ -205,11 +204,13 @@ public class InitGame {
 	            {
 	            	inputLine = JSONinterface.jsonGetData(inputLine, String.class);
 	            	// This following if should be USERNAME, not just a static andrew 
+	            	/*
 	                if (inputLine.equals("Andrew"))
 	                {
 	                    debug("same name inside");
 	                    continue;
 	                }
+	                */
 	                User.addUser(inputLine);
 	                userJList.refreshJList();
 	            }

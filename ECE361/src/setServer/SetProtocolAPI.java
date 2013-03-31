@@ -58,6 +58,7 @@ public class SetProtocolAPI {
 			
 			public void showUsers() {
 			    SetServer.sendUsers(sp);
+			    sp.theOutput = JSONinterface.genericToJson("null", "broadcasting users");
 			    /*
 				sp.theOutput = "USERS|";
 			    Iterator itUsers = SetServer.allThreads.keySet().iterator();

@@ -21,6 +21,10 @@ public class Lobby extends JPanel
 {
 	 private RoomsPanel lobbyRooms;
      private JButton test;
+     
+     private JPanel createRoom;
+     
+     
      public ChatPanel chat;
 	 
 	 private ConcurrentHashMap<String, Rooms> roomHash = new ConcurrentHashMap<String, Rooms>();
@@ -30,6 +34,8 @@ public class Lobby extends JPanel
         test = new JButton();
         chat = new ChatPanel();
         lobbyRooms = new RoomsPanel();
+        createRoom = new JPanel();
+        
         lobbyRooms.setBorder(BorderFactory.createLineBorder(Color.black)); 
         
         setLayout(new GridBagLayout());
@@ -58,8 +64,7 @@ public class Lobby extends JPanel
 	        {
 	            public void actionPerformed(ActionEvent e)
 	            {
-	                
-	                InitGame.out.println("test");
+	                InitGame.out.println(JSONinterface.genericToJson("test", "setting up test button. REMOVE THIS CONDITION"));
 	                InitGame.changeCards("GAME");
 	            } 
 	        }
