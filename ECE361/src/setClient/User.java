@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 
 import javax.swing.JList;
 
+import setServer.JSONinterface;
+
 public class User {
     private String userName;
     public static LinkedHashMap<String, User> userList = new LinkedHashMap();
@@ -20,7 +22,7 @@ public class User {
         return userName;
     }
     
-    
+    /*
     public static void getUserData(String inputLine)
     {
         InitGame.debug("User.getUserData");
@@ -38,17 +40,21 @@ public class User {
         createUserList();
         InitGame.debug("User.getUserData");
     }
+    */
     
-    public static void createUserList()
+    // Esentially gets called ONLY when the current user logs on.
+    public static void createUserList(String theInput)
     {
         InitGame.debug("User.createUserList");
-        for (String person : userData)
+        ArrayList<String> userListData = JSONinterface.jsonGetData(theInput, ArrayList.class);
+        for (String person : userListData)
         {
             addUser(person);
         }
         InitGame.debug("User.createUserList");
     }
     
+    // Called when a new user logs on
     public static void addUser(String userName)
     {
         InitGame.debug("User.addUser");

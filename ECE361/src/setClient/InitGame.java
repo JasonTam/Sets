@@ -188,16 +188,16 @@ public class InitGame {
 	                lobbyPanel.chat.displayMessage(username + ": " + message);
 	            }
 //	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
-	            else if (inputLine.matches("^ROOMS\\|.*$"))
+	            else if (action.equals("rooms"))
 	            {
-	                Rooms.getRoomData(inputLine);
-	                Rooms.createRoomHash();
+//	                Rooms.getRoomData(inputLine);
+	                Rooms.createRoomArray(inputLine);
 	                lobbyPanel.updateLobbyPanel();
 	            }
 	            
-	            else if (inputLine.matches("^USERS\\|.*$"))
+	            else if (action.equals("users"))
                 {
-	                User.getUserData(inputLine);
+	                User.createUserList(inputLine);
 	                userJList.createListModel();
                 }
 	            else if (action.equals("login"))

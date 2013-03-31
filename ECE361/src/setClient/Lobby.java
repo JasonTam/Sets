@@ -22,7 +22,7 @@ public class Lobby extends JPanel
 	 private RoomsPanel lobbyRooms;
      private JButton test;
      
-     private JPanel createRoom;
+     private CreateRoomButton createRoom;
      
      
      public ChatPanel chat;
@@ -34,7 +34,7 @@ public class Lobby extends JPanel
         test = new JButton();
         chat = new ChatPanel();
         lobbyRooms = new RoomsPanel();
-        createRoom = new JPanel();
+        createRoom = new CreateRoomButton();
         
         lobbyRooms.setBorder(BorderFactory.createLineBorder(Color.black)); 
         
@@ -55,8 +55,13 @@ public class Lobby extends JPanel
         
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 2;
+        c.gridwidth = 1;
         add(test, c);
+        
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        add(createRoom, c);
         
         test.addActionListener
         (

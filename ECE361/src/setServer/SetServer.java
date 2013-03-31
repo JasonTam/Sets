@@ -65,14 +65,17 @@ public class SetServer {
     public static void sendUsers(SetProtocol sp)
     {
 		sp.theOutput = "USERS|";
+		ArrayList<String> userList = new ArrayList<String>();
 	    Iterator itUsers = SetServer.allThreads.keySet().iterator();
 	    while (itUsers.hasNext()) {	
 	        String user = (String) itUsers.next();
-	        sp.theOutput = JSONinterface.genericToJson("login", user);
+	        userList.add(user);
 //	        sp.theOutput = sp.theOutput.concat(user + "|");
 		    //			        it.remove(); // avoids a ConcurrentModificationException
-	        broadcastToAllThreads(sp);
 	    }
+	    
+        sp.theOutput = JSONinterface.genericToJson("users", userList);
+        broadcastToAllThreads(sp);
     }
     
     public static void sendLogin(String name, SetProtocol sp)
@@ -106,7 +109,8 @@ public class SetServer {
     public static void sendRoomCreate(String roomName, SetMultiThread curThread, SetProtocol sp)
     {
 		new GameRoom(roomName, curThread);
-		sp.theOutput = "ROOMCREATE|" + roomName;
+		
+		sp.theOutput = JSONinterface.genericToJson("roomCreate", roomName);
 	    sp.state = SetProtocol.GAME;
         
 	    
@@ -133,6 +137,19 @@ public class SetServer {
         
         System.out.println(gameRooms);
         
+        
+	    Iterator itGame = gameRooms.keySet().iterator();
+	    ArrayList<String> allRooms = new ArrayList<String>();
+	    while (itGame.hasNext()) {	
+	        String roomName = (String) itGame.next();
+	        allRooms.add(roomName);
+	    }
+	    
+        sp.theOutput = JSONinterface.genericToJson("rooms", allRooms);
+        broadcastToAllThreads(sp);
+        
+        
+        /*
         sp.theOutput = "ROOMS|";
 	    Iterator itGame = SetServer.gameRooms.keySet().iterator();
 	    while (itGame.hasNext()) {	
@@ -147,6 +164,7 @@ public class SetServer {
 		    //			        it.remove(); // avoids a ConcurrentModificationException
 	    }
 	    broadcastToAllThreads(sp);
+	    */
         
     }
     

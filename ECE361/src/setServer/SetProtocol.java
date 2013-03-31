@@ -46,11 +46,9 @@ public class SetProtocol {
     	else if (theInput.toLowerCase().startsWith("chat")) {
     		spAPI.genericAPI.chat(theInput);
         }
-    	/*
-    	else if (theInput.toLowerCase().startsWith("rooms")) {
+    	else if (action.equals("rooms")) {
     		spAPI.genericAPI.showRooms();
     	}
-    	*/
     	else if (action.equals("users")) {
     		spAPI.genericAPI.showUsers();
     	}

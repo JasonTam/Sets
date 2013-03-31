@@ -5,9 +5,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import setServer.JSONinterface;
+
+import com.google.gson.JsonArray;
+
 public class Rooms {
     
-    private static String[] roomData;
     public static ArrayList<Rooms> roomList = new ArrayList<Rooms>();
     
     private String roomName;
@@ -23,6 +26,7 @@ public class Rooms {
         
     }
     
+    /*
     public static void getRoomData(String roomString)
     {
         //Whether or not its ROOM or ROOMLEAVE or ROOMCREATE. grab it.
@@ -39,22 +43,21 @@ public class Rooms {
         }
         
     }
+    */
 
-    public static void createRoomHash()
+    public static void createRoomArray(String roomString)
     {
+        ArrayList<String> roomData = JSONinterface.jsonGetData(roomString, ArrayList.class);
         roomList = new ArrayList<Rooms>();
         
-        if (roomData == null)
+        for (String roomName : roomData)
         {
-            return;
-        }
-        else
-        {
-            for (String roomName : roomData)
+                
+            if (roomName.equals("lobby"))
             {
-               String room = (roomName.split("-"))[0];
-               roomList.add(new Rooms(room));
+                continue;
             }
+            roomList.add(new Rooms(roomName));
         }
         
     }
