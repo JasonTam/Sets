@@ -24,7 +24,13 @@ public class SetProtocol {
     	
     	System.out.println("The state is : " + state);
     	System.out.println("Input being processed: " + theInput);
-    	String action = JSONinterface.jsonGetAction(theInput);
+    	String action = null;
+    	try {
+    		action = JSONinterface.jsonGetAction(theInput);
+    	} catch (java.lang.IllegalStateException e) {
+//    		Don't really care
+    		System.err.println("Caught IOException: " + e.getMessage());
+    	}
         
 // 		Each condition must always assign a value to theOutput.
 //      Initialization of the server

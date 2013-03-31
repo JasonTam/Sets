@@ -1,34 +1,24 @@
 package setClient;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import setGame.Card;
-import setGame.Field;
 import setGame.Game;
 import setGame.GameLogic;
 import setServer.JSONinterface;
@@ -74,7 +64,7 @@ public class GamePanel extends JPanel {
 				(int) (buttonSize.getHeight() * 3.5) + maxGap * 2));
 
 		final Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
-		final Collection<Card> selectedCards = new HashSet<Card>();
+		final Collection<Card> selectedCards = new LinkedList<Card>();
 		// Add buttons to experiment with Grid Layout
 		
 
@@ -89,6 +79,10 @@ public class GamePanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (bC.isSelected()) {
+						if (selectedCards.size()>=3) {
+							Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
+							cardButtons.get(pop.toString()).setSelected(false);
+						}
 						System.out.println(c.toString() + " selected");
 						selectedCards.add(c);
 					} else {
