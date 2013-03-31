@@ -1,12 +1,22 @@
 package setServer;
 import java.util.concurrent.ConcurrentHashMap;
 
+import setGame.Game;
+
 public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	private String room_name;
 	private ConcurrentHashMap<Integer, Boolean> cards;
 	
-	public void startGame()
+	public void startGame(String roomName)
 	{
+	    Game game1 = new Game();
+	    game1.start();
+	    
+	    
+	    
+	    
+	    
+	    
 //	    Ill expect the set game to send me an INDEX for every card.
 //	    The default hash value will be false.
 //	    If someone sends me a correct set, the value will cahnge to TRUE.

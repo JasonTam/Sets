@@ -41,6 +41,7 @@ public class GamePanel extends JPanel {
 	JButton leaveButton = new JButton("Leave room!");
 	GridLayout boardLayout = new GridLayout(3, 5);
 	public static String roomName;
+	public static Game curGame;
 
 	public GamePanel(String rName) {
 	    roomName = rName;
@@ -51,7 +52,7 @@ public class GamePanel extends JPanel {
 		
 		
 //		TODO The game init should probably be outside
-		final Game game1 = new Game();
+//		final Game game1 = new Game();
 		
 		gamePanel.setLayout(boardLayout);
 		
@@ -132,7 +133,8 @@ public class GamePanel extends JPanel {
 //		Process Start button
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    game1.start();
+			    InitGame.out.println(JSONinterface.genericToJson("startGame", roomName));
+			    Game game1 = new Game();
 				for (final Card c : game1.getField().getCards()) {
 					ImageIcon card_img = new ImageIcon
 		                    ("src/resources/images_cards/"+c.toString()+".gif");

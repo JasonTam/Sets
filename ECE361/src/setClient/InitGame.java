@@ -217,6 +217,10 @@ public class InitGame {
 	                User.removeUser(JSONinterface.jsonGetData(inputLine, String.class));
 	                userJList.refreshJList();
 	            }
+	            else if (action.equals("startGame"))
+	            {
+	                
+	            }
 	            else if (action.equals("gameState"))
 	            {
 	                gameState = JSONinterface.jsonGetData(inputLine, Integer.class);

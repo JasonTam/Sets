@@ -47,14 +47,16 @@ public class SetServer {
     
 //	This will be used to send a message to all specified threads.
     public static void sendChat(String roomName, SetMultiThread thread, String message) {
+        String chatMessage = thread.getName() + ": " + message;
+        broadcastToRoomThreads(roomName, thread, JSONinterface.genericToJson("chat", chatMessage));
+    }
+    
+    public static void broadcastToRoomThreads (String roomName, SetMultiThread thread, String JSON)
+    {
 	    Iterator it = gameRooms.get(roomName).keySet().iterator();
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
-	        
-	        String chatMessage = thread.getName() + ": " + message;
-	        
-	        gameRooms.get(roomName).get(key).out.println(JSONinterface.genericToJson("chat", chatMessage));
-//	        it.remove(); // avoids a ConcurrentModificationException
+	        gameRooms.get(roomName).get(key).out.println(JSON);
 	    }
     }
     
