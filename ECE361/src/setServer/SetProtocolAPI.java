@@ -118,9 +118,10 @@ public class SetProtocolAPI {
 	        			
 	        			SetServer.sendLogin(curThread.getName(), sp);
 	        			sp.changeState(SetProtocol.LOBBY, curThread);
+	        			sp.theOutput = JSONinterface.genericToJson("condition", "good login");
 	        		}
 	        		else {
-	        			sp.theOutput = JSONinterface.genericToJson("null", "Bad login information");
+	        			sp.theOutput = JSONinterface.genericToJson("condition", "bad login");
 	        		}
         		}
         		catch (Exception e){
@@ -131,7 +132,7 @@ public class SetProtocolAPI {
 			}
 			
 			private void invalidUser(String theInput) {
-			    sp.theOutput = JSONinterface.genericToJson("null", "Bad login information");
+			    sp.theOutput = JSONinterface.genericToJson("condition", "bad login");
 			}
 			
 		}
@@ -163,7 +164,7 @@ public class SetProtocolAPI {
 				String roomName = JSONinterface.jsonGetData(theInput, String.class);
 				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
-	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() >= 3) {
+	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() >= 2) {
 	        	    
         			sp.theOutput = JSONinterface.genericToJson("null", "room was full");
         		}
