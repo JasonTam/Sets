@@ -54,8 +54,8 @@ public class SetMultiThread extends Thread {
 //	        	Whatever the client says is automatically piped into the SetProtocol.
 //	        	The protocol then handles the request and decides what to do with it,
 //	        	and what response to spit back out
+		        System.out.println("Processing Input as string: " + inputLine);
 		        outputLine = sp.processInput(inputLine, this);
-		        System.out.println("Processing Input as string:" + inputLine);
 		        out.println(outputLine);
 		        
 		        System.out.println("Sending output: " + outputLine);

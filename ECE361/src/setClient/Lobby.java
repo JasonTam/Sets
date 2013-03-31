@@ -15,6 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import setServer.JSONinterface;
+
 public class Lobby extends JPanel
 {
 	 private RoomsPanel lobbyRooms;
@@ -56,6 +58,8 @@ public class Lobby extends JPanel
 	        {
 	            public void actionPerformed(ActionEvent e)
 	            {
+	                
+	                InitGame.out.println("test");
 	                InitGame.changeCards("GAME");
 	            } 
 	        }

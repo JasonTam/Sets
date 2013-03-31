@@ -29,6 +29,11 @@ public class SetProtocol {
     	if (state == INITIALIZE) {
     		spAPI.genericAPI.initialization();
         } 
+    	else if (theInput.toLowerCase().equals("test")) {
+    	    state = GAME;
+    	    
+    	    theOutput = JSONinterface.genericToJson("test", "changed to gaem state");
+    	}
     	else if (theInput.toLowerCase().startsWith("chat")) {
     		spAPI.genericAPI.chat(theInput);
         }
