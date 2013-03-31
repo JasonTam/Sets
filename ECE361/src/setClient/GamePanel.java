@@ -73,12 +73,16 @@ public class GamePanel extends JPanel {
 
 		// Add submit
 		JLabel empty = new JLabel();
+		controls.add(startButton);
 		controls.add(submitButton);
 		controls.add(clearButton);
-		controls.add(startButton);
 		controls.add(leaveButton);
 		
-		clearButton.setSize(new Dimension(50, 80));
+		submitButton.setEnabled(false);
+		clearButton.setEnabled(false);
+		
+		
+	//	clearButton.setSize(new Dimension(50, 80));
 
 		// Process submit button
 		submitButton.addActionListener(new ActionListener() {
@@ -154,6 +158,8 @@ public class GamePanel extends JPanel {
 					});
 					gamePanel.revalidate();
 					((JButton)(e.getSource())).setEnabled(false);
+					submitButton.setEnabled(true);
+					clearButton.setEnabled(true);
 				}
 			}
 		});
