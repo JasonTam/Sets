@@ -219,6 +219,8 @@ public class InitGame {
 	            }
 	            else if (action.equals("startGame"))
 	            {
+	                GamePanel.curGame = JSONinterface.jsonGetData(inputLine, Game.class);
+	                gamePanel.setupGame();
 	                
 	            }
 	            else if (action.equals("gameState"))

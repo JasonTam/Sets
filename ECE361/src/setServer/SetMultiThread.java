@@ -11,6 +11,7 @@ public class SetMultiThread extends Thread {
 //    This variable contains what the client is sending the server
     public BufferedReader in;
     public GameRoom currentRoom = null;
+    public SetProtocol sp;
     
     
     public int default_name;
@@ -40,7 +41,7 @@ public class SetMultiThread extends Thread {
 	 
 	        String inputLine, outputLine;
 	        
-	        SetProtocol sp = new SetProtocol(this);
+	        sp = new SetProtocol(this);
 	       	System.out.println(this);
 	        outputLine = sp.processInput(JSONinterface.genericToJson("null", "Initializing Game"), this);
 	        System.out.println("Sending first output: " + outputLine);

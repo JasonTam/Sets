@@ -12,6 +12,7 @@ import com.google.gson.JsonArray;
 public class Rooms {
     
     public static ArrayList<Rooms> roomList = new ArrayList<Rooms>();
+    public Boolean gameStarted = false;
     
     private String roomName;
     

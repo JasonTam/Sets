@@ -40,15 +40,19 @@ public class GamePanel extends JPanel {
 	JButton startButton = new JButton("Start Game!");
 	JButton leaveButton = new JButton("Leave room!");
 	GridLayout boardLayout = new GridLayout(3, 5);
+	final JPanel gamePanel = new JPanel();
+	
 	public static String roomName;
 	public static Game curGame;
+	private Collection<Card> selectedCards;
+	private Map<String, JToggleButton> cardButtons;
+	
 
 	public GamePanel(String rName) {
 	    roomName = rName;
  
         setLayout(new BorderLayout());
         
-		final JPanel gamePanel = new JPanel();
 		
 		
 //		TODO The game init should probably be outside
@@ -66,8 +70,8 @@ public class GamePanel extends JPanel {
 				.getWidth() * 2.5) + maxGap,
 				(int) (buttonSize.getHeight() * 3.5) + maxGap * 2));
 
-		final Map<String, JToggleButton> cardButtons = new HashMap<String, JToggleButton>();
-		final Collection<Card> selectedCards = new LinkedList<Card>();
+		cardButtons = new HashMap<String, JToggleButton>();
+		selectedCards = new LinkedList<Card>();
 		// Add buttons to experiment with Grid Layout
 		
 
@@ -130,39 +134,12 @@ public class GamePanel extends JPanel {
 					}
 				});
 				
+				
 //		Process Start button
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			    InitGame.out.println(JSONinterface.genericToJson("startGame", roomName));
-			    Game game1 = new Game();
-				for (final Card c : game1.getField().getCards()) {
-					ImageIcon card_img = new ImageIcon
-		                    ("src/resources/images_cards/"+c.toString()+".gif");
-					final JToggleButton bC = new JToggleButton(card_img);
-		//			final JToggleButton bC = new JToggleButton(c.toString());
-					gamePanel.add(bC);
-					cardButtons.put(c.toString(), bC);
-					bC.addActionListener(new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							if (bC.isSelected()) {
-								if (selectedCards.size()>=3) {
-									Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
-									cardButtons.get(pop.toString()).setSelected(false);
-								}
-								System.out.println(c.toString() + " selected");
-								selectedCards.add(c);
-							} else {
-								System.out.println(c.toString() + " unselected");
-								selectedCards.remove(c);
-							}
-						}
-					});
-					gamePanel.revalidate();
-					((JButton)(e.getSource())).setEnabled(false);
-					submitButton.setEnabled(true);
-					clearButton.setEnabled(true);
-				}
+			    
 			}
 		});
 				
@@ -180,5 +157,38 @@ public class GamePanel extends JPanel {
 //		holder.add(arg0)
 		add(controls, BorderLayout.SOUTH);
 	}
+			public void setupGame()
+			{
+			    
+			for (final Card c : curGame.getField().getCards()) {
+				ImageIcon card_img = new ImageIcon
+	                    ("src/resources/images_cards/"+c.toString()+".gif");
+				final JToggleButton bC = new JToggleButton(card_img);
+	//			final JToggleButton bC = new JToggleButton(c.toString());
+				gamePanel.add(bC);
+				cardButtons.put(c.toString(), bC);
+				bC.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if (bC.isSelected()) {
+							if (selectedCards.size()>=3) {
+								Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
+								cardButtons.get(pop.toString()).setSelected(false);
+							}
+							System.out.println(c.toString() + " selected");
+							selectedCards.add(c);
+						} else {
+							System.out.println(c.toString() + " unselected");
+							selectedCards.remove(c);
+						}
+					}
+				});
+				gamePanel.revalidate();
+				
+				startButton.setEnabled(false);
+				submitButton.setEnabled(true);
+				clearButton.setEnabled(true);
+			}
+			}
 	
 }

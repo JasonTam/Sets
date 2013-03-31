@@ -191,6 +191,19 @@ public class SetProtocolAPI {
 //					leaveGame();
 				    SetServer.sendRoomLeave(curThread, sp);
 	        	}
+	        	else if (action.equals("startGame"))
+	        	{
+	        	    String roomName = JSONinterface.jsonGetData(theInput, String.class);
+	        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
+	        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(roomName, curThread);
+	        	    
+	        	    for (SetMultiThread thread : roomThreads)
+	        	    {
+	        	        thread.out.println(JSON);
+	        	        thread.sp.state = SetProtocol.GAME;
+	        	    }
+	        	    
+	        	}
 	        	else {
 	        		roomInvalid();
 	        	}

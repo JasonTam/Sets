@@ -5,23 +5,14 @@ import setGame.Game;
 
 public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	private String room_name;
+	private Game curGame; 
 	private ConcurrentHashMap<Integer, Boolean> cards;
 	
-	public void startGame(String roomName)
+	public Game startGame()
 	{
-	    Game game1 = new Game();
-	    game1.start();
-	    
-	    
-	    
-	    
-	    
-	    
-//	    Ill expect the set game to send me an INDEX for every card.
-//	    The default hash value will be false.
-//	    If someone sends me a correct set, the value will cahnge to TRUE.
-//	    When a cards hash value is true, anyone else that submits a set using that
-//	    card will not be able to use it.
+	    curGame = new Game();
+	    curGame.start();
+	    return curGame;
 	    
 	}
 	

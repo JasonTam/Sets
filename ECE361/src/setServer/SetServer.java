@@ -46,18 +46,26 @@ public class SetServer {
 	}
     
 //	This will be used to send a message to all specified threads.
-    public static void sendChat(String roomName, SetMultiThread thread, String message) {
-        String chatMessage = thread.getName() + ": " + message;
-        broadcastToRoomThreads(roomName, thread, JSONinterface.genericToJson("chat", chatMessage));
+    public static void sendChat(String roomName, SetMultiThread curThread, String message) {
+        String chatMessage = curThread.getName() + ": " + message;
+        ArrayList<SetMultiThread> roomThreads = getRoomThreads(roomName, curThread);
+        
+        for (SetMultiThread thread : roomThreads)
+        {
+            thread.out.println( JSONinterface.genericToJson("chat", chatMessage));
+        }
+        
     }
-    
-    public static void broadcastToRoomThreads (String roomName, SetMultiThread thread, String JSON)
+//  Gets all the threads in teh current room (excluding the thread that called this    
+    public static ArrayList<SetMultiThread> getRoomThreads (String roomName, SetMultiThread thread)
     {
+        ArrayList<SetMultiThread> roomThreads = new ArrayList();
 	    Iterator it = gameRooms.get(roomName).keySet().iterator();
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
-	        gameRooms.get(roomName).get(key).out.println(JSON);
+	        roomThreads.add(gameRooms.get(roomName).get(key));
 	    }
+	    return roomThreads;
     }
     
     
