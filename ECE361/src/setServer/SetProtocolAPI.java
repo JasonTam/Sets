@@ -49,11 +49,12 @@ public class SetProtocolAPI {
 			public void chat(String theInput) {
 				String message = theInput.toLowerCase().substring(5);
 				SetServer.sendChat(curThread.currentRoom.getName(), curThread, message);
-				sp.theOutput = JSONinterface.genericToJson("null", "Chat was sent");
+				sp.theOutput = JSONinterface.genericToJson("null", "broadcasting chat");
 			}
 			
 			public void showRooms() {
 			    SetServer.sendRooms(sp);
+			    sp.theOutput = JSONinterface.genericToJson("null", "broadcasting rooms");
 			}
 			
 			public void showUsers() {
