@@ -248,8 +248,10 @@ public class SetProtocolAPI {
 	        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
 	        		
 	        		if (isSet) {
-//	        			Notify all players in room of the field change
-	        			
+//	        			Notify ALL players in room of the field change
+//	        			TODO how to notify ALL threads? idk
+	        			sp.theOutput = JSONinterface.genericToJson("updateGame", 
+	        					curGameRoom.getCurGame());
 //	        			TODO
 //	        			this might trigger other events
 	        		}

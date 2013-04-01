@@ -173,6 +173,12 @@ public class GamePanel extends JPanel {
 			clearButton.setEnabled(true);
 		}
 		
+		public void updateGame()
+		{
+			gamePanel.removeAll();
+			setupGame();
+		}
+		
 		public void addElement(final Card c, final JToggleButton bC) {
 			gamePanel.add(bC);
 			cardButtons.put(c.toString(), bC);
