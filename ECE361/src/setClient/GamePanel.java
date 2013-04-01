@@ -157,40 +157,41 @@ public class GamePanel extends JPanel {
 //		holder.add(arg0)
 		add(controls, BorderLayout.SOUTH);
 	}
-			public void setupGame()
-			{
-				for (final Card c : curGame.getField().getCards()) {
-					ImageIcon card_img = new ImageIcon
-		                    ("src/resources/images_cards/"+c.toString()+".gif");
-					final JToggleButton bC = new JToggleButton(card_img);
-		//			final JToggleButton bC = new JToggleButton(c.toString());
-					addElement(c, bC);
-					gamePanel.revalidate();
-				}
-				startButton.setEnabled(false);
-				submitButton.setEnabled(true);
-				clearButton.setEnabled(true);
+	
+		public void setupGame()
+		{
+			for (final Card c : curGame.getField().getCards()) {
+				ImageIcon card_img = new ImageIcon
+	                    ("src/resources/images_cards/"+c.toString()+".gif");
+				final JToggleButton bC = new JToggleButton(card_img);
+	//			final JToggleButton bC = new JToggleButton(c.toString());
+				addElement(c, bC);
+				gamePanel.revalidate();
 			}
-			
-			public void addElement(final Card c, final JToggleButton bC) {
-				gamePanel.add(bC);
-				cardButtons.put(c.toString(), bC);
-				bC.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						if (bC.isSelected()) {
-							if (selectedCards.size()>=3) {
-								Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
-								cardButtons.get(pop.toString()).setSelected(false);
-							}
-							System.out.println(c.toString() + " selected");
-							selectedCards.add(c);
-						} else {
-							System.out.println(c.toString() + " unselected");
-							selectedCards.remove(c);
+			startButton.setEnabled(false);
+			submitButton.setEnabled(true);
+			clearButton.setEnabled(true);
+		}
+		
+		public void addElement(final Card c, final JToggleButton bC) {
+			gamePanel.add(bC);
+			cardButtons.put(c.toString(), bC);
+			bC.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (bC.isSelected()) {
+						if (selectedCards.size()>=3) {
+							Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
+							cardButtons.get(pop.toString()).setSelected(false);
 						}
+						System.out.println(c.toString() + " selected");
+						selectedCards.add(c);
+					} else {
+						System.out.println(c.toString() + " unselected");
+						selectedCards.remove(c);
 					}
-				});
-			}
+				}
+			});
+		}
 	
 }
