@@ -5,6 +5,12 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.io.*;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
 /**
  * This file will primarily be used to start the server and 
  * keep track of the threads that are connected.
@@ -60,10 +66,10 @@ public class SetServer {
     public static ArrayList<SetMultiThread> getRoomThreads (String roomName, SetMultiThread thread)
     {
         ArrayList<SetMultiThread> roomThreads = new ArrayList();
-	    Iterator it = gameRooms.get(roomName).keySet().iterator();
+	    Iterator it = gameRooms.get(roomName).threadsInRoom.keySet().iterator();
 	    while (it.hasNext()) {	
 	        String key = (String) it.next();
-	        roomThreads.add(gameRooms.get(roomName).get(key));
+	        roomThreads.add(gameRooms.get(roomName).threadsInRoom.get(key));
 	    }
 	    return roomThreads;
     }
@@ -139,8 +145,11 @@ public class SetServer {
     public static void sendRooms(SetProtocol sp)
     {
         
+        sp.theOutput = JSONinterface.genericToJson("rooms", gameRooms);
+        broadcastToAllThreads(sp);
         
         
+		/*
         System.out.println(gameRooms);
         
         
@@ -151,8 +160,39 @@ public class SetServer {
 	        allRooms.add(roomName);
 	    }
 	    
-        sp.theOutput = JSONinterface.genericToJson("rooms", allRooms);
-        broadcastToAllThreads(sp);
+	    
+	    
+	    String test = JSONinterface.genericToJson("rooms", gameRooms);
+	    
+	    ConcurrentHashMap<String, GameRoom> test2 = JSONinterface.jsonGetData(test, new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
+	    System.out.println(test2.get("lobby").timeCreated);
+	    
+	    
+		Gson gson = new GsonBuilder().serializeNulls().create();
+		String json = JSONinterface.genericToJson("rooms", gson.toJson(gameRooms, ConcurrentHashMap.class));
+		
+		System.out.println(gson.toJson(gameRooms, ConcurrentHashMap.class));
+		
+	    System.out.println(json);
+		
+	    ConcurrentHashMap<String, GameRoom> data = JSONinterface.jsonGetData(json, new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
+	    System.out.println(data.get("lobby").getName());
+	    System.out.println(data.get("lobby").getName());
+		
+		
+		
+		JsonParser parser = new JsonParser();
+	    JsonArray array = parser.parse(json).getAsJsonArray();
+	    Gson gson2 = new Gson();
+	    ConcurrentHashMap<String, GameRoom> data = gson2.fromJson(array.get(0), new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
+	    
+		
+	    System.out.println(data.get("lobby").getName());
+		
+	    Gson gson2 = new Gson();
+	    ConcurrentHashMap<String, GameRoom> data = gson2.fromJson(parser.parse(json).getAsJsonObject(), new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
+		*/
+	    
         
         
         /*

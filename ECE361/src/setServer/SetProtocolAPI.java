@@ -164,7 +164,7 @@ public class SetProtocolAPI {
 				String roomName = JSONinterface.jsonGetData(theInput, String.class);
 				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
-	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).size() >= 2) {
+	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).threadsInRoom.size() >= 2) {
 	        	    
         			sp.theOutput = JSONinterface.genericToJson("null", "room was full");
         		}

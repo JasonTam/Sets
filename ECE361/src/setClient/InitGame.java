@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,8 +31,14 @@ import javax.swing.JToggleButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
 import setGame.Card;
 import setGame.Game;
+import setServer.GameRoom;
 import setServer.JSONinterface;
 
 @SuppressWarnings("serial")
@@ -189,8 +196,12 @@ public class InitGame {
 //	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
 	            else if (action.equals("rooms"))
 	            {
-//	                Rooms.getRoomData(inputLine);
-	                Rooms.createRoomArray(inputLine);
+				    Lobby.roomHash = JSONinterface.jsonGetData(inputLine, new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
+				    
+	                System.out.println(Lobby.roomHash.get("lobby").timeCreated);
+	                
+	                Lobby.roomArray = GameRoom.roomHashtoArray(Lobby.roomHash);
+	                
 	                lobbyPanel.updateLobbyPanel();
 	            }
 	            

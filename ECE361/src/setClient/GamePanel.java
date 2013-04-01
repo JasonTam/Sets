@@ -139,6 +139,7 @@ public class GamePanel extends JPanel {
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			    InitGame.out.println(JSONinterface.genericToJson("startGame", roomName));
+			    InitGame.out.println(JSONinterface.genericToJson("rooms", "updating rooms"));
 			    
 			}
 		});

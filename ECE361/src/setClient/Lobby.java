@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.BorderFactory;
@@ -15,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import setServer.GameRoom;
 import setServer.JSONinterface;
 
 public class Lobby extends JPanel
@@ -27,7 +29,9 @@ public class Lobby extends JPanel
      
      public ChatPanel chat;
 	 
-	 private ConcurrentHashMap<String, Rooms> roomHash = new ConcurrentHashMap<String, Rooms>();
+	 public static ConcurrentHashMap<String, GameRoom> roomHash = new ConcurrentHashMap<String, GameRoom>();
+	 
+     public static ArrayList<GameRoom> roomArray = new ArrayList<GameRoom>();
 	 
     public Lobby()
     {
@@ -133,18 +137,23 @@ public class Lobby extends JPanel
         {
             removeRooms();
             
-            if (Rooms.roomList.isEmpty())
+            if (roomArray.isEmpty())
             {
                 return;
             }
                     
             int i = 0;
             
-            for (Rooms room : Rooms.roomList) 
+            for (GameRoom room : roomArray) 
             {
-                roomButtons[i] = new JButton(room.toString());
-                roomButtons[i].setName(room.toString());
+                roomButtons[i] = new JButton(room.getName());
+                roomButtons[i].setName(room.getName());
                 add(roomButtons[i]);
+                
+                if (room.gameStarted)
+                {
+                    roomButtons[i].setEnabled(false);
+                }
                 
 	            roomButtons[i].addActionListener
 		        (
@@ -170,7 +179,7 @@ public class Lobby extends JPanel
         
         private void updateRoomListPanel()
         {
-            numRooms  = Rooms.roomList.size();
+            numRooms  = roomArray.size();
             height = (int) Math.ceil(numRooms / (width+ 0.0));
             
             
