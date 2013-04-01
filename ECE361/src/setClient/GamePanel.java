@@ -159,12 +159,20 @@ public class GamePanel extends JPanel {
 	}
 			public void setupGame()
 			{
-			    
-			for (final Card c : curGame.getField().getCards()) {
-				ImageIcon card_img = new ImageIcon
-	                    ("src/resources/images_cards/"+c.toString()+".gif");
-				final JToggleButton bC = new JToggleButton(card_img);
-	//			final JToggleButton bC = new JToggleButton(c.toString());
+				for (final Card c : curGame.getField().getCards()) {
+					ImageIcon card_img = new ImageIcon
+		                    ("src/resources/images_cards/"+c.toString()+".gif");
+					final JToggleButton bC = new JToggleButton(card_img);
+		//			final JToggleButton bC = new JToggleButton(c.toString());
+					addElement(c, bC);
+					gamePanel.revalidate();
+				}
+				startButton.setEnabled(false);
+				submitButton.setEnabled(true);
+				clearButton.setEnabled(true);
+			}
+			
+			public void addElement(final Card c, final JToggleButton bC) {
 				gamePanel.add(bC);
 				cardButtons.put(c.toString(), bC);
 				bC.addActionListener(new ActionListener() {
@@ -183,12 +191,6 @@ public class GamePanel extends JPanel {
 						}
 					}
 				});
-				gamePanel.revalidate();
-				
-				startButton.setEnabled(false);
-				submitButton.setEnabled(true);
-				clearButton.setEnabled(true);
-			}
 			}
 	
 }
