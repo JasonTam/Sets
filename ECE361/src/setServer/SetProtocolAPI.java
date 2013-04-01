@@ -225,35 +225,29 @@ public class SetProtocolAPI {
 
 	        	if (action.equals("submit")) {
 	        		System.out.println("Recieved a submit action");
+	        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread.currentRoom.getName(), curThread);
 	        		
 	        		java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
-	        		
 	        		Collection<Card> selectedCards =
 	        				JSONinterface.jsonGetData(theInput, collectionType);
-	        		
-//	        		TODO
-//	        		submit set to the game that the user is in
-//	        		should be in the current thread's game?
-	        		
-//	        		I hope we don't have to actually communicate through
-//	        		the user's room name
-//	        		Hard coded empty name room for now
-	        		String curRoomName = "";
-	        		GameRoom curGameRoom = SetServer.gameRooms.get(curRoomName);
-	        		System.out.println(curGameRoom);
+	        		GameRoom curGameRoom = SetServer.gameRooms.get(curThread.currentRoom.getName());
 	        		boolean isSet = curGameRoom.getCurGame().submitSet(selectedCards);
 	        		
 //	        		boolean isSet = GameLogic.isSet(selectedCards);
 	        		System.out.println("SERVER SAYS SET IS : " + isSet);
+	        		
+	        		
 	        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
 	        		
 	        		if (isSet) {
-//	        			Notify ALL players in room of the field change
-//	        			TODO how to notify ALL threads? idk
+	        		    // This is how you send to all threads in a room
+		        		for (SetMultiThread thread : roomThreads)
+		        		{
+		        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
+		        		    
+		        		}
 //		            	TODO
 //		            	May want to only send deltas rather than entire game
-	        			sp.theOutput = JSONinterface.genericToJson("updateGame", 
-	        					curGameRoom.getCurGame());
 //	        			TODO
 //	        			this might trigger other events
 	        		}

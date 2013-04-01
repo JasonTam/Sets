@@ -20,7 +20,7 @@ public class GameRoom implements Comparable<GameRoom>
 	public boolean gameStarted = false;
 	public Date timeCreated;
 	
-    private ConcurrentHashMap<String, Date> usersInRoom = new ConcurrentHashMap<String, Date>();
+    public ConcurrentHashMap<String, Date> usersInRoom = new ConcurrentHashMap<String, Date>();
 	
     // Starts a game in the currnt room.  Cards are dealt to all users in the room
 	public Game startGame()
