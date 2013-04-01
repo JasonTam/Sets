@@ -250,6 +250,8 @@ public class SetProtocolAPI {
 	        		if (isSet) {
 //	        			Notify ALL players in room of the field change
 //	        			TODO how to notify ALL threads? idk
+//		            	TODO
+//		            	May want to only send deltas rather than entire game
 	        			sp.theOutput = JSONinterface.genericToJson("updateGame", 
 	        					curGameRoom.getCurGame());
 //	        			TODO

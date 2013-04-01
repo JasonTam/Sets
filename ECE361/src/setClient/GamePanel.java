@@ -175,6 +175,8 @@ public class GamePanel extends JPanel {
 		
 		public void updateGame()
 		{
+//        	TODO
+//        	May want to only send deltas rather than entire game
 			gamePanel.removeAll();
 			setupGame();
 		}
