@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.BorderFactory;
@@ -32,6 +33,10 @@ public class Lobby extends JPanel
 	 public static ConcurrentHashMap<String, GameRoom> roomHash = new ConcurrentHashMap<String, GameRoom>();
 	 
      public static ArrayList<GameRoom> roomArray = new ArrayList<GameRoom>();
+     
+     public static GameRoom curRoom = roomHash.get("lobby");
+     
+     public static String userName = null;
 	 
     public Lobby()
     {

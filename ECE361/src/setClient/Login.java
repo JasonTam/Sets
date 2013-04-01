@@ -87,6 +87,8 @@ public class Login extends JFrame  {
 			    	String username = "Andrew";
 			    	String password = "andrew";
 			    	
+			    	jtfInput.setText(username);
+			    	
 			    	ArrayList<String> data =  new ArrayList<String>();
 			    	data.add(username);
 			    	data.add(password);

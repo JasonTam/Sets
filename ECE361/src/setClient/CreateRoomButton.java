@@ -25,7 +25,7 @@ public class CreateRoomButton extends JPanel {
 	        {
 	            public void actionPerformed(ActionEvent e)
 	            {
-	                if (roomName.getText() != "")
+	                if (!roomName.getText().equals(""))
 	                {
 	                    
 	                    InitGame.gamePanel = new GamePanel(roomName.getText());

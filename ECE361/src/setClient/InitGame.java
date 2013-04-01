@@ -62,7 +62,6 @@ public class InitGame {
     public static ChatPanel chatPanel = new ChatPanel();
     public static UserJList userJList = new UserJList();
     
-    public static String userName = "Andrew";
     
     private static JFrame frame;
     private static Login login;
@@ -198,11 +197,7 @@ public class InitGame {
 	            else if (action.equals("rooms"))
 	            {
 				    Lobby.roomHash = JSONinterface.jsonGetData(inputLine, new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
-				    
-	                System.out.println(Lobby.roomHash.get("lobby").timeCreated);
-	                
 	                Lobby.roomArray = GameRoom.roomHashtoArray(Lobby.roomHash);
-	                
 	                lobbyPanel.updateLobbyPanel();
 	            }
 	            
@@ -261,6 +256,7 @@ public class InitGame {
 				    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
 				    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
 						login.setVisible(false);
+						Lobby.userName = login.jtfInput.getText();
 						InitGame.showGame();
 	                }
 	            }
