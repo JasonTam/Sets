@@ -2,6 +2,9 @@ package setGame;
 
 import java.util.ArrayList;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * Card.java 
  * Purpose: Represents a Set card and attributes.
@@ -21,7 +24,11 @@ public class Card {
 	 * The attribute values will be stored in an array list. An example of the
 	 * contents of a card's attribute list: [0][1][2][1]
 	 */
-	ArrayList<Integer> attributes = new ArrayList<Integer>();
+	private final ArrayList<Integer> attributes = new ArrayList<Integer>();
+
+	public ArrayList<Integer> getAttributes() {
+		return attributes;
+	}
 
 	/**
 	 * Card constructor by radix decomposition. 
@@ -62,10 +69,42 @@ public class Card {
 	@Override
 	public String toString() {
 		String ret = "";
-		for (Integer i : attributes) {
+		for (int i : attributes) {
 			ret = ret + i;
 		}
 		return ret;
 	}
-
+	
+//	Not used
+	public int uniqueID(Card c) {
+		int id = 0;
+		for (int att : attributes) {
+			id = id*nVals + att;
+		}
+		return id;
+	}
+	
+//	Needed to overload equals for collection contains
+	public int hashCode() {
+        return new HashCodeBuilder(17, 31). // two randomly chosen prime numbers
+            // if deriving: appendSuper(super.hashCode()).
+            append(attributes).
+            toHashCode();
+    }
+	
+	public boolean equals(Object c) {
+		if (c == null)
+            return false;
+        if (c == this)
+            return true;
+        if (c.getClass() != getClass())
+            return false;
+        
+        Card rhs = (Card) c;
+        return new EqualsBuilder().
+            // if deriving: appendSuper(super.equals(obj)).
+            append(attributes, rhs.attributes).
+            isEquals();
+    }
+	
 }

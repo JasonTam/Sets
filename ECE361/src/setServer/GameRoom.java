@@ -6,6 +6,7 @@ import setGame.Game;
 public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	private String room_name;
 	private Game curGame; 
+
 	private ConcurrentHashMap<Integer, Boolean> cards;
 	
 	public Game startGame()
@@ -16,6 +17,9 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 	    
 	}
 	
+	public Game getCurGame() {
+		return curGame;
+	}
 	
 //	Create and join a game room
 	public GameRoom (String name, SetMultiThread thread) {
@@ -52,10 +56,8 @@ public class GameRoom extends ConcurrentHashMap<String, SetMultiThread> {
 		return room_name;
 	}
 	
-/*	
 	public String toString() {
 	    return getName();
 	}
-	*/
 	
 }

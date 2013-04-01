@@ -43,9 +43,9 @@ public class GameLogic {
 	 */
 	private static boolean allDiff(int i, Card a, Card b, Card c) {
 		if (a != null && b != null && c != null
-				&& a.attributes.get(i) != b.attributes.get(i)
-				&& a.attributes.get(i) != c.attributes.get(i)
-				&& b.attributes.get(i) != c.attributes.get(i)) {
+				&& a.getAttributes().get(i) != b.getAttributes().get(i)
+				&& a.getAttributes().get(i) != c.getAttributes().get(i)
+				&& b.getAttributes().get(i) != c.getAttributes().get(i)) {
 			return true;
 		} else {
 			return false;
@@ -54,8 +54,8 @@ public class GameLogic {
 
 	private static boolean allSame(int i, Card a, Card b, Card c) {
 		if (a != null && b != null && c != null
-				&& a.attributes.get(i) == b.attributes.get(i)
-				&& a.attributes.get(i) == c.attributes.get(i)) {
+				&& a.getAttributes().get(i) == b.getAttributes().get(i)
+				&& a.getAttributes().get(i) == c.getAttributes().get(i)) {
 			return true;
 		} else {
 			return false;
