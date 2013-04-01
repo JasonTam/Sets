@@ -184,6 +184,7 @@ public class InitGame {
         
         try
         {
+//        	TODO Consider Case switch if everything will be action.equals(.)
 	        while ((inputLine = in.readLine()) != null)
 	        {
 	            System.out.println("Recieved line: " + inputLine);
@@ -233,6 +234,15 @@ public class InitGame {
 	            {
 	                GamePanel.curGame = JSONinterface.jsonGetData(inputLine, Game.class);
 	                gamePanel.setupGame();
+	                
+	            }
+	            else if (action.equals("updateGame"))
+	            {
+//	            	TODO
+//	            	May want to only send deltas rather than entire game
+//	            	This is temporary?
+	                GamePanel.curGame = JSONinterface.jsonGetData(inputLine, Game.class);
+	                gamePanel.updateGame();
 	                
 	            }
 	            else if (action.equals("gameState"))

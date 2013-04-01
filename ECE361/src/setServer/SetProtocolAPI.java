@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import setGame.Card;
+import setGame.Game;
 import setGame.GameLogic;
 
 import DBI.DBConnect;
@@ -230,14 +231,32 @@ public class SetProtocolAPI {
 	        		Collection<Card> selectedCards =
 	        				JSONinterface.jsonGetData(theInput, collectionType);
 	        		
-//	        		SetServer.gameRooms.get(*curThread???).
-//	        		or something
-//	        		((The game thread that the user is in)).submitSet(selectedCards);
-//	        		Below will not be used
-	        		boolean isSet = GameLogic.isSet(selectedCards);
+//	        		TODO
+//	        		submit set to the game that the user is in
+//	        		should be in the current thread's game?
+	        		
+//	        		I hope we don't have to actually communicate through
+//	        		the user's room name
+//	        		Hard coded empty name room for now
+	        		String curRoomName = "";
+	        		GameRoom curGameRoom = SetServer.gameRooms.get(curRoomName);
+	        		System.out.println(curGameRoom);
+	        		boolean isSet = curGameRoom.getCurGame().submitSet(selectedCards);
+	        		
+//	        		boolean isSet = GameLogic.isSet(selectedCards);
 	        		System.out.println("SERVER SAYS SET IS : " + isSet);
 	        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
 	        		
+	        		if (isSet) {
+//	        			Notify ALL players in room of the field change
+//	        			TODO how to notify ALL threads? idk
+//		            	TODO
+//		            	May want to only send deltas rather than entire game
+	        			sp.theOutput = JSONinterface.genericToJson("updateGame", 
+	        					curGameRoom.getCurGame());
+//	        			TODO
+//	        			this might trigger other events
+	        		}
 	        		
 	        	}
 	        	else {

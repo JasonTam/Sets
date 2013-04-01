@@ -32,6 +32,9 @@ public class GameRoom implements Comparable<GameRoom>
 	    
 	}
 	
+	public Game getCurGame() {
+		return curGame;
+	}
 	
 //	Create and join a game room
 	public GameRoom (String name, SetMultiThread thread) {
@@ -109,10 +112,8 @@ public class GameRoom implements Comparable<GameRoom>
         return lastCmp;
     }
 	
-/*	
 	public String toString() {
 	    return getName();
 	}
-	*/
 	
 }

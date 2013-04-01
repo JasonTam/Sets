@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.apache.commons.collections.CollectionUtils;
+
 public class Game {
 	private Deck deck;
 	private Field field;
@@ -100,10 +102,15 @@ public class Game {
 	}
 	
 	public boolean submitSet(Collection<Card> cards) {
-		if (cards.size()!=3 ||
+
+//		this is just here to help me choose sets to troubleshoot
+	this.field.printSets();
+//	TODO ************ remove above when done
+	
+		if (cards.size()==3 &&
 				this.field.getCards().containsAll(cards)) {
 			if (GameLogic.isSet(cards)) {
-//				System.out.println("SET FOUND!");
+				System.out.println("SET FOUND!");
 				dealer.removeCardsFromField(cards);
 				dealer.deal();
 				return true;
