@@ -40,10 +40,9 @@ public class SetProtocol {
     		theOutput = JSONinterface.genericToJson("null", "sending blank line");
         } 
     	else if (action.equals("test")) {
-    	    state = GAME;
     	    System.out.println(SetServer.allThreads);
     	    System.out.println(SetServer.gameRooms);
-    	    theOutput = JSONinterface.genericToJson("test", "changed to gaem state");
+    	    theOutput = JSONinterface.genericToJson("test", "Check Server console for hashes");
     	}
     	else if (action.equals("chat")) {
     		spAPI.genericAPI.chat(theInput);

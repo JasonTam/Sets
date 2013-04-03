@@ -113,7 +113,6 @@ public class SetProtocolAPI {
 	        		if (dbc.validateUser(username, password)) {
 	        			curThread.setName(username);
 	        			
-	        			SetServer.allThreads.remove(Integer.toString(curThread.default_name));
 	        			SetServer.allThreads.put(curThread.getName(), curThread);
 	        			SetServer.lobby.join(curThread);
 	        			
@@ -167,7 +166,7 @@ public class SetProtocolAPI {
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
 	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).threadsInRoom.size() >= 2) {
 	        	    
-        			sp.theOutput = JSONinterface.genericToJson("null", "room was full");
+        			sp.theOutput = JSONinterface.genericToJson("joinError", "fullroom");
         		}
 //	        	If the room doesn't exist, create it and join the room
 	        	else if (!SetServer.gameRooms.containsKey(roomName)) {

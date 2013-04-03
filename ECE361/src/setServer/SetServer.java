@@ -37,16 +37,8 @@ public class SetServer {
             System.exit(-1);
         }
         while (listening) {
-//        	When a new thread attempts to connect to the server,
-//        	add it to the global list of threads.
-        	allThreads.put(Integer.toString(i), new SetMultiThread(serverSocket.accept(), i));
-        	
-//        	Once the thread has been accepted, initiate the connection
-        	allThreads.get(Integer.toString(i)).start();
-        	
-//        	Just using this to keep track of connected threads.
-        	System.out.println(i + 1);
-        	++i;
+        	// Just sit and wait for new connections
+        	new SetMultiThread(serverSocket.accept()).start();
         }
         serverSocket.close();
 	}
