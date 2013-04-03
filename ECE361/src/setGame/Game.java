@@ -113,6 +113,7 @@ public class Game {
 				System.out.println("SET FOUND!");
 				dealer.removeCardsFromField(cards);
 				dealer.deal();
+				validateField();
 				return true;
 			} else {
 				System.out.println("INVALID SET!");
@@ -125,7 +126,7 @@ public class Game {
 	
 	private void validateField() {
 		// Deal extra cards if no set on field
-		if (!field.existSet()) {
+		while (!field.existSet()) {
 			dealer.dealExtra(3);
 		}
 	}
