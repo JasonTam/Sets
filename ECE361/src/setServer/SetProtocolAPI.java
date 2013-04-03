@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+
+
+
 import setGame.Card;
 import setGame.Game;
 import setGame.GameLogic;
@@ -51,7 +54,7 @@ public class SetProtocolAPI {
 			
 			public void chat(String theInput) {
 				String message = JSONinterface.jsonGetData(theInput, String.class);
-				SetServer.sendChat(curThread.currentRoom.getName(), curThread, message);
+				SetServer.sendChat(curThread.currentRoom.getName(), curThread, message,1);
 				sp.theOutput = JSONinterface.genericToJson("null", "broadcasting chat");
 			}
 			
@@ -190,8 +193,15 @@ public class SetProtocolAPI {
 
 	        	if (action.equals("leave")) {
 	        		System.out.println(curThread.currentRoom);
+	        		
+	        		
 //					leaveGame();
-				    SetServer.sendRoomLeave(curThread, sp);
+		     
+				   SetServer.sendRoomLeave(curThread, sp);
+				    
+				    
+				    
+				    
 	        	}
 	        	else if (action.equals("startGame"))
 	        	{
@@ -222,7 +232,7 @@ public class SetProtocolAPI {
 			public void gameStart(String theInput) {
 				
 				String action = JSONinterface.jsonGetAction(theInput);
-
+				
 	        	if (action.equals("submit")) {
 	        		System.out.println("Recieved a submit action");
 	        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread.currentRoom.getName(), curThread);
@@ -252,6 +262,26 @@ public class SetProtocolAPI {
 //	        			this might trigger other events
 	        		}
 	        		
+	        	}
+	        	else if(action.equals("leave")){
+	        		System.out.println("Recieved a LEAVE action");
+	        		
+	        		String roomName = JSONinterface.jsonGetData(theInput, String.class);
+	        		System.out.println(roomName);
+//		        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
+		        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(roomName, curThread);
+		        	    //ArrayList<SetMultiThread> usersThreads= SetServer.ge
+		        	    //int si=roomThreads.size();
+		        	String message = "has left the room";
+		        	    for (SetMultiThread thread : roomThreads)
+		        	    {
+		        	    	if(!thread.equals(curThread))
+		        	    	{
+		        	    	SetServer.sendChat(roomName, curThread, message,2);
+		        	    	}
+		        	    }
+	        		    
+		        	    SetServer.sendRoomLeave(curThread, sp);
 	        	}
 	        	else {
 	        		gameInvalid();
