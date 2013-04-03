@@ -37,23 +37,23 @@ public class SetServer {
             System.exit(-1);
         }
         while (listening) {
-//        	When a new thread attempts to connect to the server,
-//        	add it to the global list of threads.
-        	allThreads.put(Integer.toString(i), new SetMultiThread(serverSocket.accept(), i));
-        	
-//        	Once the thread has been accepted, initiate the connection
-        	allThreads.get(Integer.toString(i)).start();
-        	
-//        	Just using this to keep track of connected threads.
-        	System.out.println(i + 1);
-        	++i;
+        	// Just sit and wait for new connections
+        	new SetMultiThread(serverSocket.accept()).start();
         }
         serverSocket.close();
 	}
     
-//	This will be used to send a message to all specified threads.
-    public static void sendChat(String roomName, SetMultiThread curThread, String message) {
-        String chatMessage = curThread.getName() + ": " + message;
+//	This will be used to send a message to all specified threads. 1->chat, 2->leave
+    public static void sendChat(String roomName, SetMultiThread curThread, String message,int type) {
+        String chatMessage = null;
+    	if(type==1)
+        {
+        	chatMessage = curThread.getName() + ": " + message;
+        }
+        else if(type==2)
+        {
+        	chatMessage = curThread.getName() + " " + message;	
+        }
         ArrayList<SetMultiThread> roomThreads = getRoomThreads(roomName, curThread);
         
         for (SetMultiThread thread : roomThreads)
@@ -62,6 +62,7 @@ public class SetServer {
         }
         
     }
+
 //  Gets all the threads in teh current room (excluding the thread that called this    
     public static ArrayList<SetMultiThread> getRoomThreads (String roomName, SetMultiThread thread)
     {
