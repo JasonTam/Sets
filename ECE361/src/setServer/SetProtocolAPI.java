@@ -239,12 +239,14 @@ public class SetProtocolAPI {
 	        		
 	        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
 	        		
+	        		curGameRoom.getCurGame().print();
+	        		System.out.println("IS GAME OVER?");
+	        		System.out.println(curGameRoom.getCurGame().isGameOver());
 	        		if (isSet) {
 	        		    // This is how you send to all threads in a room
 		        		for (SetMultiThread thread : roomThreads)
 		        		{
 		        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
-		        		    
 		        		}
 //		            	TODO
 //		            	May want to only send deltas rather than entire game
