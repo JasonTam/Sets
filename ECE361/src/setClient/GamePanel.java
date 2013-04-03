@@ -162,6 +162,11 @@ public class GamePanel extends JPanel {
 		public void setupGame()
 		{
 			for (final Card c : curGame.getField().getCards()) {
+				if (c == null)
+				{
+					continue;
+				}
+				System.out.println(curGame.getField().getCards());
 				ImageIcon card_img = new ImageIcon
 	                    ("src/resources/images_cards/"+c.toString()+".gif");
 				final JToggleButton bC = new JToggleButton(card_img);

@@ -14,18 +14,14 @@ public class SetMultiThread extends Thread {
     public SetProtocol sp;
     
     
-    public int default_name;
-    
     public static DBConnect dbc = new DBConnect();
    
  
 //    	This constructor accepts the socket as well as an integer, 
 //    	which acts as its default name
-    public SetMultiThread(Socket s, int n) {
+    public SetMultiThread(Socket s) {
 	    super("SetMultiThread");
 	    socket = s;
-	    setName(Integer.toString(default_name));
-	    default_name = n;
     }
     
     public void run() {
@@ -72,13 +68,6 @@ public class SetMultiThread extends Thread {
 	        if (currentRoom != null)
 	        {
 	            this.currentRoom.leave(this);
-	        }
-	        
-	        if (SetServer.allThreads.remove(getName()) == null)
-	        {
-	            // If someone quits during the login process, this removes
-	            // the thread from the hash
-	            SetServer.allThreads.remove(Integer.toString(default_name));
 	        }
 	        out.close();
 	        in.close();

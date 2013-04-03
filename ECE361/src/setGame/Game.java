@@ -114,6 +114,7 @@ public class Game {
 				dealer.removeCardsFromField(cards);
 				dealer.deal();
 				validateField();
+				gameover = isGameOver();
 				return true;
 			} else {
 				System.out.println("INVALID SET!");
