@@ -69,6 +69,7 @@ public class SetMultiThread extends Thread {
 	        {
 	            this.currentRoom.leave(this);
 	        }
+	        SetServer.allThreads.remove(this.getName());
 	        out.close();
 	        in.close();
 	        socket.close();
