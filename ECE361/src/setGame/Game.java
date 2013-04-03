@@ -113,8 +113,11 @@ public class Game {
 				System.out.println("SET FOUND!");
 				dealer.removeCardsFromField(cards);
 				dealer.deal();
-				validateField();
 				gameover = isGameOver();
+				if (gameover)
+					System.out.println(">>Game class says gameover");
+				else
+					validateField();
 				return true;
 			} else {
 				System.out.println("INVALID SET!");
