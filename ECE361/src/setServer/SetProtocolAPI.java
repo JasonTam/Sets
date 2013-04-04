@@ -342,9 +342,10 @@ public class SetProtocolAPI {
 			
             private void leave(String theInput) 
             {
+                // SO when you leave a game abruptly, you just take a loss and lose all stats for that game.
+    		    curThread.currentUser.resetScore();
         	    curThread.currentUser.forfeit = true;
         	    curThread.currentUser.games_lost = 1;
-    		    curThread.currentUser.updateScore();
     		    
     		    try
     		    {
