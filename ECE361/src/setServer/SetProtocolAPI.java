@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 
@@ -28,6 +29,8 @@ public class SetProtocolAPI {
 		public DBConnect dbc;
 		
 		public SetProtocolAPI outer = SetProtocolAPI.this;
+		
+		public int TESTINGONLY = 0;
 		
 		public SetProtocolAPI(SetMultiThread spThread, SetProtocol sp) {
 			this.curThread = spThread;
@@ -179,7 +182,7 @@ public class SetProtocolAPI {
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
 	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).threadsInRoom.size() >= 2) {
 	        	    
-        			sp.theOutput = JSONinterface.genericToJson("joinError", "fullroom");
+        			sp.theOutput = JSONinterface.genericToJson("null", "Room is full");
         		}
 //	        	If the room doesn't exist, create it and join the room
 	        	else if (!SetServer.gameRooms.containsKey(roomName)) {
@@ -197,6 +200,7 @@ public class SetProtocolAPI {
 	        	    curThread.currentUser.correctSets = 0;
 	        		sp.changeState(SetProtocol.ROOM, curThread);
 	        		SetServer.gameRooms.get(roomName).join(curThread);
+	        	    SetServer.sendRooms(sp);
 	        		SetServer.sendRoomUsers();
 	        	}
 			}
@@ -209,7 +213,6 @@ public class SetProtocolAPI {
 				String action = JSONinterface.jsonGetAction(theInput);
 
 	        	if (action.equals("leave")) {
-	        	    curThread.currentUser.totalScore = curThread.currentUser.cumulativeScore;
 //				    SetServer.sendRoomLeave(curThread, sp);
 	        	    SetServer.lobby.join(curThread);
 	        	    sp.changeState(SetProtocol.LOBBY, curThread);
@@ -262,6 +265,7 @@ public class SetProtocolAPI {
 			
 			private void submit(String theInput)
 			{
+			    TESTINGONLY++;
         	    curThread.currentUser.totalSets++;
         	    curThread.currentUser.updateScore();
         		System.out.println("Recieved a submit action");
@@ -282,20 +286,44 @@ public class SetProtocolAPI {
         		curGameRoom.getCurGame().print();
         		System.out.println("IS GAME OVER?");
         		System.out.println(curGameRoom.getCurGame().isGameOver());
-        		
+/*        		
         		if(curGameRoom.getCurGame().isGameOver())
+        		*/
+        		if(TESTINGONLY > 5)
         		{
-        		    System.out.println(curThread.currentUser);
-        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-        		}
         		
-        		if (isSet) {
+	        		
+	        		for (SetMultiThread thread : roomThreads)
+	        		{
+	        	        thread.currentUser.updateScore();
+	        		    if (thread.currentUser.getName().equals(curThread.currentRoom.getWinner().getName()))
+	        		    {
+	        		        thread.currentUser.games_won = 1;
+	        		    }
+	        		    else
+	        		    {
+	        		        thread.currentUser.games_lost = 1;
+	        		    }
+	        		    
+		    		    try
+		    		    {
+		    		        dbc.updateScore(curThread.currentUser.createScoreArray());
+		    		    }
+		    		    catch (Exception e)
+		    		    {
+		    		        e.printStackTrace();
+		    		    }
+		    		    thread.out.println(JSONinterface.genericToJson("gameResults", User.getUsersInRoomArray(curGameRoom)));
+		        	    SetServer.lobby.join(thread);
+		        	    
+	        		    thread.sp.changeState(SetProtocol.LOBBY, thread);
+	        		    
+	        		    thread.currentUser.resetScore();
+	        		}
+	        		SetServer.sendRooms(sp);
+	    		    
+        		}
+        		else if (isSet) {
         		    curThread.currentUser.correctSets++;
         		    curThread.currentUser.updateScore();
         		    // This is how you send to all threads in a room
@@ -308,7 +336,7 @@ public class SetProtocolAPI {
 //	        			TODO
 //	        			this might trigger other events
         		}
-	        	    SetServer.sendRoomUsers();
+        	    SetServer.sendRoomUsers();
 	        		
 			}
 			
@@ -320,7 +348,7 @@ public class SetProtocolAPI {
     		    
     		    try
     		    {
-    		        dbc.updateScore(curThread.currentUser.createScoreArray(), curThread.currentUser.getName());
+    		        dbc.updateScore(curThread.currentUser.createScoreArray());
     		    }
     		    catch (Exception e)
     		    {
@@ -334,9 +362,8 @@ public class SetProtocolAPI {
         	    //TODO UPDATE DATABASE RIGHT HERE
         	    //TODO UPDATE DATABASE RIGHT HERE
         		    
-    		    //AFTER THE DATABASE GETS UPDATED...
-        	    curThread.currentUser.forfeit = false;
-    		    curThread.currentUser.totalScore = curThread.currentUser.cumulativeScore;
+    		    //AFTER THE DATABASE GETS UPDATED...a rest scores!
+    		    curThread.currentUser.resetScore();
         	            
         	            
         		System.out.println("Recieved a LEAVE action");

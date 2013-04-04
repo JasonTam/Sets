@@ -1,6 +1,7 @@
 package setServer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -29,9 +30,6 @@ public class User implements Comparable<User>{
     public int correctSets;
     
     public int totalScore = 0;
-    
-    // We should hit the DB and obtain the users score; this will be show in the lobby
-    public int cumulativeScore = 234;
     
    
     public User(String name)
@@ -126,9 +124,9 @@ public class User implements Comparable<User>{
 	    
     }
     
-    public ArrayList<Integer> createScoreArray()
+    public Collection createScoreArray()
     {
-        ArrayList<Integer> scores = new ArrayList<Integer>();
+        Collection scores = new ArrayList();
 	    scores.add(games_played);
 	    scores.add(games_won);
 	    scores.add(games_lost);
@@ -145,6 +143,7 @@ public class User implements Comparable<User>{
 	    
 	    scores.add(totalSets);
 	    scores.add(correctSets);
+	    scores.add(userName);
 	    
 	    return scores;
     }

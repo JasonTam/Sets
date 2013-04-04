@@ -19,6 +19,8 @@ public class GameRoom implements Comparable<GameRoom>
 	private transient Game curGame; 
 	public boolean gameStarted = false;
 	public Date timeCreated;
+	public static int roomCapacity = 2;
+	
 	
     public ConcurrentHashMap<String, User> usersInRoom = new ConcurrentHashMap<String, User>();
     

@@ -3,6 +3,8 @@ package DBI;
 import java.security.MessageDigest;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -51,7 +53,8 @@ public class DBConnect {
 	}
 	
 	
-	public int updateScore(ArrayList<Integer> list, String username) throws SQLException {
+	public int updateScore(Collection list) throws SQLException {
+	    List arrayList = new ArrayList(list);
 		String updateString=
 			    "UPDATE Users " +
 			    "SET " +
@@ -67,9 +70,14 @@ public class DBConnect {
 		PreparedStatement prepareStatement = dbcon.prepareStatement(updateString);
 		for(int i = 0; i < list.size() ; i++)
 		{
-		    prepareStatement.setInt(i+1, list.get(i));
+		    if (i == list.size() - 1)
+		    {
+		        prepareStatement.setString(i+1, (String)arrayList.get(i));
+		        break;
+		    }
+		    prepareStatement.setInt(i+1, (int) arrayList.get(i));
+		    //If last iteration...
 		}
-		prepareStatement.setString(list.size() + 1, username);
 		
 		System.out.println(prepareStatement.toString());
 		return prepareStatement.executeUpdate();
