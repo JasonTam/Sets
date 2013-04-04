@@ -79,6 +79,11 @@ public class SetProtocolAPI {
 			
 			public void quitApp() {
 //			    SetServer.sendLogout(curThread.getName(), sp);
+		        if (curThread.currentRoom!= null)
+		        {
+		            curThread.currentRoom.leave(curThread);
+		        }
+		        SetServer.allThreads.remove(curThread.getName());
 			    SetServer.sendRoomUsers();
 	        	sp.theOutput = "Bye.";
 			}
@@ -205,6 +210,8 @@ public class SetProtocolAPI {
 	        	}
 	        	else if (action.equals("startGame"))
 	        	{
+	        	    curThread.currentUser.correctSets = 0;
+	        	    curThread.currentUser.totalSets = 0;
 	        	    String roomName = JSONinterface.jsonGetData(theInput, String.class);
 	        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
 	        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
@@ -234,6 +241,7 @@ public class SetProtocolAPI {
 				String action = JSONinterface.jsonGetAction(theInput);
 				
 	        	if (action.equals("submit")) {
+	        	    curThread.currentUser.totalSets++;
 	        		System.out.println("Recieved a submit action");
 	        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
 	        		
@@ -252,7 +260,21 @@ public class SetProtocolAPI {
 	        		curGameRoom.getCurGame().print();
 	        		System.out.println("IS GAME OVER?");
 	        		System.out.println(curGameRoom.getCurGame().isGameOver());
+	        		
+	        		if(curGameRoom.getCurGame().isGameOver())
+	        		{
+	        		    System.out.println(curThread.currentUser);
+	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+	        		}
+	        		
 	        		if (isSet) {
+	        		    curThread.currentUser.correctSets++;
 	        		    // This is how you send to all threads in a room
 		        		for (SetMultiThread thread : roomThreads)
 		        		{
@@ -266,6 +288,16 @@ public class SetProtocolAPI {
 	        		
 	        	}
 	        	else if(action.equals("leave")){
+	        	    curThread.currentUser.forfeit = true;
+	        	            
+	        	    //TODO UPDATE DATABASE RIGHT HERE
+	        	    //TODO UPDATE DATABASE RIGHT HERE
+	        	    //TODO UPDATE DATABASE RIGHT HERE
+	        	    //TODO UPDATE DATABASE RIGHT HERE
+	        	    //TODO UPDATE DATABASE RIGHT HERE
+	        	    //TODO UPDATE DATABASE RIGHT HERE
+	        	            
+	        	            
 	        		System.out.println("Recieved a LEAVE action");
 	        		String roomName = JSONinterface.jsonGetData(theInput, String.class);
 	        		System.out.println(roomName);

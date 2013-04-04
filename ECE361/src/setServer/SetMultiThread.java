@@ -69,11 +69,6 @@ public class SetMultiThread extends Thread {
 	        
 //	        Simply closing out all of the made connnections.
 	        System.out.println("quiting out of app");
-	        if (currentRoom != null)
-	        {
-	            this.currentRoom.leave(this);
-	        }
-	        SetServer.allThreads.remove(this.getName());
 	        out.close();
 	        in.close();
 	        socket.close();

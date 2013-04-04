@@ -12,18 +12,23 @@ import setClient.InitGame;
 
 public class User implements Comparable<User>{
     private String userName;
-    public static LinkedHashMap<String, User> userList = new LinkedHashMap();
     private static String[] userData;
     
     public Date dateRoomChange;
+    
+    
+    
+    // Variables for the current game session
+    public int correctSets;
+    public int totalSets;
+    Boolean forfeit = false;
+    
     
     // Probably should pull stats from the database and give it the user.
     public User(String name)
     {
         userName = name;
         dateRoomChange = new Date();
-        
-        addUser();
     }
     
     public String toString()
@@ -72,20 +77,7 @@ public class User implements Comparable<User>{
 	    return usersArray;
     }
     
-    private void addUser()
-    {
-        InitGame.debug("User.addUser");
-        userList.put(userName, this);
-        InitGame.debug("User.addUser");
-        
-    }
     
-    public static void removeUser(String userName)
-    {
-        userList.remove(userName);
-        User removed = userList.get(userName);
-        removed = null;
-    }
 
     @Override
     public int compareTo(User user) {

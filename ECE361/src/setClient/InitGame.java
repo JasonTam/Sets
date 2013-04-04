@@ -224,7 +224,6 @@ public class InitGame {
 	            }
 	            else if (action.equals("logout"))
 	            {
-	                User.removeUser(JSONinterface.jsonGetData(inputLine, String.class));
 	                userJList.refreshJList();
 	            }
 	            else if (action.equals("startGame"))
