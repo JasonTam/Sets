@@ -242,6 +242,7 @@ public class SetProtocolAPI {
 				
 	        	if (action.equals("submit")) {
 	        	    curThread.currentUser.totalSets++;
+	        	    curThread.currentUser.updateScore();
 	        		System.out.println("Recieved a submit action");
 	        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
 	        		
@@ -275,6 +276,7 @@ public class SetProtocolAPI {
 	        		
 	        		if (isSet) {
 	        		    curThread.currentUser.correctSets++;
+	        		    curThread.currentUser.updateScore();
 	        		    // This is how you send to all threads in a room
 		        		for (SetMultiThread thread : roomThreads)
 		        		{
@@ -285,10 +287,12 @@ public class SetProtocolAPI {
 //	        			TODO
 //	        			this might trigger other events
 	        		}
+		        	    SetServer.sendRoomUsers();
 	        		
 	        	}
 	        	else if(action.equals("leave")){
 	        	    curThread.currentUser.forfeit = true;
+        		    curThread.currentUser.updateScore();
 	        	            
 	        	    //TODO UPDATE DATABASE RIGHT HERE
 	        	    //TODO UPDATE DATABASE RIGHT HERE
@@ -296,6 +300,10 @@ public class SetProtocolAPI {
 	        	    //TODO UPDATE DATABASE RIGHT HERE
 	        	    //TODO UPDATE DATABASE RIGHT HERE
 	        	    //TODO UPDATE DATABASE RIGHT HERE
+        		    
+        		    //AFTER THE DATABASE GETS UPDATED...
+	        	    curThread.currentUser.forfeit = false;
+        		    curThread.currentUser.totalScore = 0;
 	        	            
 	        	            
 	        		System.out.println("Recieved a LEAVE action");

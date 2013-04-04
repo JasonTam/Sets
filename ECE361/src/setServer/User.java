@@ -12,19 +12,19 @@ import setClient.InitGame;
 
 public class User implements Comparable<User>{
     private String userName;
-    private static String[] userData;
     
     public Date dateRoomChange;
     
     
     
     // Variables for the current game session
+    // Check setprotocolAPI -- these stats should be sent AFTER THE END OF A GAME!
     public int correctSets;
     public int totalSets;
     Boolean forfeit = false;
+    public int totalScore = 0;
     
-    
-    // Probably should pull stats from the database and give it the user.
+   
     public User(String name)
     {
         userName = name;
@@ -33,7 +33,7 @@ public class User implements Comparable<User>{
     
     public String toString()
     {
-        return userName;
+        return userName + ": " + totalScore;
     }
     
     /*
@@ -75,6 +75,20 @@ public class User implements Comparable<User>{
 	    Collections.sort(usersArray);
 	    
 	    return usersArray;
+    }
+    
+    //Every time you guess, you lose a point
+    //Every time you guess correctly, you gain 6 points.
+    // Everytime you forfeit a game, you lose 16 points.
+    public void updateScore()
+    {
+        totalScore = (correctSets * 6) - (totalSets * 1);
+        
+        if (forfeit)
+        {
+            totalScore = totalScore - 16;
+        }
+                
     }
     
     
