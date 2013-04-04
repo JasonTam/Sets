@@ -187,6 +187,15 @@ public class GamePanel extends JPanel {
 			setupGame();
 		}
 		
+		public void endGame()
+		{
+		    //Im not sure if remove all even happens...
+		    gamePanel.removeAll();
+		    System.out.println("Game over happened!");
+			submitButton.setEnabled(false);
+			clearButton.setEnabled(false);
+		}
+		
 		public void addElement(final Card c, final JToggleButton bC) {
 			gamePanel.add(bC);
 			cardButtons.put(c.toString(), bC);

@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JToggleButton;
@@ -209,23 +210,23 @@ public class InitGame {
 				    Lobby.userArray = JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType());
 	                userJList.createListModel();
                 }
+	            /*
 	            else if (action.equals("login"))
 	            {
 	            	inputLine = JSONinterface.jsonGetData(inputLine, String.class);
 	            	// This following if should be USERNAME, not just a static andrew 
-	            	/*
-	                if (inputLine.equals("Andrew"))
-	                {
-	                    debug("same name inside");
-	                    continue;
-	                }
-	                */
-	                userJList.refreshJList();
+//	                if (inputLine.equals("Andrew"))
+//	                {
+//	                    debug("same name inside");
+//	                    continue;
+//	                }
+//	                userJList.refreshJList();
 	            }
 	            else if (action.equals("logout"))
 	            {
 	                userJList.refreshJList();
 	            }
+	            */
 	            else if (action.equals("startGame"))
 	            {
 	                GamePanel.curGame = JSONinterface.jsonGetData(inputLine, Game.class);
@@ -238,21 +239,30 @@ public class InitGame {
 //	            	May want to only send deltas rather than entire game
 //	            	This is temporary?
 	                GamePanel.curGame = JSONinterface.jsonGetData(inputLine, Game.class);
-	                gamePanel.updateGame();
+                    gamePanel.updateGame();
 	                
+	            }
+	            else if (action.equals("gameResults"))
+	            {
+	                debug(JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType()));
 	            }
 	            else if (action.equals("gameState"))
 	            {
 	                gameState = JSONinterface.jsonGetData(inputLine, Integer.class);
 	            }
-	            else if (action.equals("condition"))
+	            else if (action.equals("login-response"))
 	            {
-	                if (JSONinterface.jsonGetData(inputLine, String.class).equals("bad login"))
+	                if (JSONinterface.jsonGetData(inputLine, String.class).equals("badInfo"))
 	                {
-	                    login.jlbOutMessage.setText("Invalid login information");
+	                    login.jlbOutMessage.setText("Invalid login information.");
 	                    
 	                }
-	                else if (JSONinterface.jsonGetData(inputLine, String.class).equals("good login"))
+	                else if (JSONinterface.jsonGetData(inputLine, String.class).equals("alreadyOn"))
+	                {
+	                    login.jlbOutMessage.setText("Already logged on.");
+	                    
+	                }
+	                else if (JSONinterface.jsonGetData(inputLine, String.class).equals("good"))
 	                {
 				    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
 				    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
@@ -260,6 +270,7 @@ public class InitGame {
 						Lobby.userName = login.jtfInput.getText();
 						InitGame.showGame();
 	                }
+	                
 	            }
 	            else {
 	                debug("Nothing done");

@@ -162,6 +162,10 @@ public class Lobby extends JPanel
                 {
                     roomButtons[i].setEnabled(false);
                 }
+                if (room.usersInRoom.size() >= GameRoom.roomCapacity)
+                {
+                    roomButtons[i].setEnabled(false);
+                }
                 
 	            roomButtons[i].addActionListener
 		        (
