@@ -3,6 +3,7 @@ package setClient;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -68,7 +69,6 @@ public class InitGame {
     
     private static JFrame frame;
     private static Login login;
-    
     
     public static int gameState = 0;
     /**
@@ -277,5 +277,15 @@ public class InitGame {
         public static void debug(Object msg)
         {
            System.out.println(msg);
+        }
+        
+        public static Boolean topIsLobby()
+        {
+            for (Component comp : cardLayout.getComponents() ) {
+                if (comp.isVisible() == true && comp.getClass().equals(Lobby.class)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }

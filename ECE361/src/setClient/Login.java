@@ -88,8 +88,6 @@ public class Login extends JFrame  {
 					        System.out.println("login line: " + currentLine);
 					    if (currentLine < InitGame.lineNumber && JSONinterface.jsonGetAction(currentInput = InitGame.inputLine).equals("login-response"))
 					    {
-					        System.out.println("THE EQUAL, BREAK");
-					        System.out.println(currentInput);
 					        currentLine = InitGame.lineNumber;
 					        break;
 					    }

@@ -47,6 +47,10 @@ public class SetProtocol {
     	    System.out.println(SetServer.gameRooms);
     	    System.out.println("All Usrs in your room");
     	    System.out.println(curThread.currentRoom.usersInRoom);
+    	    System.out.println("All Usrs in Lobby");
+    	    System.out.println(SetServer.lobby.usersInRoom.containsKey(curThread.currentUser.getName()));
+    	    System.out.println(curThread.currentUser.getName());
+    	    
     	    theOutput = JSONinterface.genericToJson("test", "Check Server console for hashes");
     	}
     	else if (action.equals("chat")) {

@@ -14,15 +14,24 @@ public class User implements Comparable<User>{
     private String userName;
     
     public Date dateRoomChange;
+    public GameRoom userRoom;
     
     
     
     // Variables for the current game session
     // Check setprotocolAPI -- these stats should be sent AFTER THE END OF A GAME!
-    public int correctSets;
-    public int totalSets;
+    public int games_played = 1;
+    public int games_won = 0;
+    public int games_lost = 0;
+    public int games_tied = 0;
     Boolean forfeit = false;
+    public int totalSets;
+    public int correctSets;
+    
     public int totalScore = 0;
+    
+    // We should hit the DB and obtain the users score; this will be show in the lobby
+    public int cumulativeScore = 234;
     
    
     public User(String name)
@@ -31,9 +40,21 @@ public class User implements Comparable<User>{
         dateRoomChange = new Date();
     }
     
+    public String getName()
+    {
+        return userName;
+    }
+    
     public String toString()
     {
-        return userName + ": " + totalScore;
+        if (InitGame.topIsLobby())
+        {
+            return userName;
+        }
+        else
+        {
+	        return userName + ": " + totalScore;
+        }
     }
     
     /*
@@ -89,6 +110,43 @@ public class User implements Comparable<User>{
             totalScore = totalScore - 16;
         }
                 
+    }
+    
+    public void resetScore()
+    {
+	    games_played = 1;
+	    games_won = 0;
+	    games_lost = 0;
+	    games_tied = 0;
+	    forfeit = false;
+	    totalSets = 0;
+	    correctSets = 0;
+	    
+	    totalScore = 0;
+	    
+    }
+    
+    public ArrayList<Integer> createScoreArray()
+    {
+        ArrayList<Integer> scores = new ArrayList<Integer>();
+	    scores.add(games_played);
+	    scores.add(games_won);
+	    scores.add(games_lost);
+	    scores.add(games_tied);
+	   
+	    if (forfeit)
+	    {
+	        scores.add(1);
+	    }
+	    else
+	    {
+	        scores.add(0);
+	    }
+	    
+	    scores.add(totalSets);
+	    scores.add(correctSets);
+	    
+	    return scores;
     }
     
     

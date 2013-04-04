@@ -11,6 +11,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+
+/* For ease of use... hehehe
+ * 
+ * ip address: 199.98.20.120
+ * port: 5122 
+ * user: default
+ * password: Gir(W8
+ */
+
 /**
  * This file will primarily be used to start the server and 
  * keep track of the threads that are connected.

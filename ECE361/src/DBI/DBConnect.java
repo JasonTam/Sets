@@ -2,6 +2,7 @@ package DBI;
 
 import java.security.MessageDigest;
 import java.sql.*;
+import java.util.ArrayList;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -49,6 +50,30 @@ public class DBConnect {
 		return manipulated==1;
 	}
 	
+	
+	public int updateScore(ArrayList<Integer> list, String username) throws SQLException {
+		String updateString=
+			    "UPDATE Users " +
+			    "SET " +
+			        "games_played = games_played + ?, " +
+			        "games_won = games_won + ?, " +
+			        "games_lost = games_lost + ?, " +
+			        "games_tied = games_tied + ?, " +
+			        "games_quit = games_quit + ?, " +
+			        "sets_submitted = sets_submitted + ?, " +
+			        "sets_correct = sets_correct + ? " +
+			    "WHERE username = ?";
+
+		PreparedStatement prepareStatement = dbcon.prepareStatement(updateString);
+		for(int i = 0; i < list.size() ; i++)
+		{
+		    prepareStatement.setInt(i+1, list.get(i));
+		}
+		prepareStatement.setString(list.size() + 1, username);
+		
+		System.out.println(prepareStatement.toString());
+		return prepareStatement.executeUpdate();
+	}
 	
 	public static void main(String[] args) {
 		DBConnect  a = new DBConnect();

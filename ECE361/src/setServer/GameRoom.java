@@ -21,6 +21,28 @@ public class GameRoom implements Comparable<GameRoom>
 	public Date timeCreated;
 	
     public ConcurrentHashMap<String, User> usersInRoom = new ConcurrentHashMap<String, User>();
+    
+    public User getWinner()
+    {
+        
+        Iterator itUsers = usersInRoom.keySet().iterator();
+        User winner = usersInRoom.get(itUsers.next());
+        
+        itUsers = usersInRoom.keySet().iterator();
+        
+        while(itUsers.hasNext())
+        {
+            String key = (String) itUsers.next();
+            User curUser = usersInRoom.get(key);
+            
+            if (curUser.totalScore > winner.totalScore)
+            {
+                winner = curUser;
+            }
+            
+        }
+        return winner;
+    }
 	
     // Starts a game in the currnt room.  Cards are dealt to all users in the room
 	public Game startGame()
@@ -59,14 +81,14 @@ public class GameRoom implements Comparable<GameRoom>
 		}
 		thread.currentRoom = this;
 		threadsInRoom.put(thread.getName(), thread);
-		usersInRoom.put(thread.currentUser.toString(), thread.currentUser);
+		usersInRoom.put(thread.currentUser.getName(), thread.currentUser);
 	}
 
 //	Leave a game room
 	public void leave(SetMultiThread thread) {
 		threadsInRoom.remove(thread.getName());
 		
-		usersInRoom.remove(thread.currentUser.toString());
+		usersInRoom.remove(thread.currentUser.getName());
 		
 		if (threadsInRoom.isEmpty() & !getName().equals(SetServer.lobby.getName())) {
 			SetServer.gameRooms.remove(getName());

@@ -1,5 +1,6 @@
 package setServer;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -129,6 +130,8 @@ public class SetProtocolAPI {
 	        			SetServer.sendRoomUsers();
 	        			sp.changeState(SetProtocol.LOBBY, curThread);
 	        			sp.theOutput = JSONinterface.genericToJson("login-response", "good");
+	        			
+	        			
 	        		}
 	        		else {
 	        			sp.theOutput = JSONinterface.genericToJson("login-response", "badInfo");
@@ -181,6 +184,8 @@ public class SetProtocolAPI {
 //	        	If the room doesn't exist, create it and join the room
 	        	else if (!SetServer.gameRooms.containsKey(roomName)) {
 	        	    new GameRoom(roomName, curThread);
+		        	curThread.currentUser.totalScore = 0;
+	        	    curThread.currentUser.correctSets = 0;
 	        	    sp.changeState(SetProtocol.ROOM, curThread);
 //	        	    SetServer.sendRoomCreate(roomName, curThread, sp);
 	        	    SetServer.sendRooms(sp);
@@ -188,9 +193,11 @@ public class SetProtocolAPI {
 	        	}
 //	        	If the room does exist and its not full, join it
 	        	else {
+		        	curThread.currentUser.totalScore = 0;
+	        	    curThread.currentUser.correctSets = 0;
+	        		sp.changeState(SetProtocol.ROOM, curThread);
 	        		SetServer.gameRooms.get(roomName).join(curThread);
 	        		SetServer.sendRoomUsers();
-	        		sp.changeState(SetProtocol.ROOM, curThread);
 	        	}
 			}
 		}
@@ -202,6 +209,7 @@ public class SetProtocolAPI {
 				String action = JSONinterface.jsonGetAction(theInput);
 
 	        	if (action.equals("leave")) {
+	        	    curThread.currentUser.totalScore = curThread.currentUser.cumulativeScore;
 //				    SetServer.sendRoomLeave(curThread, sp);
 	        	    SetServer.lobby.join(curThread);
 	        	    sp.changeState(SetProtocol.LOBBY, curThread);
@@ -210,8 +218,6 @@ public class SetProtocolAPI {
 	        	}
 	        	else if (action.equals("startGame"))
 	        	{
-	        	    curThread.currentUser.correctSets = 0;
-	        	    curThread.currentUser.totalSets = 0;
 	        	    String roomName = JSONinterface.jsonGetData(theInput, String.class);
 	        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
 	        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
@@ -236,97 +242,17 @@ public class SetProtocolAPI {
 
 		public class game {
 			
+		    // Send score to DB under two conditions -- the game is over,
+		    // or a user has left the game.
 			public void gameStart(String theInput) {
 				
 				String action = JSONinterface.jsonGetAction(theInput);
 				
 	        	if (action.equals("submit")) {
-	        	    curThread.currentUser.totalSets++;
-	        	    curThread.currentUser.updateScore();
-	        		System.out.println("Recieved a submit action");
-	        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
-	        		
-	        		java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
-	        		Collection<Card> selectedCards =
-	        				JSONinterface.jsonGetData(theInput, collectionType);
-	        		GameRoom curGameRoom = SetServer.gameRooms.get(curThread.currentRoom.getName());
-	        		boolean isSet = curGameRoom.getCurGame().submitSet(selectedCards);
-	        		
-//	        		boolean isSet = GameLogic.isSet(selectedCards);
-	        		System.out.println("SERVER SAYS SET IS : " + isSet);
-	        		
-	        		
-	        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
-	        		
-	        		curGameRoom.getCurGame().print();
-	        		System.out.println("IS GAME OVER?");
-	        		System.out.println(curGameRoom.getCurGame().isGameOver());
-	        		
-	        		if(curGameRoom.getCurGame().isGameOver())
-	        		{
-	        		    System.out.println(curThread.currentUser);
-	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-	        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
-	        		}
-	        		
-	        		if (isSet) {
-	        		    curThread.currentUser.correctSets++;
-	        		    curThread.currentUser.updateScore();
-	        		    // This is how you send to all threads in a room
-		        		for (SetMultiThread thread : roomThreads)
-		        		{
-		        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
-		        		}
-//		            	TODO
-//		            	May want to only send deltas rather than entire game
-//	        			TODO
-//	        			this might trigger other events
-	        		}
-		        	    SetServer.sendRoomUsers();
-	        		
+	        	    submit(theInput);
 	        	}
 	        	else if(action.equals("leave")){
-	        	    curThread.currentUser.forfeit = true;
-        		    curThread.currentUser.updateScore();
-	        	            
-	        	    //TODO UPDATE DATABASE RIGHT HERE
-	        	    //TODO UPDATE DATABASE RIGHT HERE
-	        	    //TODO UPDATE DATABASE RIGHT HERE
-	        	    //TODO UPDATE DATABASE RIGHT HERE
-	        	    //TODO UPDATE DATABASE RIGHT HERE
-	        	    //TODO UPDATE DATABASE RIGHT HERE
-        		    
-        		    //AFTER THE DATABASE GETS UPDATED...
-	        	    curThread.currentUser.forfeit = false;
-        		    curThread.currentUser.totalScore = 0;
-	        	            
-	        	            
-	        		System.out.println("Recieved a LEAVE action");
-	        		String roomName = JSONinterface.jsonGetData(theInput, String.class);
-	        		System.out.println(roomName);
-//		        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
-		        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
-		        	    //ArrayList<SetMultiThread> usersThreads= SetServer.ge
-		        	    //int si=roomThreads.size();
-		        	String message = "has left the room";
-		        	    for (SetMultiThread thread : roomThreads)
-		        	    {
-		        	    	if(!thread.equals(curThread))
-		        	    	{
-		        	    	SetServer.sendChat(roomName, curThread, message,2);
-		        	    	}
-		        	    }
-	        		    
-//		        	    SetServer.sendRoomLeave(curThread, sp);
-		        	    SetServer.lobby.join(curThread);
-		        	    sp.changeState(SetProtocol.LOBBY, curThread);
-		        	    SetServer.sendRooms(sp);
-		        	    SetServer.sendRoomUsers();
+	        	    leave(theInput);
 	        	}
 	        	else {
 	        		gameInvalid();
@@ -334,15 +260,108 @@ public class SetProtocolAPI {
 	        	
 			}
 			
-			
-			/* This is a command the server has to send everyone.
-			private void leaveGame() {
-				sp.theOutput = "ROOMLEAVE|" + curThread.currentRoom;
-				curThread.currentRoom.leave(curThread);
-				SetServer.lobby.join(curThread);
-				sp.state = SetProtocol.LOBBY;
+			private void submit(String theInput)
+			{
+        	    curThread.currentUser.totalSets++;
+        	    curThread.currentUser.updateScore();
+        		System.out.println("Recieved a submit action");
+        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
+        		
+        		java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
+        		Collection<Card> selectedCards =
+        				JSONinterface.jsonGetData(theInput, collectionType);
+        		GameRoom curGameRoom = SetServer.gameRooms.get(curThread.currentRoom.getName());
+        		boolean isSet = curGameRoom.getCurGame().submitSet(selectedCards);
+        		
+//	        		boolean isSet = GameLogic.isSet(selectedCards);
+        		System.out.println("SERVER SAYS SET IS : " + isSet);
+        		
+        		
+        		sp.theOutput = JSONinterface.genericToJson("isSet", isSet);
+        		
+        		curGameRoom.getCurGame().print();
+        		System.out.println("IS GAME OVER?");
+        		System.out.println(curGameRoom.getCurGame().isGameOver());
+        		
+        		if(curGameRoom.getCurGame().isGameOver())
+        		{
+        		    System.out.println(curThread.currentUser);
+        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+        		    //TODO UPDATE DATEBASE WITH SCORES HERE!!! 
+        		}
+        		
+        		if (isSet) {
+        		    curThread.currentUser.correctSets++;
+        		    curThread.currentUser.updateScore();
+        		    // This is how you send to all threads in a room
+	        		for (SetMultiThread thread : roomThreads)
+	        		{
+	        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
+	        		}
+//		            	TODO
+//		            	May want to only send deltas rather than entire game
+//	        			TODO
+//	        			this might trigger other events
+        		}
+	        	    SetServer.sendRoomUsers();
+	        		
 			}
-			*/
+			
+            private void leave(String theInput) 
+            {
+        	    curThread.currentUser.forfeit = true;
+        	    curThread.currentUser.games_lost = 1;
+    		    curThread.currentUser.updateScore();
+    		    
+    		    try
+    		    {
+    		        dbc.updateScore(curThread.currentUser.createScoreArray(), curThread.currentUser.getName());
+    		    }
+    		    catch (Exception e)
+    		    {
+    		        e.printStackTrace();
+    		    }
+        	            
+        	    //TODO UPDATE DATABASE RIGHT HERE
+        	    //TODO UPDATE DATABASE RIGHT HERE
+        	    //TODO UPDATE DATABASE RIGHT HERE
+        	    //TODO UPDATE DATABASE RIGHT HERE
+        	    //TODO UPDATE DATABASE RIGHT HERE
+        	    //TODO UPDATE DATABASE RIGHT HERE
+        		    
+    		    //AFTER THE DATABASE GETS UPDATED...
+        	    curThread.currentUser.forfeit = false;
+    		    curThread.currentUser.totalScore = curThread.currentUser.cumulativeScore;
+        	            
+        	            
+        		System.out.println("Recieved a LEAVE action");
+        		String roomName = JSONinterface.jsonGetData(theInput, String.class);
+        		System.out.println(roomName);
+//		        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
+	        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
+	        	    //ArrayList<SetMultiThread> usersThreads= SetServer.ge
+	        	    //int si=roomThreads.size();
+	        	String message = "has left the room";
+	        	    for (SetMultiThread thread : roomThreads)
+	        	    {
+	        	    	if(!thread.equals(curThread))
+	        	    	{
+	        	    	SetServer.sendChat(roomName, curThread, message,2);
+	        	    	}
+	        	    }
+        		    
+//		        	    SetServer.sendRoomLeave(curThread, sp);
+	        	    SetServer.lobby.join(curThread);
+	        	    sp.changeState(SetProtocol.LOBBY, curThread);
+	        	    SetServer.sendRooms(sp);
+	        	    SetServer.sendRoomUsers();
+            }
+            
 			
 			private void gameInvalid() {
 				sp.theOutput = JSONinterface.genericToJson("null", "Invalid game state command");

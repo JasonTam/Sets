@@ -79,6 +79,7 @@ public class Lobby extends JPanel
 	        {
 	            public void actionPerformed(ActionEvent e)
 	            {
+	                System.out.println(InitGame.topIsLobby());
 	                InitGame.out.println(JSONinterface.genericToJson("test", "setting up test button. REMOVE THIS CONDITION"));
 //	                InitGame.changeCards("GAME");
 	            } 
