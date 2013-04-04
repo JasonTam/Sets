@@ -40,12 +40,15 @@ import setGame.Card;
 import setGame.Game;
 import setServer.GameRoom;
 import setServer.JSONinterface;
+import setServer.User;
 
 @SuppressWarnings("serial")
 public class InitGame {
     
     public static PrintWriter out;
     public static BufferedReader in;
+    
+    public static int lineNumber = 0;
     
     public static int PORT = 4444;
     public static String HOST = "localhost";
@@ -65,6 +68,7 @@ public class InitGame {
     
     private static JFrame frame;
     private static Login login;
+    
     
     public static int gameState = 0;
     /**
@@ -186,6 +190,7 @@ public class InitGame {
 //        	TODO Consider Case switch if everything will be action.equals(.)
 	        while ((inputLine = in.readLine()) != null)
 	        {
+	            lineNumber++;
 	            System.out.println("Recieved line: " + inputLine);
 	        	String action = JSONinterface.jsonGetAction(inputLine);
 	        	
@@ -196,14 +201,12 @@ public class InitGame {
 //	            else if (inputLine.matches("^(ROOMS\\||ROOMCREATE\\||ROOMLEAVE\\|).*$"))
 	            else if (action.equals("rooms"))
 	            {
-				    Lobby.roomHash = JSONinterface.jsonGetData(inputLine, new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
-	                Lobby.roomArray = GameRoom.roomHashtoArray(Lobby.roomHash);
+				    Lobby.roomArray = JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<GameRoom>>(){}.getType());
 	                lobbyPanel.updateLobbyPanel();
 	            }
-	            
 	            else if (action.equals("users"))
                 {
-	                User.createUserList(inputLine);
+				    Lobby.userArray = JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType());
 	                userJList.createListModel();
                 }
 	            else if (action.equals("login"))
@@ -217,7 +220,6 @@ public class InitGame {
 	                    continue;
 	                }
 	                */
-	                User.addUser(inputLine);
 	                userJList.refreshJList();
 	            }
 	            else if (action.equals("logout"))

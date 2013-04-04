@@ -35,7 +35,8 @@ public class Login extends JFrame  {
 	JLabel jlbPassword;
 	JLabel jlbUser;
 	JPasswordField jpwPassword;
-	
+
+	int currentLine;
 	
 	String newline = "\n";
 
@@ -77,6 +78,40 @@ public class Login extends JFrame  {
 					
 					InitGame.out.println(loginString);
 					
+					String currentInput = null;
+					
+					// Keeps reading the inputs UNTIL the current line is the login response.  DOES NOT GET NEW LINE, only reads what is there.
+					while (true)
+				    {
+					        System.out.println("KLNIE");
+					        System.out.println("INit game line: " + InitGame.lineNumber);
+					        System.out.println("login line: " + currentLine);
+					    if (currentLine < InitGame.lineNumber && JSONinterface.jsonGetAction(currentInput = InitGame.inputLine).equals("login-response"))
+					    {
+					        System.out.println("THE EQUAL, BREAK");
+					        System.out.println(currentInput);
+					        currentLine = InitGame.lineNumber;
+					        break;
+					    }
+				    }
+		                if (JSONinterface.jsonGetData(currentInput, String.class).equals("badInfo"))
+		                {
+		                    jlbOutMessage.setText("Invalid login information.");
+		                    
+		                }
+		                else if (JSONinterface.jsonGetData(currentInput, String.class).equals("alreadyOn"))
+		                {
+		                    jlbOutMessage.setText("Already logged on.");
+		                    
+		                }
+		                else if (JSONinterface.jsonGetData(currentInput, String.class).equals("good"))
+		                {
+					    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
+					    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
+							setVisible(false);
+							Lobby.userName = jtfInput.getText();
+							InitGame.showGame();
+		                }
 
 
 			    	
@@ -96,8 +131,8 @@ public class Login extends JFrame  {
 					String loginString  = JSONinterface.genericToJson("login", data);
 					
 					InitGame.out.println(loginString);
-			    	InitGame.out.println(JSONinterface.genericToJson("users", "show all users"));
-			    	InitGame.out.println(JSONinterface.genericToJson("rooms", "show all rooms"));
+			    	InitGame.out.println(JSONinterface.genericToJson("rooms", "send me rooms"));
+			    	InitGame.out.println(JSONinterface.genericToJson("users", "send me users"));
 			    	
 					setVisible(false);
 					InitGame.showGame();

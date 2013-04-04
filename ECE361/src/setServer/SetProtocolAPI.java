@@ -64,8 +64,8 @@ public class SetProtocolAPI {
 			}
 			
 			public void showUsers() {
-			    SetServer.sendUsers(sp);
-			    sp.theOutput = JSONinterface.genericToJson("null", "broadcasting users");
+			    SetServer.sendRoomUsers();
+			    sp.theOutput = JSONinterface.genericToJson("null", "sending users in room user list.");
 			    /*
 				sp.theOutput = "USERS|";
 			    Iterator itUsers = SetServer.allThreads.keySet().iterator();
@@ -78,7 +78,8 @@ public class SetProtocolAPI {
 		    }
 			
 			public void quitApp() {
-			    SetServer.sendLogout(curThread.getName(), sp);
+//			    SetServer.sendLogout(curThread.getName(), sp);
+			    SetServer.sendRoomUsers();
 	        	sp.theOutput = "Bye.";
 			}
 			
@@ -104,7 +105,7 @@ public class SetProtocolAPI {
 				
 //        		First of all, check if anyone else with your acct is logged in:
         		if (SetServer.allThreads.containsKey(username)) {
-        			sp.theOutput = JSONinterface.genericToJson("loginError", "Already logged on");
+        			sp.theOutput = JSONinterface.genericToJson("login-response", "alreadyOn");
         			System.out.println("Already logged in");
         			return;
         		}
@@ -114,15 +115,18 @@ public class SetProtocolAPI {
 	        		if (dbc.validateUser(username, password)) {
 	        			curThread.setName(username);
 	        			
-	        			SetServer.allThreads.put(curThread.getName(), curThread);
-	        			SetServer.lobby.join(curThread);
+	        			curThread.currentUser = new User(username);
 	        			
-	        			SetServer.sendLogin(curThread.getName(), sp);
+	        			SetServer.lobby.join(curThread);
+	        			SetServer.allThreads.put(curThread.getName(), curThread);
+	        			
+//	        			SetServer.sendLogin(curThread.getName(), sp);
+	        			SetServer.sendRoomUsers();
 	        			sp.changeState(SetProtocol.LOBBY, curThread);
-	        			sp.theOutput = JSONinterface.genericToJson("condition", "good login");
+	        			sp.theOutput = JSONinterface.genericToJson("login-response", "good");
 	        		}
 	        		else {
-	        			sp.theOutput = JSONinterface.genericToJson("condition", "bad login");
+	        			sp.theOutput = JSONinterface.genericToJson("login-response", "badInfo");
 	        		}
         		}
         		catch (Exception e){
@@ -171,12 +175,16 @@ public class SetProtocolAPI {
         		}
 //	        	If the room doesn't exist, create it and join the room
 	        	else if (!SetServer.gameRooms.containsKey(roomName)) {
-	        	    SetServer.sendRoomCreate(roomName, curThread, sp);
+	        	    new GameRoom(roomName, curThread);
+	        	    sp.changeState(SetProtocol.ROOM, curThread);
+//	        	    SetServer.sendRoomCreate(roomName, curThread, sp);
+	        	    SetServer.sendRooms(sp);
+	        		SetServer.sendRoomUsers();
 	        	}
 //	        	If the room does exist and its not full, join it
 	        	else {
 	        		SetServer.gameRooms.get(roomName).join(curThread);
-	        		sp.theOutput = JSONinterface.genericToJson("null", "Sucessfully join room");
+	        		SetServer.sendRoomUsers();
 	        		sp.changeState(SetProtocol.ROOM, curThread);
 	        	}
 			}
@@ -189,22 +197,17 @@ public class SetProtocolAPI {
 				String action = JSONinterface.jsonGetAction(theInput);
 
 	        	if (action.equals("leave")) {
-	        		System.out.println(curThread.currentRoom);
-	        		
-	        		
-//					leaveGame();
-		     
-				   SetServer.sendRoomLeave(curThread, sp);
-				    
-				    
-				    
-				    
+//				    SetServer.sendRoomLeave(curThread, sp);
+	        	    SetServer.lobby.join(curThread);
+	        	    sp.changeState(SetProtocol.LOBBY, curThread);
+	        	    SetServer.sendRooms(sp);
+	        	    SetServer.sendRoomUsers();
 	        	}
 	        	else if (action.equals("startGame"))
 	        	{
 	        	    String roomName = JSONinterface.jsonGetData(theInput, String.class);
 	        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
-	        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(roomName, curThread);
+	        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
 	        	    
 	        	    for (SetMultiThread thread : roomThreads)
 	        	    {
@@ -232,7 +235,7 @@ public class SetProtocolAPI {
 				
 	        	if (action.equals("submit")) {
 	        		System.out.println("Recieved a submit action");
-	        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread.currentRoom.getName(), curThread);
+	        		ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
 	        		
 	        		java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>(){}.getType();
 	        		Collection<Card> selectedCards =
@@ -264,11 +267,10 @@ public class SetProtocolAPI {
 	        	}
 	        	else if(action.equals("leave")){
 	        		System.out.println("Recieved a LEAVE action");
-	        		
 	        		String roomName = JSONinterface.jsonGetData(theInput, String.class);
 	        		System.out.println(roomName);
 //		        	    String JSON = JSONinterface.genericToJson("startGame", SetServer.gameRooms.get(roomName).startGame());
-		        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(roomName, curThread);
+		        	    ArrayList<SetMultiThread> roomThreads = SetServer.getRoomThreads(curThread);
 		        	    //ArrayList<SetMultiThread> usersThreads= SetServer.ge
 		        	    //int si=roomThreads.size();
 		        	String message = "has left the room";
@@ -280,7 +282,11 @@ public class SetProtocolAPI {
 		        	    	}
 		        	    }
 	        		    
-		        	    SetServer.sendRoomLeave(curThread, sp);
+//		        	    SetServer.sendRoomLeave(curThread, sp);
+		        	    SetServer.lobby.join(curThread);
+		        	    sp.changeState(SetProtocol.LOBBY, curThread);
+		        	    SetServer.sendRooms(sp);
+		        	    SetServer.sendRoomUsers();
 	        	}
 	        	else {
 	        		gameInvalid();

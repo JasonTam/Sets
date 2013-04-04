@@ -10,7 +10,11 @@ public class SetMultiThread extends Thread {
     public PrintWriter out;
 //    This variable contains what the client is sending the server
     public BufferedReader in;
+    
     public GameRoom currentRoom = null;
+    
+    public User currentUser = null;
+    
     public SetProtocol sp;
     
     

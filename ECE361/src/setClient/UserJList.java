@@ -1,10 +1,13 @@
 package setClient;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+
+import setServer.User;
 
 public class UserJList extends JList
 {
@@ -31,15 +34,15 @@ public class UserJList extends JList
     class ListData extends AbstractListModel
     {
         
-        private LinkedHashMap<String, User> data = User.userList;
+        private ArrayList<User> data = Lobby.userArray;
         private Object[] keySet;
         
 
         private ListData()
         {
             InitGame.debug("UserJList.ListData");
-            InitGame.debug(this.data);
-            keySet = User.userList.keySet().toArray();
+            keySet = data.toArray();
+            InitGame.debug(data);
             InitGame.debug("UserJList.ListData");
         }
 
@@ -50,7 +53,7 @@ public class UserJList extends JList
 
         @Override
         public Object getElementAt(int index) {
-            return User.userList.get(keySet[index].toString());
+            return data.get(index);
         }
         
     }

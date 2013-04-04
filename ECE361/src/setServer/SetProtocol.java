@@ -40,8 +40,13 @@ public class SetProtocol {
     		theOutput = JSONinterface.genericToJson("null", "sending blank line");
         } 
     	else if (action.equals("test")) {
+    	    
+    	    System.out.println("All Connected Threads");
     	    System.out.println(SetServer.allThreads);
+    	    System.out.println("All Current Game Rooms");
     	    System.out.println(SetServer.gameRooms);
+    	    System.out.println("All Usrs in your room");
+    	    System.out.println(curThread.currentRoom.usersInRoom);
     	    theOutput = JSONinterface.genericToJson("test", "Check Server console for hashes");
     	}
     	else if (action.equals("chat")) {

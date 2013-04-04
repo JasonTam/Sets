@@ -54,7 +54,7 @@ public class SetServer {
         {
         	chatMessage = curThread.getName() + " " + message;	
         }
-        ArrayList<SetMultiThread> roomThreads = getRoomThreads(roomName, curThread);
+        ArrayList<SetMultiThread> roomThreads = getRoomThreads(curThread);
         
         for (SetMultiThread thread : roomThreads)
         {
@@ -63,9 +63,11 @@ public class SetServer {
         
     }
 
-//  Gets all the threads in teh current room (excluding the thread that called this    
-    public static ArrayList<SetMultiThread> getRoomThreads (String roomName, SetMultiThread thread)
+//  Gets all the threads in the current room
+    public static ArrayList<SetMultiThread> getRoomThreads (SetMultiThread thread)
     {
+        System.out.println(thread.currentRoom);
+        String roomName = thread.currentRoom.getName();
         ArrayList<SetMultiThread> roomThreads = new ArrayList();
 	    Iterator it = gameRooms.get(roomName).threadsInRoom.keySet().iterator();
 	    while (it.hasNext()) {	
@@ -75,10 +77,77 @@ public class SetServer {
 	    return roomThreads;
     }
     
-    
-    public static void sendUsers(SetProtocol sp)
+    // This should send ALL users a list fo users in THEIR ROOM.
+    public static void sendRoomUsers()
     {
-		sp.theOutput = "USERS|";
+	    Iterator itUsers = SetServer.allThreads.keySet().iterator();
+	    while (itUsers.hasNext()) {	
+	        String user = (String) itUsers.next();
+	        SetMultiThread curThread = SetServer.allThreads.get(user);
+            curThread.out.println( JSONinterface.genericToJson("users", User.getUsersInRoomArray(curThread.currentRoom)));
+	    }
+	    
+    }
+    
+    
+    
+    
+    public static void broadcastToAllThreads(SetProtocol sp)
+    {
+	    Iterator itThread = SetServer.allThreads.keySet().iterator();
+	    
+	    while (itThread.hasNext())
+	    {
+	        String key = (String) itThread.next();
+	        allThreads.get(key).out.println(sp.theOutput);
+	    }
+    }
+    
+    // Send a list of ALL ROOMS to ALL USERS 
+    public static void sendRooms(SetProtocol sp)
+    {
+        
+        sp.theOutput = JSONinterface.genericToJson("rooms", GameRoom.getRoomsArray());
+        broadcastToAllThreads(sp);
+    }
+    
+}
+    /*
+    public static void sendRoomLeave(SetMultiThread curThread, SetProtocol sp)
+    {
+		sp.theOutput = JSONinterface.genericToJson("roomleave", curThread.currentRoom.getName());
+		
+		curThread.currentRoom.leave(curThread);
+		SetServer.lobby.join(curThread);
+        
+	    broadcastToAllThreads(sp);
+	    sendRooms(sp);
+    }
+    
+    public static void sendRoomCreate(String roomName, SetMultiThread curThread, SetProtocol sp)
+    {
+		
+		sp.theOutput = JSONinterface.genericToJson("roomCreate", roomName);
+	    broadcastToAllThreads(sp);
+	    sendRooms(sp);
+    }
+    public static void sendLogout(String name, SetProtocol sp)
+    {
+        System.out.println(name + " logged out");
+        sp.theOutput = JSONinterface.genericToJson("logout", name);
+	    broadcastToAllThreads(sp);
+    }
+    public static void sendLogin(String name, SetProtocol sp)
+    {
+        System.out.println(name + " logged in");
+        
+        sp.theOutput = JSONinterface.genericToJson("login", name);
+        
+	    broadcastToAllThreads(sp);
+        
+    }
+    public static void sendAllUsers(SetProtocol sp)
+    {
 		ArrayList<String> userList = new ArrayList<String>();
 	    Iterator itUsers = SetServer.allThreads.keySet().iterator();
 	    while (itUsers.hasNext()) {	
@@ -91,128 +160,4 @@ public class SetServer {
         sp.theOutput = JSONinterface.genericToJson("users", userList);
         broadcastToAllThreads(sp);
     }
-    
-    public static void sendLogin(String name, SetProtocol sp)
-    {
-        System.out.println(name + " logged in");
-        
-        sp.theOutput = JSONinterface.genericToJson("login", name);
-        
-	    broadcastToAllThreads(sp);
-        
-    }
-    
-    public static void sendLogout(String name, SetProtocol sp)
-    {
-        System.out.println(name + " logged out");
-        sp.theOutput = JSONinterface.genericToJson("logout", name);
-	    broadcastToAllThreads(sp);
-    }
-    
-    public static void sendRoomLeave(SetMultiThread curThread, SetProtocol sp)
-    {
-		sp.theOutput = JSONinterface.genericToJson("roomleave", curThread.currentRoom.getName());
-		
-		curThread.currentRoom.leave(curThread);
-		SetServer.lobby.join(curThread);
-		sp.changeState(SetProtocol.LOBBY, curThread);
-        
-	    broadcastToAllThreads(sp);
-	    sendRooms(sp);
-    }
-    
-    public static void sendRoomCreate(String roomName, SetMultiThread curThread, SetProtocol sp)
-    {
-		new GameRoom(roomName, curThread);
-		
-		sp.theOutput = JSONinterface.genericToJson("roomCreate", roomName);
-		sp.changeState(SetProtocol.ROOM, curThread);
-	    broadcastToAllThreads(sp);
-	    sendRooms(sp);
-			    
-        
-    }
-    public static void broadcastToAllThreads(SetProtocol sp)
-    {
-	    Iterator itThread = SetServer.allThreads.keySet().iterator();
-	    
-	    while (itThread.hasNext())
-	    {
-	        String key = (String) itThread.next();
-	        allThreads.get(key).out.println(sp.theOutput);
-	    }
-    }
-    
-    public static void sendRooms(SetProtocol sp)
-    {
-        
-        sp.theOutput = JSONinterface.genericToJson("rooms", gameRooms);
-        broadcastToAllThreads(sp);
-        
-        
-		/*
-        System.out.println(gameRooms);
-        
-        
-	    Iterator itGame = gameRooms.keySet().iterator();
-	    ArrayList<String> allRooms = new ArrayList<String>();
-	    while (itGame.hasNext()) {	
-	        String roomName = (String) itGame.next();
-	        allRooms.add(roomName);
-	    }
-	    
-	    
-	    
-	    String test = JSONinterface.genericToJson("rooms", gameRooms);
-	    
-	    ConcurrentHashMap<String, GameRoom> test2 = JSONinterface.jsonGetData(test, new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
-	    System.out.println(test2.get("lobby").timeCreated);
-	    
-	    
-		Gson gson = new GsonBuilder().serializeNulls().create();
-		String json = JSONinterface.genericToJson("rooms", gson.toJson(gameRooms, ConcurrentHashMap.class));
-		
-		System.out.println(gson.toJson(gameRooms, ConcurrentHashMap.class));
-		
-	    System.out.println(json);
-		
-	    ConcurrentHashMap<String, GameRoom> data = JSONinterface.jsonGetData(json, new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
-	    System.out.println(data.get("lobby").getName());
-	    System.out.println(data.get("lobby").getName());
-		
-		
-		
-		JsonParser parser = new JsonParser();
-	    JsonArray array = parser.parse(json).getAsJsonArray();
-	    Gson gson2 = new Gson();
-	    ConcurrentHashMap<String, GameRoom> data = gson2.fromJson(array.get(0), new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
-	    
-		
-	    System.out.println(data.get("lobby").getName());
-		
-	    Gson gson2 = new Gson();
-	    ConcurrentHashMap<String, GameRoom> data = gson2.fromJson(parser.parse(json).getAsJsonObject(), new TypeToken<ConcurrentHashMap<String, GameRoom>>(){}.getType());
-		*/
-	    
-        
-        
-        /*
-        sp.theOutput = "ROOMS|";
-	    Iterator itGame = SetServer.gameRooms.keySet().iterator();
-	    while (itGame.hasNext()) {	
-	        String roomName = (String) itGame.next();
-	        sp.theOutput = sp.theOutput.concat(roomName);
-		    Iterator itUser = SetServer.gameRooms.get(roomName).keySet().iterator();
-		    while (itUser.hasNext()) {
-		    	String userName = (String) itUser.next();
-		    	sp.theOutput = sp.theOutput.concat("-" + userName);
-		    }
-		    sp.theOutput = sp.theOutput.concat("|");
-		    //			        it.remove(); // avoids a ConcurrentModificationException
-	    }
-	    broadcastToAllThreads(sp);
-	    */
-        
-    }
-    
-}
+    */

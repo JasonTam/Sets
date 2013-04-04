@@ -20,7 +20,7 @@ public class GameRoom implements Comparable<GameRoom>
 	public boolean gameStarted = false;
 	public Date timeCreated;
 	
-    public ConcurrentHashMap<String, Date> usersInRoom = new ConcurrentHashMap<String, Date>();
+    public ConcurrentHashMap<String, User> usersInRoom = new ConcurrentHashMap<String, User>();
 	
     // Starts a game in the currnt room.  Cards are dealt to all users in the room
 	public Game startGame()
@@ -45,6 +45,7 @@ public class GameRoom implements Comparable<GameRoom>
 	}
 	
 //	Create a game room
+	// Only used for the lobby.
 	public GameRoom (String name) {
 	    timeCreated = new Date();
 		room_name = name;
@@ -56,33 +57,35 @@ public class GameRoom implements Comparable<GameRoom>
 		if (thread.currentRoom != null) {
 			thread.currentRoom.leave(thread);
 		}
-		threadsInRoom.put(thread.getName(), thread);
-		usersInRoom.put(thread.getName(), new Date());
 		thread.currentRoom = this;
+		threadsInRoom.put(thread.getName(), thread);
+		usersInRoom.put(thread.currentUser.toString(), thread.currentUser);
 	}
 
 //	Leave a game room
 	public void leave(SetMultiThread thread) {
 		threadsInRoom.remove(thread.getName());
-		usersInRoom.remove(thread.getName());
+		
+		usersInRoom.remove(thread.currentUser.toString());
+		
 		if (threadsInRoom.isEmpty() & !getName().equals(SetServer.lobby.getName())) {
 			SetServer.gameRooms.remove(getName());
 		}
 	}
 	
 	// Setting up an array for use with the front end room buttons
-	public static ArrayList<GameRoom> roomHashtoArray(ConcurrentHashMap<String, GameRoom> roomHash)
+	public static ArrayList<GameRoom> getRoomsArray()
 	{
 	    
 	    
 	    ArrayList<GameRoom> roomsArray = new ArrayList<GameRoom>();
-	    Iterator<String> itRooms = roomHash.keySet().iterator();
+	    Iterator<String> itRooms = SetServer.gameRooms.keySet().iterator();
 	    
 	    //Filter out the rooms
 	    while (itRooms.hasNext())
 	    {
 	        String key = (String) itRooms.next();
-	        GameRoom curRoom = roomHash.get(key);
+	        GameRoom curRoom = SetServer.gameRooms.get(key);
 	        
 	        if (curRoom.getName().equals("lobby"))
 	        {
@@ -90,7 +93,7 @@ public class GameRoom implements Comparable<GameRoom>
 	        }
 	        
 	        
-	        roomsArray.add(roomHash.get(key));
+	        roomsArray.add(SetServer.gameRooms.get(key));
 	    }
 	    
 	    //Sort the rooms by date...

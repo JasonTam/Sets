@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 
 import setServer.GameRoom;
 import setServer.JSONinterface;
+import setServer.User;
 
 public class Lobby extends JPanel
 {
@@ -34,7 +35,7 @@ public class Lobby extends JPanel
 	 
      public static ArrayList<GameRoom> roomArray = new ArrayList<GameRoom>();
      
-     public static GameRoom curRoom = roomHash.get("lobby");
+     public static ArrayList<User> userArray = new ArrayList<User>();
      
      public static String userName = null;
 	 
@@ -92,6 +93,7 @@ public class Lobby extends JPanel
         lobbyRooms.revalidate();
         lobbyRooms.repaint();
     }
+    
     
     private class RoomsPanel extends JPanel
     {
