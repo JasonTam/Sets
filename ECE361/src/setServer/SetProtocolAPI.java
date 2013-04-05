@@ -314,9 +314,8 @@ public class SetProtocolAPI {
 		    		        e.printStackTrace();
 		    		    }
 		    		    thread.out.println(JSONinterface.genericToJson("gameResults", User.getUsersInRoomArray(curGameRoom)));
-		        	    SetServer.lobby.join(thread);
 		        	    
-	        		    thread.sp.changeState(SetProtocol.LOBBY, thread);
+	        		    thread.sp.changeState(SetProtocol.ROOM, thread);
 	        		    
 	        		    thread.currentUser.resetScore();
 	        		}

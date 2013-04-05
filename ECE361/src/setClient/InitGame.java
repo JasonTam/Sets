@@ -54,6 +54,9 @@ public class InitGame {
     
     public static int PORT = 4444;
     public static String HOST = "localhost";
+//    public static String HOST = "199.98.20.120";
+    
+    
     public static String inputLine = null;
     
     private static Socket socket = null;

@@ -9,6 +9,12 @@
 - we need to test things out and see how well our concurrency is being handled.
 
 
+
+
+
+
+
+
 This is how I have begun getting our VM ready:
 
 	http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
@@ -20,3 +26,15 @@ This is how I have begun getting our VM ready:
 Git was already installed, so this is how I cloned the project:
 
 	git clone https://github.com/JasonTam/ECE361.git
+
+	
+Opening port from firewall...
+
+	sudo ufw allow 4444
+
+Woot.. it worked:
+
+	java -jar runnableServer.jar
+	(just make sure you change the adderess in initGame.
+
+	
