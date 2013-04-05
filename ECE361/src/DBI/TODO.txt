@@ -8,6 +8,18 @@
 
 - we need to test things out and see how well our concurrency is being handled.
 
+- HTML encode the POPUP message when teh game ends.  This pop up should appear on everyones screen (that was in the current game,
+unless they left early)
+
+- Test that the DB gets updated CORRECTLY at the end of game.  I think its working,
+but we need more testing.
+
+- Run through playing multiple games in the same instance.
+
+- Test game playing in general.
+
+- Establish those concurreny rules we keep talking about ( in case 2 people submit the same set at the same time!)
+
 
 
 
@@ -32,9 +44,17 @@ Opening port from firewall...
 
 	sudo ufw allow 4444
 
+
+Create the setServer JAR:
+
+	Rigth click the package
+	Export
+	Runnable Jar File
+	Select correct launch config
+	Package required dependencies inside.
+	DONE
+
 Woot.. it worked:
 
 	java -jar runnableServer.jar
-	(just make sure you change the adderess in initGame.
-
-	
+	(just make sure you change the IP adderess in initGame);
