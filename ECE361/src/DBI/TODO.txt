@@ -1,0 +1,22 @@
+- Every time you submit 6 sets, end game is reached -- I did this on purpose so that we could test things out and ensure that scores get updated appropriately.
+
+- We could work on USER permissions (only the founder of a room can start the game)
+
+- We can decide what happens if everyone except one person leaves a started game
+
+- Can users start games when only one person is in them?
+
+- we need to test things out and see how well our concurrency is being handled.
+
+
+This is how I have begun getting our VM ready:
+
+	http://www.webupd8.org/2012/01/install-oracle-java-jdk-7-in-ubuntu-via.html
+	
+	sudo add-apt-repository ppa:webupd8team/java
+	sudo apt-get update
+	sudo apt-get install oracle-java7-installer
+	
+Git was already installed, so this is how I cloned the project:
+
+	git clone https://github.com/JasonTam/ECE361.git
