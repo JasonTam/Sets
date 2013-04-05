@@ -247,7 +247,22 @@ public class InitGame {
 	            }
 	            else if (action.equals("gameResults"))
 	            {
-	                debug(JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType()));
+	                
+	                ArrayList<User> scoreData = JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType());
+	                debug(scoreData);
+	                
+	                gamePanel.clearButton.setEnabled(false);
+	                gamePanel.submitButton.setEnabled(false);
+	                JOptionPane.showMessageDialog(frame,
+	                    "<html>" +
+	                        "<ul>" +
+		                        "<li>HI</li>" +
+		                        "<li>BYE</li>" +
+	                        "</ul>" +
+	                    "</html>"
+                    );
+                
+	                
 	            }
 	            else if (action.equals("gameState"))
 	            {

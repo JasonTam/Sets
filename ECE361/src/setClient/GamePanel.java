@@ -44,6 +44,7 @@ public class GamePanel extends JPanel {
 	
 	public static String roomName;
 	public static Game curGame;
+	
 	private Collection<Card> selectedCards;
 	private Map<String, JToggleButton> cardButtons;
 	
@@ -158,6 +159,7 @@ public class GamePanel extends JPanel {
 //		holder.add(arg0)
 		add(controls, BorderLayout.SOUTH);
 	}
+	
 	
 		public void setupGame()
 		{

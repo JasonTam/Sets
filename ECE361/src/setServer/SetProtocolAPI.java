@@ -320,6 +320,7 @@ public class SetProtocolAPI {
 	        		    thread.currentUser.resetScore();
 	        		}
 	        		SetServer.sendRooms(sp);
+	        		TESTINGONLY = 0;
 	    		    
         		}
         		else if (isSet) {
