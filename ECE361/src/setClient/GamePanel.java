@@ -15,6 +15,7 @@ import java.util.Queue;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
@@ -169,8 +170,9 @@ public class GamePanel extends JPanel {
 					continue;
 				}
 				System.out.println(curGame.getField().getCards());
+//				JOptionPane.showMessageDialog(this, getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
 				ImageIcon card_img = new ImageIcon
-	                    ("src/resources/images_cards/"+c.toString()+".gif");
+	                    (getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
 				final JToggleButton bC = new JToggleButton(card_img);
 	//			final JToggleButton bC = new JToggleButton(c.toString());
 				addElement(c, bC);
