@@ -121,7 +121,7 @@ public class User implements Comparable<User>{
 	    forfeit = false;
 	    totalSets = 0;
 	    correctSets = 0;
-	    
+	    incorrectSets = 0;
 	    totalScore = 0;
 	    
     }
@@ -134,6 +134,7 @@ public class User implements Comparable<User>{
 	    scores.add(games_lost);
 	    scores.add(games_tied);
 	   
+//	    For # of games quit
 	    if (forfeit)
 	    {
 	        scores.add(1);
@@ -146,7 +147,7 @@ public class User implements Comparable<User>{
 	    scores.add(totalSets);
 	    scores.add(correctSets);
 	    scores.add(userName);
-	    
+
 	    return scores;
     }
     
