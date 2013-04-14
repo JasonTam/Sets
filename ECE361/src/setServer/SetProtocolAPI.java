@@ -339,13 +339,7 @@ public class SetProtocolAPI {
         		else if (isSet==0) {
         			curThread.currentUser.incorrectSets++;
         		    curThread.currentUser.updateScore();
-        		    // This is how you send to all threads in a room
-	        		for (SetMultiThread thread : roomThreads)
-	        		{
-	        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
-	        		}
         		}
-        		
         	    SetServer.sendRoomUsers();
 	        		
 			}
