@@ -63,3 +63,21 @@ Woot.. it worked:
 
 	java -jar runnableServer.jar
 	(just make sure you change the IP adderess in initGame);
+
+
+
+
+
+How to create RegistrationServer jar
+	Right click RegistrationPage package
+	Export
+	Runnable jar file
+	Select correct launch config
+	Package deps inside
+
+How to RUN RegistrationServer jar
+	Place it next to the src folder (it needs to be even with src folder)
+	add firewall exception as needed
+	java -cp RegistrationServer.jar RegistrationPage.RegistrationServer
+	Should work
+	 
