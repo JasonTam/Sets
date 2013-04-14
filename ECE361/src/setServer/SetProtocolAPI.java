@@ -265,7 +265,7 @@ public class SetProtocolAPI {
 			
 			private void submit(String theInput)
 			{
-			    TESTINGONLY++;
+			    //TESTINGONLY++;
         	    curThread.currentUser.totalSets++;
         	    curThread.currentUser.updateScore();
         		System.out.println("Recieved a submit action");
