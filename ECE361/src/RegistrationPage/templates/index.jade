@@ -39,3 +39,17 @@ html
           span.small new password
         input(type='password',name='newpassword')
         button(type='submit') Change Password
+      h3 Top 25 (by games won)
+      table(border=1)
+        tr
+          th Username
+          th Games Played
+          th Games Won
+          th Sets Correct %
+        if scores
+          for score in scores
+            tr
+              td #{score.username}
+              td #{score.played}
+              td #{score.won}
+              td #{score.correct}

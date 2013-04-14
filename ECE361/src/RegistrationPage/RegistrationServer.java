@@ -23,10 +23,12 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.neuland.jade4j.Jade4J;
 import DBI.DBConnect;
+import DBI.User;
 
 // Wanted to use Jade template engine, the dependencies are absolutely nuts.
 
@@ -76,6 +78,12 @@ public class RegistrationServer extends AbstractHandler
 				System.err.println("no parameters!");
 				view.put("error", "Error Creating User");
 			}
+		}
+		try {
+			List<User> I = db.getStats();
+			view.put("scores", I);
+		} catch (Exception e){
+			e.printStackTrace();
 		}
 		baseRequest.setHandled(true);
 		String html = Jade4J.render("src/RegistrationPage/templates/index.jade", view);
