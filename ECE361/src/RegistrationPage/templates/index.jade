@@ -9,17 +9,33 @@ html
         h1 ECE361 Set Game
           img(src='/static/Cooper-Union-Logo.gif')
         p Andrew, Jason, Jordan, Nick, Victor
-        label
-          | Username:
-          span.small hey
-        input#name(type='text',name='username')
-        label
-          | Password:
-          span.small boo
-        input#email(type='password',name='password')
-        button(type='submit') Submit
         if (notify != "")
           div(class="notify")= notify
         if (error != "")
           div(class="error")= error
         div.spacer
+        h3 Register
+        label
+          | Username:
+          span.small new username
+        input#name(type='text',name='username')
+        label
+          | Password:
+          span.small new password
+        input#email(type='password',name='password')
+        button(type='submit') Register
+      form#changepassword(name="changepassword",method="POST")
+        h3 Change Password
+        label
+          | Username:
+          span.small current username
+        input(type='text',name='username')
+        label
+          | Password:
+          span.small current password
+        input(type='password',name='password')
+        label
+          | New Password:
+          span.small new password
+        input(type='password',name='newpassword')
+        button(type='submit') Change Password

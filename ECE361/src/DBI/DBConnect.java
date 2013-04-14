@@ -52,6 +52,16 @@ public class DBConnect {
 		return manipulated==1;
 	}
 	
+	public Boolean updateUserPassword(String username, String password, String newpassword) throws SQLException {
+		String queryString = "UPDATE Users SET password = ? WHERE username = ? AND password = ?;";
+		PreparedStatement ps = dbcon.prepareStatement(queryString);
+		ps.setString(1, DigestUtils.shaHex(newpassword));
+		ps.setString(2, username);
+		ps.setString(3, DigestUtils.shaHex(password));
+		int manipulated = ps.executeUpdate();
+		return manipulated==1;
+	}
+	
 	
 	public int updateScore(Collection list) throws SQLException {
 	    List arrayList = new ArrayList(list);
