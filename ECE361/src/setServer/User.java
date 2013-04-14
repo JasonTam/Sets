@@ -28,6 +28,7 @@ public class User implements Comparable<User>{
     Boolean forfeit = false;
     public int totalSets;
     public int correctSets;
+    public int incorrectSets;
     
     public int totalScore = 0;
     
@@ -101,7 +102,8 @@ public class User implements Comparable<User>{
     // Everytime you forfeit a game, you lose 16 points.
     public void updateScore()
     {
-        totalScore = (correctSets * 6) - (totalSets * 1);
+//        totalScore = (correctSets * 6) - (totalSets * 1);
+        totalScore = (correctSets * 5) - (incorrectSets * 1);
         
         if (forfeit)
         {

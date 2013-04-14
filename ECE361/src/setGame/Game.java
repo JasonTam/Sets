@@ -101,31 +101,35 @@ public class Game {
 		}
 	}
 	
-	public boolean submitSet(Collection<Card> cards) {
+//	Returns 0 if not a set
+//	Returns 1 if it is a set
+//	Returns 2 if the cards are not valid (not on the current field)
+	public int submitSet(Collection<Card> cards) {
 
 //		this is just here to help me choose sets to troubleshoot
 	this.field.printSets();
 //	TODO ************ remove above when done
+	if  (!this.field.getCards().containsAll(cards)) 
+		return 2;
 	
-		if (cards.size()==3 &&
-				this.field.getCards().containsAll(cards)) {
-			if (GameLogic.isSet(cards)) {
-				System.out.println("SET FOUND!");
-				dealer.removeCardsFromField(cards);
-				dealer.deal();
-				gameover = isGameOver();
-				if (gameover)
-					System.out.println(">>Game class says gameover");
-				else
-					validateField();
-				return true;
-			} else {
-				System.out.println("INVALID SET!");
-				return false;
-			}
+	if (cards.size()==3) {
+		if (GameLogic.isSet(cards)) {
+			System.out.println("SET FOUND!");
+			dealer.removeCardsFromField(cards);
+			dealer.deal();
+			gameover = isGameOver();
+			if (gameover)
+				System.out.println(">>Game class says gameover");
+			else
+				validateField();
+			return 1;
+		} else {
+			System.out.println("INVALID SET!");
+			return 0;
 		}
-		else
-			return false;
+	}
+	else
+		return 0;
 	}
 	
 	private void validateField() {

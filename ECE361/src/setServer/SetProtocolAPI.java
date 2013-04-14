@@ -275,7 +275,7 @@ public class SetProtocolAPI {
         		Collection<Card> selectedCards =
         				JSONinterface.jsonGetData(theInput, collectionType);
         		GameRoom curGameRoom = SetServer.gameRooms.get(curThread.currentRoom.getName());
-        		boolean isSet = curGameRoom.getCurGame().submitSet(selectedCards);
+        		int isSet = curGameRoom.getCurGame().submitSet(selectedCards);
         		
 //	        		boolean isSet = GameLogic.isSet(selectedCards);
         		System.out.println("SERVER SAYS SET IS : " + isSet);
@@ -323,7 +323,7 @@ public class SetProtocolAPI {
 	        		TESTINGONLY = 0;
 	    		    
         		}
-        		else if (isSet) {
+        		else if (isSet==1) {
         		    curThread.currentUser.correctSets++;
         		    curThread.currentUser.updateScore();
         		    // This is how you send to all threads in a room
@@ -336,6 +336,16 @@ public class SetProtocolAPI {
 //	        			TODO
 //	        			this might trigger other events
         		}
+        		else if (isSet==0) {
+        			curThread.currentUser.incorrectSets++;
+        		    curThread.currentUser.updateScore();
+        		    // This is how you send to all threads in a room
+	        		for (SetMultiThread thread : roomThreads)
+	        		{
+	        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
+	        		}
+        		}
+        		
         	    SetServer.sendRoomUsers();
 	        		
 			}
