@@ -20,6 +20,11 @@ but we need more testing.
 
 - Establish those concurreny rules we keep talking about ( in case 2 people submit the same set at the same time!)
 
+-- IMPORTANT --
+When the first person click START GAME, their start will automcatically get disabled.  However, the other users have to wait for the server response to disable their buttons.
+This, the best solution might be to start the game ONLY after ALL players have clicked the button?
+We need to address this.
+
 
 
 
