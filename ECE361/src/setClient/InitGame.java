@@ -53,7 +53,7 @@ public class InitGame {
     public static int lineNumber = 0;
     
     public static int PORT = 4444;
-    public static String HOST = "10.0.0.3";
+    public static String HOST = "localhost";
 //    public static String HOST = "199.98.20.120";
     
     

@@ -172,7 +172,8 @@ public class GamePanel extends JPanel {
 				System.out.println(curGame.getField().getCards());
 //				JOptionPane.showMessageDialog(this, getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
 				ImageIcon card_img = new ImageIcon
-	                    (getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
+	                    (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
+// Use this config for the runnable jar	                    (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
 				final JToggleButton bC = new JToggleButton(card_img);
 	//			final JToggleButton bC = new JToggleButton(c.toString());
 				addElement(c, bC);
