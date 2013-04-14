@@ -53,11 +53,21 @@ public class RegistrationServer extends AbstractHandler
 		view.put("error", "");
 		/* If we have form data, add response to view */
 		if(request.getMethod().equalsIgnoreCase("POST")){
+			Map<String, String[]> parameters = request.getParameterMap();
 			try {
 				String u = request.getParameter("username");
 				String p = request.getParameter("password");
-				db.createUser(u, p);
-				view.put("notify", "Successfully Created User "+u);
+				if (parameters.containsKey("newpassword")){
+					boolean worked = db.updateUserPassword(u, p, request.getParameter("newpassword"));
+					if (worked){
+						view.put("notify", "Changed Password for User "+u);
+					} else {
+						view.put("error", "Username and Password incorrect.");
+					}
+				} else {
+					db.createUser(u, p);
+					view.put("notify", "Successfully Created User "+u);
+				}
 			} catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e){
 				view.put("error", "User already exists!");
 			}
