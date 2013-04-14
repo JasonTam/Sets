@@ -286,10 +286,10 @@ public class SetProtocolAPI {
         		curGameRoom.getCurGame().print();
         		System.out.println("IS GAME OVER?");
         		System.out.println(curGameRoom.getCurGame().isGameOver());
-/*        		
         		if(curGameRoom.getCurGame().isGameOver())
-        		*/
+/*        		
         		if(TESTINGONLY > 5)
+        		*/
         		{
         		
 	        		
