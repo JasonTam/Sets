@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
+import DBI.User;
 
 
 public class DBConnect {
@@ -50,6 +50,26 @@ public class DBConnect {
 		ps.setString(2, DigestUtils.shaHex(password));
 		int manipulated = ps.executeUpdate();
 		return manipulated==1;
+	}
+	
+	public List<User> getStats() throws SQLException{
+		List<User> users = new ArrayList<User>();
+		String queryString =
+				"SELECT U.username, U.games_played, U.games_won, U.sets_submitted, U.sets_correct " +
+				"FROM Users U ORDER BY games_won DESC LIMIT 25";
+		PreparedStatement ps = dbcon.prepareStatement(queryString);
+		ResultSet r = ps.executeQuery();
+		r.first();
+		do{
+			User u = new User();
+			u.username = r.getString(1);
+			u.played = r.getInt(2);
+			u.won = r.getInt(3);
+			u.correct = (((float)r.getInt(5))/r.getInt(4))*100;
+			users.add(u);
+			r.next();
+		}while(!r.isLast());
+		return users;
 	}
 	
 	public Boolean updateUserPassword(String username, String password, String newpassword) throws SQLException {
