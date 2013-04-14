@@ -188,6 +188,9 @@ public class GamePanel extends JPanel {
 		{
 //        	TODO
 //        	May want to only send deltas rather than entire game
+			selectedCards.removeAll(selectedCards);
+			for (JToggleButton bC : cardButtons.values())
+				bC.setSelected(false);
 			gamePanel.removeAll();
 			setupGame();
 		}
