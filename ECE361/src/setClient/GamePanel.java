@@ -175,7 +175,6 @@ public class GamePanel extends JPanel {
 	                    (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
 // Use this config for the runnable jar	                    (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
 				final JToggleButton bC = new JToggleButton(card_img);
-	//			final JToggleButton bC = new JToggleButton(c.toString());
 				addElement(c, bC);
 				gamePanel.revalidate();
 			}
@@ -183,20 +182,12 @@ public class GamePanel extends JPanel {
 			submitButton.setEnabled(true);
 			clearButton.setEnabled(true);
 		}
-		
+			
 		public void updateGame()
 		{
-//        	TODO
-//        	May want to only send deltas rather than entire game
 			selectedCards.removeAll(selectedCards);
 			for (JToggleButton bC : cardButtons.values())
 				bC.setSelected(false);
-			//gamePanel.removeAll();
-			//cardButtons = new HashMap<String, JToggleButton>();
-//			setupGame();
-			
-			
-//			TODO move up 
 			
 			int index = 0;
 			for (final Card c : curGame.getField().getCards()) {
@@ -206,16 +197,12 @@ public class GamePanel extends JPanel {
 				else {
 					System.out.println("New card: " + c);
 
-//					gamePanel.remove(cardButtons.get(c.toString()));
 					gamePanel.remove(index);
 					cardButtons.remove(c.toString());
 					System.out.println(curGame.getField().getCards());
-//					JOptionPane.showMessageDialog(this, getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
 					ImageIcon card_img = new ImageIcon
 		                    (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
-	// Use this config for the runnable jar	                    (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
 					final JToggleButton bC = new JToggleButton(card_img);
-		//			final JToggleButton bC = new JToggleButton(c.toString());
 					addElement(c, bC,index);
 					gamePanel.revalidate();
 				}
@@ -236,30 +223,17 @@ public class GamePanel extends JPanel {
 			clearButton.setEnabled(false);
 		}
 		
-		
-		public void addElement(final Card c, final JToggleButton bC) {
-			gamePanel.add(bC);
-			cardButtons.put(c.toString(), bC);
-			bC.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (bC.isSelected()) {
-						if (selectedCards.size()>=3) {
-							Card pop = ((LinkedList<Card>) selectedCards).removeFirst();
-							cardButtons.get(pop.toString()).setSelected(false);
-						}
-						System.out.println(c.toString() + " selected");
-						selectedCards.add(c);
-					} else {
-						System.out.println(c.toString() + " unselected");
-						selectedCards.remove(c);
-					}
-				}
-			});
-		}
-		
-		public void addElement(final Card c, final JToggleButton bC, int index) {
-			gamePanel.add(bC,index);
+		public void addElement(final Card c, final JToggleButton bC, int... index) {
+			System.out.println(index);
+			System.out.println(index.length);
+			if (index.length==0) {
+				gamePanel.add(bC);
+				System.out.println("in 1");
+			}
+			else {
+				gamePanel.add(bC,index[0]);
+				System.out.println("in 2");
+			}
 			cardButtons.put(c.toString(), bC);
 			bC.addActionListener(new ActionListener() {
 				@Override
