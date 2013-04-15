@@ -67,7 +67,7 @@ public class Login extends JFrame  {
 			jbnLogin.addActionListener(new ActionListener() {          
 			    public void actionPerformed(ActionEvent e) {
 			    	
-			    	String userString = jtfInput.getText();;
+			    	String userString = jtfInput.getText().toLowerCase();
 			    	String passString = new String(jpwPassword.getPassword());
 			    	
 			    	ArrayList<String> data =  new ArrayList<String>();
