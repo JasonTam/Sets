@@ -1,0 +1,11 @@
+form#form(name="register",method="POST")
+  h3 Register
+  label
+    | Username:
+    span.small new username
+  input#name(type='text',name='username')
+  label
+    | Password:
+    span.small new password
+  input#email(type='password',name='password')
+  button(type='submit') Register
