@@ -10,12 +10,12 @@ import javax.swing.JTextField;
 
 import setServer.JSONinterface;
 
-public class CreateRoomButton extends JPanel {
+public class CreateRoomPanel extends JPanel {
     
     private JButton createButton = new JButton("Create Room!");
     private JTextField roomName = new JTextField();
     
-    public CreateRoomButton()
+    public CreateRoomPanel()
     {
         
         setLayout(new GridLayout(2, 1));

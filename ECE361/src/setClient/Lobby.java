@@ -26,7 +26,7 @@ public class Lobby extends JPanel
 	 private RoomsPanel lobbyRooms;
      private JButton test;
      
-     public CreateRoomButton createRoom;
+     public CreateRoomPanel createRoom;
      
      
      public ChatPanel chat;
@@ -44,7 +44,7 @@ public class Lobby extends JPanel
         test = new JButton("Click me to view an output of data structurs in teh server's error console.");
         chat = new ChatPanel();
         lobbyRooms = new RoomsPanel();
-        createRoom = new CreateRoomButton();
+        createRoom = new CreateRoomPanel();
         
         lobbyRooms.setBorder(BorderFactory.createLineBorder(Color.black)); 
         
