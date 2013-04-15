@@ -85,3 +85,13 @@ table {
 table, th, td {
 	border:1px solid black;
 }
+
+.error {
+	color:red;
+	font-weight:bold;
+}
+
+.notify {
+	color:green;
+	font-weight:bold;
+}

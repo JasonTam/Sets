@@ -40,6 +40,7 @@ public class DBConnect {
 		prepareStatement.setString(1, username);
 		prepareStatement.setString(2, DigestUtils.shaHex(password));
 		ResultSet rs = prepareStatement.executeQuery();
+		System.out.println(prepareStatement.toString());
 		return rs.next();
 	}
 	
@@ -49,6 +50,7 @@ public class DBConnect {
 		ps.setString(1, username);
 		ps.setString(2, DigestUtils.shaHex(password));
 		int manipulated = ps.executeUpdate();
+		System.out.println(ps.toString());
 		return manipulated==1;
 	}
 	
@@ -78,6 +80,7 @@ public class DBConnect {
 		ps.setString(1, DigestUtils.shaHex(newpassword));
 		ps.setString(2, username);
 		ps.setString(3, DigestUtils.shaHex(password));
+		System.out.println(ps.toString());
 		int manipulated = ps.executeUpdate();
 		return manipulated==1;
 	}
