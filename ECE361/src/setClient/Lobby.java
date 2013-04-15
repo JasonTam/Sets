@@ -26,7 +26,7 @@ public class Lobby extends JPanel
 	 private RoomsPanel lobbyRooms;
      private JButton test;
      
-     private CreateRoomButton createRoom;
+     public CreateRoomButton createRoom;
      
      
      public ChatPanel chat;

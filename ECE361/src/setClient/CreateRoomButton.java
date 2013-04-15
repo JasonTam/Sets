@@ -12,10 +12,11 @@ import setServer.JSONinterface;
 
 public class CreateRoomButton extends JPanel {
     
+    private JButton createButton = new JButton("Create Room!");
+    private JTextField roomName = new JTextField();
+    
     public CreateRoomButton()
     {
-        JButton createButton = new JButton("Create Room!");
-        final JTextField roomName = new JTextField();
         
         setLayout(new GridLayout(2, 1));
         
@@ -27,12 +28,7 @@ public class CreateRoomButton extends JPanel {
 	            {
 	                if (!roomName.getText().equals(""))
 	                {
-	                    
-	                    InitGame.gamePanel = new GamePanel(roomName.getText());
-	                    InitGame.cardLayout.add(InitGame.gamePanel, "GAME");
-		                InitGame.out.println(JSONinterface.genericToJson("join", roomName.getText()));
-		                roomName.setText("");
-		                InitGame.changeCards("GAME");
+		                InitGame.out.println(JSONinterface.genericToJson("create", roomName.getText()));
 	                }
 	            } 
 	        }
@@ -43,6 +39,15 @@ public class CreateRoomButton extends JPanel {
         
         
         
+    }
+   
+    public void createRoomAction()
+    {
+        InitGame.gamePanel = new GamePanel(roomName.getText());
+        InitGame.cardLayout.add(InitGame.gamePanel, "GAME");
+        InitGame.out.println(JSONinterface.genericToJson("join", roomName.getText()));
+        roomName.setText("");
+        InitGame.changeCards("GAME");
     }
 
 }
