@@ -163,9 +163,9 @@ public class SetProtocolAPI {
 		        if (action.equals("join")) {
 		        	joinRoom(theInput);
 		    	}
-
-		        else if (theInput.toLowerCase().startsWith("set")) {
-		        	//theOutput = gameLogic.set();
+		        else if (action.equals("create"))
+		        {
+		        	createRoom(theInput);
 		        }
 		        else {
 		        	lobbyInvalid(theInput);
@@ -176,6 +176,21 @@ public class SetProtocolAPI {
 				sp.theOutput = JSONinterface.genericToJson("null", "Invalid Lobby command");
 			}
 			
+			private void createRoom(String theInput)
+			{
+				String roomName = JSONinterface.jsonGetData(theInput, String.class);
+				// If the room already exists, reject the creation.
+	        	if (SetServer.gameRooms.containsKey(roomName))
+	        	{
+        			sp.theOutput = JSONinterface.genericToJson("create", "fail");
+	        	}
+	        	else 
+	        	{
+        			sp.theOutput = JSONinterface.genericToJson("create", "success");
+	        	}
+	        		
+				
+			}
 			private void joinRoom(String theInput) {
 				String roomName = JSONinterface.jsonGetData(theInput, String.class);
 				
