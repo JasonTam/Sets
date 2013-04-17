@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -182,37 +183,52 @@ public class GamePanel extends JPanel {
 			submitButton.setEnabled(true);
 			clearButton.setEnabled(true);
 		}
-			
+		
 		public void updateGame()
+		{
+//        	TODO
+//        	May want to only send deltas rather than entire game
+			gamePanel.removeAll();
+			setupGame();
+		}
+			
+		/*public void updateGame()
 		{
 			selectedCards.removeAll(selectedCards);
 			for (JToggleButton bC : cardButtons.values())
 				bC.setSelected(false);
 			
-			int index = 0;
-			for (final Card c : curGame.getField().getCards()) {
-				if (c == null || cardButtons.containsKey(c.toString())) {
-					System.out.println("Already contains: " + c);
+			ArrayList<Card> cardsUpdated = curGame.getField().getCards();
+			
+			
+			Object[] cardsOnField = cardButtons.keySet().toArray();
+			for (int index = 0; index < cardButtons.size(); index++) {
+				if (index > cardsUpdated.size()) {
+					break;
+				}
+				String curCardValue = cardsOnField[index].toString();
+				Card newCard = cardsUpdated.get(index);
+				String newCardValue = newCard.toString();
+				System.out.println(newCardValue + " " + curCardValue);
+				if (curCardValue == newCardValue) {
+					// do nothing
+					System.out.println("Already contains: " + curCardValue);
+					continue;
 				}
 				else {
-					System.out.println("New card: " + c);
-
-					gamePanel.remove(index);
-					cardButtons.remove(c.toString());
-					System.out.println(curGame.getField().getCards());
+					System.out.println("New card: " + newCardValue);
+					//System.out.println(curGame.getField().getCards());
 					ImageIcon card_img = new ImageIcon
-		                    (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
+		                    (getClass().getResource("/resources/images_cards/"+newCardValue+".gif"));
 					final JToggleButton bC = new JToggleButton(card_img);
-					addElement(c, bC,index);
+					addElement(newCard, bC,index);
 					gamePanel.revalidate();
 				}
-
-				index++;
 			}
 			startButton.setEnabled(false);
 			submitButton.setEnabled(true);
 			clearButton.setEnabled(true);
-		}
+		}*/
 		
 		public void endGame()
 		{
@@ -251,6 +267,5 @@ public class GamePanel extends JPanel {
 					}
 				}
 			});
-		}
-		
+		}	
 }

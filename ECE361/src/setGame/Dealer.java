@@ -35,24 +35,27 @@ public class Dealer {
 
 	private void dealCard() {
 		if (deck.size() > 0) {
-			int indexOfNull = field.indexOf(null);
-			if (0 <= indexOfNull && indexOfNull < field.getBaseSize()) {
-				field.set(indexOfNull, deck.remove(0));
-			} else {
-				field.add(deck.remove(0));
-			}
+//			int indexOfNull = field.indexOf(null);
+//			if (0 <= indexOfNull && indexOfNull < field.getBaseSize()) {
+//				field.set(indexOfNull, deck.remove(0));
+//			} else {
+//				field.add(deck.remove(0));
+//			}
+			field.add(deck.remove(0));
 		}
 	}
 
 	public void removeCardsFromField(int[] indices) {
 		for (int index : indices) {
-			field.set(index, null);
+//			field.set(index, null);
+			field.remove(index);
 		}
 	}
 	
 	public void removeCardsFromField(Collection<Card> cards) {
 		for (Card c : cards)
-			field.set(field.indexOf(c), null);
+//			field.set(field.indexOf(c), null);	
+			field.remove(field.indexOf(c));
 	}
 	
 	
