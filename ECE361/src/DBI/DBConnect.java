@@ -12,7 +12,7 @@ import DBI.User;
 
 public class DBConnect {
 	
-	private static String DBURL = "jdbc:mysql://199.98.20.120/SetGame";
+	private static String DBURL = "jdbc:mysql://199.98.20.120/SetGame?autoReconnect=true";
 	private static String DBUSERNAME = "root";
 	private static String DBPASSWORD = "password";
 	
