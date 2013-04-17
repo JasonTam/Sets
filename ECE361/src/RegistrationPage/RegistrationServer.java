@@ -30,8 +30,6 @@ import de.neuland.jade4j.Jade4J;
 import DBI.DBConnect;
 import DBI.User;
 
-// Wanted to use Jade template engine, the dependencies are absolutely nuts.
-
 public class RegistrationServer extends AbstractHandler
 {
 	private DBConnect db;

@@ -213,6 +213,20 @@ public class InitGame {
 				    Lobby.userArray = JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType());
 	                userJList.createListModel();
                 }
+	            else if (action.equals("create"))
+	            {
+	            	String message = JSONinterface.jsonGetData(inputLine, String.class);
+	            	if (message.equals("fail"))
+	            	{
+	            		JOptionPane.showMessageDialog(frame, "Sorry, that room already exists");
+	            		
+	            	}
+	            	else
+	            	{
+	            		lobbyPanel.createRoom.createRoomAction();
+	            	}
+	            	
+	            }
 	            /*
 	            else if (action.equals("login"))
 	            {
