@@ -1,12 +1,14 @@
 package setClient;
 
 import java.awt.BorderLayout;
+
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -26,6 +28,7 @@ import setGame.Card;
 import setGame.Game;
 import setGame.GameLogic;
 import setServer.JSONinterface;
+
 
 // TODO 
 // Need to go through game flow 
@@ -50,6 +53,7 @@ public class GamePanel extends JPanel {
 
 	private Collection<Card> selectedCards;
 	private Map<Card, JToggleButton> cardButtons;
+	private Map<Card, Integer> cardInd;
 
 	public GamePanel(String rName) {
 		roomName = rName;
@@ -71,6 +75,7 @@ public class GamePanel extends JPanel {
 				+ maxGap, (int) (buttonSize.getHeight() * 3.5) + maxGap * 2));
 
 		cardButtons = new HashMap<Card, JToggleButton>();
+		cardInd = new HashMap<Card, Integer>();
 		selectedCards = new LinkedList<Card>();
 		// Add buttons to experiment with Grid Layout
 
@@ -155,6 +160,7 @@ public class GamePanel extends JPanel {
 	}
 
 	public void setupGame() {
+		int index = 0;
 		for (final Card c : curGame.getField().getCards()) {
 			if (c == null) {
 				continue;
@@ -165,8 +171,9 @@ public class GamePanel extends JPanel {
 			// Use this config for the runnable jar
 			// (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
 			final JToggleButton bC = new JToggleButton(getImg(c));
-			addElement(c, bC);
+			addElement(c, bC,index);
 			gamePanel.revalidate();
+			index++;
 		}
 		startButton.setEnabled(false);
 		submitButton.setEnabled(true);
@@ -181,79 +188,80 @@ public class GamePanel extends JPanel {
 //		setupGame();
 //	}
 
-//	public void brkn_updateGame() {
-//		clearSelected();
-//
-//		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
-//
-//		Object[] cardsOnField = cardButtons.keySet().toArray();
-//		for (int index = 0; index < cardButtons.size(); index++) {
-//			if (index > cardsUpdated.size()) {
-//				break;
-//			}
-//			String curCardValue = cardsOnField[index].toString();
-//			Card newCard = cardsUpdated.get(index);
-//			String newCardValue = newCard.toString();
-//			System.out.println(newCardValue + " " + curCardValue);
-//			if (curCardValue == newCardValue) {
-//				// do nothing
-//				System.out.println("Already contains: " + curCardValue);
-//				continue;
-//			} else {
-//				System.out.println("New card: " + newCardValue);
-//				// System.out.println(curGame.getField().getCards());
-//				ImageIcon card_img = new ImageIcon(getClass().getResource(
-//						"/resources/images_cards/" + newCardValue + ".gif"));
-//				final JToggleButton bC = new JToggleButton(card_img);
-//				addElement(newCard, bC, index);
-//				gamePanel.revalidate();
-//			}
-//		}
-//	}
+	/*public void brkn_updateGame() {
+		clearSelected();
 
-//	public void updateGame() {
-//		clearSelected();
-//
-//		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
-////		Set<Card> cardsCurrent = cardButtons.keySet();
-//		Object[] cardsCurrent = cardButtons.keySet().toArray();
-//		Map<Card,Integer> remCards = new HashMap<Card,Integer>();
-//		Set<Card> sameCards = new HashSet<Card>();
-//		
-////		for (Card c : cardsCurrent) {
-//		System.out.println("SIZE OF UPDATE1: " + cardsUpdated.size());
-//		for (int i = 0; i < cardButtons.size(); i++) {
-//			Card c = (Card) cardsCurrent[i];
-//			if (!cardsUpdated.contains(c)) {
-//				remCards.put(c,i);
-//				System.out.println("remove index add: " + i);
-//			} else {
-//				sameCards.add(c);
-//			}
-//		}
-//		for (Card c : sameCards)
-//			cardsUpdated.remove(c);
-//		
-//		System.out.println("SIZE OF UPDATE2: " + cardsUpdated.size());
-//		for (Card c : remCards.keySet()) {
-//			System.out.println("removing index: " + remCards.get(c));
-//			gamePanel.remove(cardButtons.get(c));
-//			cardButtons.remove(c);
-//			Card pop = cardsUpdated.remove(0);
-//			
-//			final JToggleButton bC = new JToggleButton(getImg(pop));
-//			addElement(pop, bC, remCards.get(c));
-//		}
-//		
-//		System.out.println("CARDS REMAINING TO UPDATE: " + cardsUpdated.size());
-//		
-//		for (Card c : cardsUpdated) {
-//			final JToggleButton bC = new JToggleButton(getImg(c));
-//			addElement(c, bC);
-//		}
-//
-//	}
-	
+		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
+
+		Object[] cardsOnField = cardButtons.keySet().toArray();
+		for (int index = 0; index < cardButtons.size(); index++) {
+			if (index > cardsUpdated.size()) {
+				break;
+			}
+			String curCardValue = cardsOnField[index].toString();
+			Card newCard = cardsUpdated.get(index);
+			String newCardValue = newCard.toString();
+			System.out.println(newCardValue + " " + curCardValue);
+			if (curCardValue == newCardValue) {
+				// do nothing
+				System.out.println("Already contains: " + curCardValue);
+				continue;
+			} else {
+				System.out.println("New card: " + newCardValue);
+				// System.out.println(curGame.getField().getCards());
+				ImageIcon card_img = new ImageIcon(getClass().getResource(
+						"/resources/images_cards/" + newCardValue + ".gif"));
+				final JToggleButton bC = new JToggleButton(card_img);
+				addElement(newCard, bC, index);
+				gamePanel.revalidate();
+			}
+		}
+	}*/
+
+	/*public void updateGame() {
+		clearSelected();
+
+		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
+//		Set<Card> cardsCurrent = cardButtons.keySet();
+		Object[] cardsCurrent = cardButtons.keySet().toArray();
+		Map<Card,Integer> remCards = new HashMap<Card,Integer>();
+		Set<Card> sameCards = new HashSet<Card>();
+		
+//		for (Card c : cardsCurrent) {
+		System.out.println("SIZE OF UPDATE1: " + cardsUpdated.size());
+		for (int i = 0; i < cardButtons.size(); i++) {
+			Card c = (Card) cardsCurrent[i];
+			if (!cardsUpdated.contains(c)) {
+				remCards.put(c,i);
+				System.out.println("remove index add: " + i);
+			} else {
+				sameCards.add(c);
+			}
+		}
+		for (Card c : sameCards)
+			cardsUpdated.remove(c);
+		
+		System.out.println("SIZE OF UPDATE2: " + cardsUpdated.size());
+		for (Card c : remCards.keySet()) {
+			System.out.println("removing index: " + remCards.get(c));
+			gamePanel.remove(cardButtons.get(c));
+			cardButtons.remove(c);
+			Card pop = cardsUpdated.remove(0);
+			
+			final JToggleButton bC = new JToggleButton(getImg(pop));
+			addElement(pop, bC, remCards.get(c));
+		}
+		
+		System.out.println("CARDS REMAINING TO UPDATE: " + cardsUpdated.size());
+		
+		for (Card c : cardsUpdated) {
+			final JToggleButton bC = new JToggleButton(getImg(c));
+			addElement(c, bC);
+		}
+
+	}
+*/	
+/*	
 	public void updateGame()
 	{
 		clearSelected();
@@ -262,6 +270,7 @@ public class GamePanel extends JPanel {
 		Map<Card,Integer> remCards = new HashMap<Card,Integer>();
 		
 		int index = 0;
+//		Analyze cards that are no longer on the field
 		for (Card c : cardButtons.keySet()) {
 			if (cardsUpdated.contains(c)) {
 				System.out.println("Repeat: " + c);
@@ -289,6 +298,50 @@ public class GamePanel extends JPanel {
 			addElement(c, bC);
 		}
 	}
+	*/
+	
+	
+	public void updateGame()
+	{
+		clearSelected();
+
+		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
+		Set<Card> remCards = new HashSet<Card>();
+		
+		int index = 0;
+//		Analyze cards that are no longer on the field
+		for (Card c : cardButtons.keySet()) {
+			if (cardsUpdated.contains(c)) {
+				System.out.println("Repeat: " + c);
+				cardsUpdated.remove(c);
+			} else {
+				System.out.println(
+						"New card: " + c + " @index: " + index);
+				remCards.add(c);
+			}
+			index++;
+		}
+		System.out.println("CARDS TO UPDATE2: " + cardsUpdated.size());
+		for (Card c : remCards) {
+			gamePanel.remove(cardButtons.get(c));
+			cardButtons.remove(c);
+			Card pop = cardsUpdated.remove(0);
+			final JToggleButton bC = new JToggleButton(getImg(pop));
+			addElement(pop, bC, cardInd.get(c));
+//			cardInd.put(pop, cardInd.get(c));
+			cardInd.remove(c);
+		}
+		
+		System.out.println("CARDS REMAINING TO UPDATE: " + cardsUpdated.size());
+//		Extra Cards
+		int offset = 1;
+		for (Card c : cardsUpdated) {
+			final JToggleButton bC = new JToggleButton(getImg(c));
+			addElement(c, bC,cardInd.size()+offset);
+			offset++;
+		}
+	}
+	
 	
 	
 	
@@ -305,9 +358,11 @@ public class GamePanel extends JPanel {
 		System.out.println(index.length);
 		if (index.length == 0) {
 			gamePanel.add(bC);
+			cardInd.put(c, 0);
 			System.out.println("Adding to end");
 		} else {
 			gamePanel.add(bC, index[0]);
+			cardInd.put(c, index[0]);
 			System.out.println("Adding to index: " + index[0]);
 		}
 		cardButtons.put(c, bC);
