@@ -321,19 +321,18 @@ public class GamePanel extends JPanel {
 			}
 			index++;
 		}
-		System.out.println("CARDS TO UPDATE2: " + cardsUpdated.size());
+		
+//		Fill in the voids with new cards
 		for (Card c : remCards) {
 			gamePanel.remove(cardButtons.get(c));
 			cardButtons.remove(c);
 			Card pop = cardsUpdated.remove(0);
 			final JToggleButton bC = new JToggleButton(getImg(pop));
 			addElement(pop, bC, cardInd.get(c));
-//			cardInd.put(pop, cardInd.get(c));
 			cardInd.remove(c);
 		}
 		
-		System.out.println("CARDS REMAINING TO UPDATE: " + cardsUpdated.size());
-//		Extra Cards
+//		Extra Cards (if greater than usual number of cards)
 		int offset = 1;
 		for (Card c : cardsUpdated) {
 			final JToggleButton bC = new JToggleButton(getImg(c));
