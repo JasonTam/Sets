@@ -336,7 +336,8 @@ public class GamePanel extends JPanel {
 		int offset = 1;
 		for (Card c : cardsUpdated) {
 			final JToggleButton bC = new JToggleButton(getImg(c));
-			addElement(c, bC,cardInd.size()+offset);
+			addElement(c, bC);
+			cardInd.put(c, cardInd.size()+offset);
 			offset++;
 		}
 	}
@@ -357,7 +358,6 @@ public class GamePanel extends JPanel {
 		System.out.println(index.length);
 		if (index.length == 0) {
 			gamePanel.add(bC);
-			cardInd.put(c, 0);
 			System.out.println("Adding to end");
 		} else {
 			gamePanel.add(bC, index[0]);

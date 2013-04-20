@@ -30,6 +30,7 @@ public class Game {
 		this.deck = new Deck();
 		this.field = new Field(baseSize);
 		this.dealer = new Dealer(deck, field);
+		this.validateField();
 	}
 
 	public void start() {
