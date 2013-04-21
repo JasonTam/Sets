@@ -262,19 +262,82 @@ public class InitGame {
 	            else if (action.equals("gameResults"))
 	            {
 	                
-	                ArrayList<User> scoreData = JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType());
-	                debug(scoreData);
-	                
-	                gamePanel.clearButton.setEnabled(false);
-	                gamePanel.submitButton.setEnabled(false);
-	                JOptionPane.showMessageDialog(frame,
-	                    "<html>" +
-	                        "<ul>" +
-		                        "<li>HI</li>" +
-		                        "<li>BYE</li>" +
-	                        "</ul>" +
-	                    "</html>"
-                    );
+	            	ArrayList<User> scoreData = JSONinterface.jsonGetData(inputLine, new TypeToken<ArrayList<User>>(){}.getType());
+	            	debug(scoreData);
+
+	            	gamePanel.clearButton.setEnabled(false);
+	            	gamePanel.submitButton.setEnabled(false);
+	            	ArrayList<User> scoreDataWithScoreOrder=scoreData;
+	            	int[] scorekeeper = new int[scoreData.size()];
+	            	int index=0;
+	            	for( User usr2: scoreDataWithScoreOrder)
+	            	{
+	            		int higher=0;
+	            		for(User usr:scoreData)
+	            		{
+	            			if(usr2.getTotalScore()>usr.getTotalScore())
+	            			{
+	            				higher++;
+	            			}
+	            		}
+	            		scorekeeper[index]=higher;
+	            		index++;
+	            	}
+	            	//
+	            	User tmp2;
+	            	int tmp;
+	            	for (int k=0; k<scoreData.size()-1; k++) {
+
+	            	    boolean isSorted=true;
+	            	    for (int i=1; i<scoreData.size()-k; i++) {
+
+	            	         if (scorekeeper[i]>scorekeeper[i-1]  ) {
+	            	             tmp=scorekeeper[i];
+	            	             scorekeeper[i]=scorekeeper[i-1];
+	            	             scorekeeper[i-1]=tmp;
+
+
+	            	            tmp2=scoreData.get(i);
+	            	            scoreData.set(i,scoreData.get(i-1));
+	            	            scoreData.set(i-1,tmp2);
+
+	            	            isSorted=false;
+	            	        }
+	            	    }
+	            	    if (isSorted) break;
+	            	}
+
+	            	//
+
+	            	String data="";
+	            	String winnerNames="";
+	            	int highScore=scoreData.get(0).getTotalScore();
+	            	for( User usr: scoreData)
+	            	{   
+	            		if(usr.getTotalScore()<highScore)
+	            		{
+	            		data=data+"<tr>";
+	            		data=data+"<td>"+usr.getName()+"</td>";
+	            		data=data+"<td>"+usr.getTotalScore()+"</td>";
+	            		data=data+"</tr>";
+	            		}else{
+	            			winnerNames=winnerNames+" "+usr.getName();
+	            			data=data+"<tr>";
+	            	    	data=data+"<td>"+usr.getName()+"</td>";
+	            	    	data=data+"<td>"+usr.getTotalScore()+"</td>";
+	            	    	data=data+"</tr>";
+	            		}
+	            	}
+
+
+
+
+	            	JOptionPane.showMessageDialog(frame,
+	            	    "<html>" +
+	            	    	"<h3> The Winner is" + winnerNames +"!!!</h3>"+	                              
+	            	        "<table>"+data+"</table>"+	                     
+	            	    "</html>"
+	            	);
                 
 	                
 	            }

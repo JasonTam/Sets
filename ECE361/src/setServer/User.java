@@ -43,7 +43,10 @@ public class User implements Comparable<User>{
     {
         return userName;
     }
-    
+    public int getTotalScore()
+    {
+    	return totalScore;
+    }
     public String toString()
     {
         if (InitGame.topIsLobby())
