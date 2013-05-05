@@ -54,6 +54,7 @@ public class GamePanel extends JPanel {
 	private Collection<Card> selectedCards;
 	private Map<Card, JToggleButton> cardButtons;
 	private Map<Card, Integer> cardInd;
+	private boolean cheat = true;
 
 	public GamePanel(String rName) {
 		roomName = rName;
@@ -178,6 +179,10 @@ public class GamePanel extends JPanel {
 		startButton.setEnabled(false);
 		submitButton.setEnabled(true);
 		clearButton.setEnabled(true);
+		
+//		FOR CHEATING*****************************************
+		if (cheat) {cheatSet();}
+		
 	}
 
 //	public void updateGame() {
@@ -340,6 +345,9 @@ public class GamePanel extends JPanel {
 			cardInd.put(c, cardInd.size()+offset);
 			offset++;
 		}
+		
+//		FOR CHEATING*****************************************
+		if (cheat) {cheatSet();}
 	}
 	
 	
@@ -397,8 +405,53 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void cheatSet() {
-
-		
+		System.out.println("Cheating so hard: ");
+		System.out.println("cheatset::" + curGame.getField().getCards());
+		for (Card c : getOneSet()) {
+			System.out.println(c);
+			cardButtons.get(c).setSelected(true);
+			selectedCards.add(c);
+		}
+	}
+	
+	private ArrayList<Card> getOneSet() {
+		ArrayList<Card> cards = new ArrayList<Card>();
+		cards.addAll(cardButtons.keySet());
+		ArrayList<Card> set = new ArrayList<Card>();
+		for (int i = 0; i < cards.size() - 2; i++) {
+			for (int j = i + 1; j < cards.size() - 1; j++) {
+				for (int k = j + 1; k < cards.size(); k++) {
+					if (GameLogic.isSet(cards.get(i), cards.get(j), cards.get(k))) {
+						set.add(cards.get(i));
+						set.add(cards.get(j));
+						set.add(cards.get(k));
+						return set;
+					}
+				}
+			}
+		}
+		return set;
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
