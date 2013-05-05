@@ -313,45 +313,60 @@ public class GamePanel extends JPanel {
 		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
 		Set<Card> remCards = new HashSet<Card>();
 		
-		int index = 0;
-//		Analyze cards that are no longer on the field
-		for (Card c : cardButtons.keySet()) {
-			if (cardsUpdated.contains(c)) {
-				System.out.println("Repeat: " + c);
-				cardsUpdated.remove(c);
-			} else {
-				System.out.println(
-						"New card: " + c + " @index: " + index);
-				remCards.add(c);
+		if (cardsUpdated.size()!=cardButtons.keySet().size()) {
+			gamePanel.removeAll();
+			selectedCards.removeAll(selectedCards);
+			cardButtons.keySet().removeAll(cardButtons.keySet());
+			cardInd.keySet().removeAll(cardInd.keySet());
+//			Set<Card> cards = cardButtons.keySet();
+//			for (Card c : cards) cardButtons.remove(c);
+//			for (Card c : cards) cardInd.remove(c);
+			setupGame();
+		} else {
+		
+			int index = 0;
+	//		Analyze cards that are no longer on the field
+			for (Card c : cardButtons.keySet()) {
+				if (cardsUpdated.contains(c)) {
+					System.out.println("Repeat: " + c);
+					cardsUpdated.remove(c);
+				} else {
+					System.out.println(
+							"New card: " + c + " @index: " + index);
+					remCards.add(c);
+				}
+				index++;
 			}
-			index++;
-		}
-		
-//		Fill in the voids with new cards
-		for (Card c : remCards) {
-			gamePanel.remove(cardButtons.get(c));
-			cardButtons.remove(c);
-			Card pop = cardsUpdated.remove(0);
-			final JToggleButton bC = new JToggleButton(getImg(pop));
-			addElement(pop, bC, cardInd.get(c));
-			cardInd.remove(c);
-		}
-		
-//		Extra Cards (if greater than usual number of cards)
-		int offset = 1;
-		for (Card c : cardsUpdated) {
-			final JToggleButton bC = new JToggleButton(getImg(c));
-			addElement(c, bC);
-			cardInd.put(c, cardInd.size()+offset);
-			offset++;
+			
+	//		Fill in the voids with new cards
+			
+			for (Card c : remCards) {
+				gamePanel.remove(cardButtons.get(c));
+				cardButtons.remove(c);
+				if (cardsUpdated.size()!=0) {
+					Card pop = cardsUpdated.remove(0);
+					final JToggleButton bC = new JToggleButton(getImg(pop));
+					System.out.println("???? BAD INDEX?: " + cardInd.get(c));
+					addElement(pop, bC, cardInd.get(c));
+				}
+				cardInd.remove(c);
+			}
+			
+	//		Extra Cards (if greater than usual number of cards)
+			if (cardsUpdated.size()!=0) {
+				int offset = 1;
+				for (Card c : cardsUpdated) {
+					final JToggleButton bC = new JToggleButton(getImg(c));
+					addElement(c, bC);
+					cardInd.put(c, cardInd.size()+offset);
+					offset++;
+				}
+			}
 		}
 		
 //		FOR CHEATING*****************************************
 		if (cheat) {cheatSet();}
 	}
-	
-	
-	
 	
 	public void endGame() {
 		// Im not sure if remove all even happens...
@@ -405,6 +420,7 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void cheatSet() {
+		clearSelected();
 		System.out.println("Cheating so hard: ");
 		System.out.println("cheatset::" + curGame.getField().getCards());
 		for (Card c : getOneSet()) {
@@ -432,6 +448,7 @@ public class GamePanel extends JPanel {
 		}
 		return set;
 	}
+	
 	
 }
 
