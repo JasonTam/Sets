@@ -396,5 +396,9 @@ public class GamePanel extends JPanel {
 		return card_img;
 	}
 	
+	private void cheatSet() {
+
+		
+	}
 	
 }

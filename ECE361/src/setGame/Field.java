@@ -75,6 +75,23 @@ public class Field {
 		return sets;
 	}
 	
+	public ArrayList<Card> getOneSet() {
+		ArrayList<Card> set = new ArrayList<Card>();
+		for (int i = 0; i < field.size() - 2; i++) {
+			for (int j = i + 1; j < field.size() - 1; j++) {
+				for (int k = j + 1; k < field.size(); k++) {
+					if (GameLogic.isSet(field.get(i), field.get(j), field.get(k))) {
+						set.add(field.get(i));
+						set.add(field.get(j));
+						set.add(field.get(k));
+						return set;
+					}
+				}
+			}
+		}
+		return set;
+	}
+	
 	public boolean existSet() {
 		boolean exists = false;
 		ArrayList<String> sets = findSets();
