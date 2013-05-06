@@ -66,7 +66,7 @@ public class Lobby extends JPanel
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
-        add(test, c);
+//        add(test, c);
         
         c.gridx = 1;
         c.gridy = 1;

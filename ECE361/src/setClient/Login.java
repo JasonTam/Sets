@@ -55,7 +55,7 @@ public class Login extends JFrame  {
 			jpwPassword = new JPasswordField(20);
 			jpwPassword.setEchoChar('*');
 
-			jbnTest = new JButton("test as Andrew");
+			jbnTest = new JButton("Play as guest");
 			
 	        addWindowListener(new WindowAdapter() {
 	            public void windowClosing(WindowEvent e) {
