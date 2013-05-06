@@ -185,126 +185,6 @@ public class GamePanel extends JPanel {
 		
 	}
 
-//	public void updateGame() {
-//		// TODO
-//		// May want to only send deltas rather than entire game
-//		clearSelected();
-//		gamePanel.removeAll();
-//		setupGame();
-//	}
-
-	/*public void brkn_updateGame() {
-		clearSelected();
-
-		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
-
-		Object[] cardsOnField = cardButtons.keySet().toArray();
-		for (int index = 0; index < cardButtons.size(); index++) {
-			if (index > cardsUpdated.size()) {
-				break;
-			}
-			String curCardValue = cardsOnField[index].toString();
-			Card newCard = cardsUpdated.get(index);
-			String newCardValue = newCard.toString();
-			System.out.println(newCardValue + " " + curCardValue);
-			if (curCardValue == newCardValue) {
-				// do nothing
-				System.out.println("Already contains: " + curCardValue);
-				continue;
-			} else {
-				System.out.println("New card: " + newCardValue);
-				// System.out.println(curGame.getField().getCards());
-				ImageIcon card_img = new ImageIcon(getClass().getResource(
-						"/resources/images_cards/" + newCardValue + ".gif"));
-				final JToggleButton bC = new JToggleButton(card_img);
-				addElement(newCard, bC, index);
-				gamePanel.revalidate();
-			}
-		}
-	}*/
-
-	/*public void updateGame() {
-		clearSelected();
-
-		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
-//		Set<Card> cardsCurrent = cardButtons.keySet();
-		Object[] cardsCurrent = cardButtons.keySet().toArray();
-		Map<Card,Integer> remCards = new HashMap<Card,Integer>();
-		Set<Card> sameCards = new HashSet<Card>();
-		
-//		for (Card c : cardsCurrent) {
-		System.out.println("SIZE OF UPDATE1: " + cardsUpdated.size());
-		for (int i = 0; i < cardButtons.size(); i++) {
-			Card c = (Card) cardsCurrent[i];
-			if (!cardsUpdated.contains(c)) {
-				remCards.put(c,i);
-				System.out.println("remove index add: " + i);
-			} else {
-				sameCards.add(c);
-			}
-		}
-		for (Card c : sameCards)
-			cardsUpdated.remove(c);
-		
-		System.out.println("SIZE OF UPDATE2: " + cardsUpdated.size());
-		for (Card c : remCards.keySet()) {
-			System.out.println("removing index: " + remCards.get(c));
-			gamePanel.remove(cardButtons.get(c));
-			cardButtons.remove(c);
-			Card pop = cardsUpdated.remove(0);
-			
-			final JToggleButton bC = new JToggleButton(getImg(pop));
-			addElement(pop, bC, remCards.get(c));
-		}
-		
-		System.out.println("CARDS REMAINING TO UPDATE: " + cardsUpdated.size());
-		
-		for (Card c : cardsUpdated) {
-			final JToggleButton bC = new JToggleButton(getImg(c));
-			addElement(c, bC);
-		}
-
-	}
-*/	
-/*	
-	public void updateGame()
-	{
-		clearSelected();
-
-		ArrayList<Card> cardsUpdated = curGame.getField().getCards();
-		Map<Card,Integer> remCards = new HashMap<Card,Integer>();
-		
-		int index = 0;
-//		Analyze cards that are no longer on the field
-		for (Card c : cardButtons.keySet()) {
-			if (cardsUpdated.contains(c)) {
-				System.out.println("Repeat: " + c);
-				cardsUpdated.remove(c);
-			} else {
-				System.out.println(
-						"New card: " + c + " @index: " + index);
-				remCards.put(c,index);
-			}
-			index++;
-		}
-		System.out.println("CARDS TO UPDATE2: " + cardsUpdated.size());
-		for (Card c : remCards.keySet()) {
-			gamePanel.remove(cardButtons.get(c));
-			cardButtons.remove(c);
-			Card pop = cardsUpdated.remove(0);
-			final JToggleButton bC = new JToggleButton(getImg(pop));
-			addElement(pop, bC, remCards.get(c));
-		}
-		
-		System.out.println("CARDS REMAINING TO UPDATE: " + cardsUpdated.size());
-//		Extra Cards
-		for (Card c : cardsUpdated) {
-			final JToggleButton bC = new JToggleButton(getImg(c));
-			addElement(c, bC);
-		}
-	}
-	*/
-	
 	
 	public void updateGame()
 	{
@@ -394,7 +274,8 @@ public class GamePanel extends JPanel {
 				if (bC.isSelected()) {
 					if (selectedCards.size() >= 3) {
 						Card pop = ((LinkedList<Card>) selectedCards)
-								.removeFirst();
+//								.removeFirst();
+								.removeLast();
 						cardButtons.get(pop).setSelected(false);
 					}
 					System.out.println(c.toString() + " selected");
