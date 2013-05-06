@@ -34,6 +34,7 @@ public class Login extends JFrame  {
 	JLabel jlbOutMessage;
 	JLabel jlbPassword;
 	JLabel jlbUser;
+	JLabel jlbTitle;
 	JPasswordField jpwPassword;
 
 	int currentLine;
@@ -56,6 +57,11 @@ public class Login extends JFrame  {
 			jpwPassword.setEchoChar('*');
 
 			jbnTest = new JButton("Play as guest");
+			
+			jlbTitle = new JLabel();
+			jlbTitle.setText("Welcome to the Set Game");
+			jlbTitle.setFont(new Font("Sans", Font.HANGING_BASELINE, 20));
+			
 			
 	        addWindowListener(new WindowAdapter() {
 	            public void windowClosing(WindowEvent e) {
@@ -115,42 +121,43 @@ public class Login extends JFrame  {
 			GridBagLayout gridBag = new GridBagLayout();
 			Container contentPane = getContentPane();
 			contentPane.setLayout(gridBag);
-			
+			contentPane.setPreferredSize(new Dimension(400, 200));
+//			contentPane.setSize(new Dimension(400, 300));
 			GridBagConstraints gridCons1 = new GridBagConstraints();
 			gridCons1.gridx=2;
-			gridCons1.gridy=1;
+			gridCons1.gridy=2;
 			contentPane.add(jtfInput, gridCons1);
 			
 
 			gridCons1.gridx=2;
-			gridCons1.gridy=2;
+			gridCons1.gridy=3;
 			contentPane.add(jpwPassword, gridCons1);
 
 			gridCons1.gridx=4;
-			gridCons1.gridy=2;
+			gridCons1.gridy=3;
 			contentPane.add(jbnLogin, gridCons1);
 			
 			gridCons1.gridx=4;
-			gridCons1.gridy=1;
+			gridCons1.gridy=2;
 			contentPane.add(jbnRegister, gridCons1);
 
 
 			gridCons1.gridx=2;
-			gridCons1.gridy=3;
+			gridCons1.gridy=4;
 			contentPane.add(jlbOutMessage, gridCons1);
 			
 
 			gridCons1.gridx=1;
-			gridCons1.gridy=1;
+			gridCons1.gridy=2;
 			contentPane.add(jlbPassword, gridCons1);
 			
 			gridCons1.gridx=1;
-			gridCons1.gridy=2;
+			gridCons1.gridy=3;
 			contentPane.add(jlbUser, gridCons1);
 			
-			gridCons1.gridx=4;
-			gridCons1.gridy=3;
-			contentPane.add(jbnTest, gridCons1);
+			gridCons1.gridx=2;
+			gridCons1.gridy=1;
+			contentPane.add(jlbTitle, gridCons1);
 	}
 
 	
