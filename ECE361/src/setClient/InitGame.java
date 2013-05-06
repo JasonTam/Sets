@@ -144,6 +144,9 @@ public class InitGame {
     
     public static void main(String[] args) {
     	initServerConnection();
+    	
+        setTheme();
+    	
     	login = new Login();
     	login.pack();
 		login.addWindowListener(new WindowAdapter() {
@@ -156,29 +159,6 @@ public class InitGame {
 		login.setVisible(true);
 		
 
-        
-        /* Use an appropriate Look and Feel */
-        try {
-            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-//            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (UnsupportedLookAndFeelException ex) {
-            ex.printStackTrace();
-        } catch (IllegalAccessException ex) {
-            ex.printStackTrace();
-        } catch (InstantiationException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        /* Turn off metal's use of bold fonts */
-//        UIManager.put("swing.boldMetal", Boolean.FALSE);
-        
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
         
@@ -400,5 +380,29 @@ public class InitGame {
                 }
             }
             return false;
+        }
+        
+        private static void setTheme() {
+        	/* Use an appropriate Look and Feel */
+            try {
+                //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+//                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                    if ("Nimbus".equals(info.getName())) {
+                        UIManager.setLookAndFeel(info.getClassName());
+                        break;
+                    }
+                }
+            } catch (UnsupportedLookAndFeelException ex) {
+                ex.printStackTrace();
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            } catch (InstantiationException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+            /* Turn off metal's use of bold fonts */
+//            UIManager.put("swing.boldMetal", Boolean.FALSE);
         }
     }

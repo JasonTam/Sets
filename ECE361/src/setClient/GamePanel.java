@@ -1,28 +1,31 @@
 package setClient;
 
 import java.awt.BorderLayout;
-
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 
 import setGame.Card;
 import setGame.Game;
@@ -36,12 +39,13 @@ public class GamePanel extends JPanel {
 	// public static PrintWriter out;
 	// public static BufferedReader in;
 
-	JButton submitButton = new JButton("Submit Set");
-	JButton clearButton = new JButton("Clear Selection");
+	JButton submitButton = new JButton("[S]ubmit Set");
+	JButton clearButton = new JButton("[C]lear Selection");
 	JButton startButton = new JButton("Start Game!");
 	JButton leaveButton = new JButton("Leave room!");
 	GridLayout boardLayout = new GridLayout(3, 5);
 	final JPanel gamePanel = new JPanel();
+	JPanel controls = new JPanel();
 
 	public static String roomName;
 	public static Game curGame;
@@ -58,8 +62,8 @@ public class GamePanel extends JPanel {
 
 		gamePanel.setLayout(boardLayout);
 
-		JPanel controls = new JPanel();
-		controls.setLayout(new GridLayout(4, 1));
+//		controls.setLayout(new GridLayout(1, 4));
+		controls.setLayout(new GridBagLayout());
 
 		// Set up components preferred size
 		JButton b = new JButton("Just fake button");
@@ -75,15 +79,14 @@ public class GamePanel extends JPanel {
 		// Add submit
 		JLabel empty = new JLabel();
 		controls.add(startButton);
-		controls.add(submitButton);
-		controls.add(clearButton);
+		startButton.setPreferredSize(new Dimension(500, 100));
 		controls.add(leaveButton);
 
 		submitButton.setEnabled(false);
 		clearButton.setEnabled(false);
 
 		// Process submit button
-		submitButton.addActionListener(new ActionListener() {
+		Action submitAction = new AbstractAction(submitButton.getLabel()) {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Selected Cards: ");
 				for (Card c : selectedCards) {
@@ -91,10 +94,10 @@ public class GamePanel extends JPanel {
 				}
 				if (selectedCards.size() == 3) {
 					System.out.println("Submitting: " + selectedCards);
-
+	
 					java.lang.reflect.Type collectionType = new com.google.gson.reflect.TypeToken<Collection<Card>>() {
 					}.getType();
-
+	
 					String jsonSubmitSet = JSONinterface.genericToJson(
 							"submit", selectedCards, collectionType);
 					InitGame.out.println(jsonSubmitSet);
@@ -106,22 +109,18 @@ public class GamePanel extends JPanel {
 					System.out
 							.println("Invalid Set! Sets must contain exactly 3 cards.");
 				}
-				/*
-				 * try { System.out.println("This was recieved in the client");
-				 * System.out.println(InitGame.in.readLine()); } catch
-				 * (IOException e1) { e1.printStackTrace(); } catch
-				 * (NullPointerException e1) { e1.printStackTrace(); }
-				 */
-
 			}
-		});
+		};
+		submitButton.setAction(submitAction);
+		
 
 		// Process clear button
-		clearButton.addActionListener(new ActionListener() {
+		Action clearAction = new AbstractAction(clearButton.getLabel()) {
 			public void actionPerformed(ActionEvent e) {
 				clearSelected();
 			}
-		});
+		};
+		clearButton.setAction(clearAction);
 
 		// Process Start button
 		startButton.addActionListener(new ActionListener() {
@@ -157,16 +156,29 @@ public class GamePanel extends JPanel {
 				continue;
 			}
 			System.out.println(curGame.getField().getCards());
-			// JOptionPane.showMessageDialog(this,
-			// getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
-			// Use this config for the runnable jar
-			// (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
 			final JToggleButton bC = new JToggleButton(getImg(c));
 			addElement(c, bC,index);
 			gamePanel.revalidate();
 			index++;
 		}
-		startButton.setEnabled(false);
+//		startButton.setEnabled(false);
+		controls.remove(startButton); controls.revalidate();
+		controls.add(clearButton,0);
+		
+		submitButton.setPreferredSize(new Dimension(400, 100));
+		controls.add(submitButton,0);
+		// Bind a keystroke to the button to act as accelerator.
+        int c = JComponent.WHEN_IN_FOCUSED_WINDOW;
+        KeyStroke submitkey = KeyStroke.getKeyStroke('s');
+        KeyStroke clearkey = KeyStroke.getKeyStroke('c');
+        
+        controls.getInputMap(c).put(submitkey, "SUBMIT");
+        controls.getActionMap().put("SUBMIT", submitButton.getAction());
+        controls.getInputMap(c).put(clearkey, "CLEAR");
+        controls.getActionMap().put("CLEAR", clearButton.getAction());
+        
+        
+        
 		submitButton.setEnabled(true);
 		clearButton.setEnabled(true);
 		
@@ -213,7 +225,6 @@ public class GamePanel extends JPanel {
 				if (cardsUpdated.size()!=0) {
 					Card pop = cardsUpdated.remove(0);
 					final JToggleButton bC = new JToggleButton(getImg(pop));
-					System.out.println("???? BAD INDEX?: " + cardInd.get(c));
 					addElement(pop, bC, cardInd.get(c));
 				}
 				cardInd.remove(c);
@@ -282,6 +293,10 @@ public class GamePanel extends JPanel {
 	}
 	
 	private ImageIcon getImg(Card c) {
+		// JOptionPane.showMessageDialog(this,
+		// getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
+		// Use this config for the runnable jar
+		// (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
 		ImageIcon card_img = new ImageIcon(getClass().getResource(
 				"/resources/images_cards/" + c.toString() + ".gif"));
 		return card_img;
