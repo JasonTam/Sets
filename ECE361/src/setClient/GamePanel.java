@@ -29,11 +29,6 @@ import setGame.Game;
 import setGame.GameLogic;
 import setServer.JSONinterface;
 
-
-// TODO 
-// Need to go through game flow 
-// Need event listeners to connect to state of the game
-
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
 	final static int maxGap = 100;
@@ -61,9 +56,6 @@ public class GamePanel extends JPanel {
 
 		setLayout(new BorderLayout());
 
-		// TODO The game init should probably be outside
-		// final Game game1 = new Game();
-
 		gamePanel.setLayout(boardLayout);
 
 		JPanel controls = new JPanel();
@@ -89,8 +81,6 @@ public class GamePanel extends JPanel {
 
 		submitButton.setEnabled(false);
 		clearButton.setEnabled(false);
-
-		// clearButton.setSize(new Dimension(50, 80));
 
 		// Process submit button
 		submitButton.addActionListener(new ActionListener() {
@@ -198,9 +188,6 @@ public class GamePanel extends JPanel {
 			selectedCards.removeAll(selectedCards);
 			cardButtons.keySet().removeAll(cardButtons.keySet());
 			cardInd.keySet().removeAll(cardInd.keySet());
-//			Set<Card> cards = cardButtons.keySet();
-//			for (Card c : cards) cardButtons.remove(c);
-//			for (Card c : cards) cardInd.remove(c);
 			setupGame();
 		} else {
 		
