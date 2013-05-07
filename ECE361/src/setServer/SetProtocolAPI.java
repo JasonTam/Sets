@@ -395,13 +395,13 @@ public class SetProtocolAPI {
 	        	    //ArrayList<SetMultiThread> usersThreads= SetServer.ge
 	        	    //int si=roomThreads.size();
 	        	String message = "has left the room";
-	        	    for (SetMultiThread thread : roomThreads)
-	        	    {
-	        	    	if(!thread.equals(curThread))
-	        	    	{
+	        	//    for (SetMultiThread thread : roomThreads)
+	        	  //  {
+	        	    //	if(!thread.equals(curThread))
+	        	    	//{
 	        	    	SetServer.sendChat(roomName, curThread, message,2);
-	        	    	}
-	        	    }
+	        	    	//}
+	        	   // }
         		    
 //		        	    SetServer.sendRoomLeave(curThread, sp);
 	        	    SetServer.lobby.join(curThread);

@@ -68,6 +68,7 @@ public class SetServer {
         
         for (SetMultiThread thread : roomThreads)
         {
+        	
             thread.out.println( JSONinterface.genericToJson("chat", chatMessage));
         }
         
