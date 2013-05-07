@@ -332,8 +332,9 @@ public class SetProtocolAPI {
 		        	    
 	        		    thread.sp.changeState(SetProtocol.ROOM, thread);
 	        		    
-	        		    thread.currentUser.resetScore();
+//	        		    thread.currentUser.resetScore();
 	        		}
+	        		for (SetMultiThread thread : roomThreads) thread.currentUser.resetScore();
 	        		SetServer.sendRooms(sp);
 	        		TESTINGONLY = 0;
 	    		    
