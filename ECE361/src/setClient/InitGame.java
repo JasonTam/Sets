@@ -382,7 +382,7 @@ public class InitGame {
             return false;
         }
         
-        private static void setTheme() {
+        public static void setTheme() {
         	/* Use an appropriate Look and Feel */
             try {
                 //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
