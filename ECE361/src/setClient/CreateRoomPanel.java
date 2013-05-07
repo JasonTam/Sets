@@ -18,7 +18,7 @@ public class CreateRoomPanel extends JPanel {
     public CreateRoomPanel()
     {
         
-        setLayout(new GridLayout(2, 1));
+        setLayout(new GridLayout(1, 2));
         
         createButton.addActionListener
         (

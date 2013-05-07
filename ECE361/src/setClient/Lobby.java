@@ -58,6 +58,7 @@ public class Lobby extends JPanel
         
         c.gridx = 0;
         c.gridy = 0;
+        c.gridheight = 1;
         add(lobbyRooms, c);
         
 //        c.gridx = 1;
@@ -71,7 +72,9 @@ public class Lobby extends JPanel
         
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 1;
+        c.weighty = 0.25;
+        
+//        createRoom.setPreferredSize(new Dimension(100, 100));
         add(createRoom, c);
         
         test.addActionListener

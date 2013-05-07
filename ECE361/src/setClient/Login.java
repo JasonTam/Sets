@@ -121,7 +121,7 @@ public class Login extends JFrame  {
 			GridBagLayout gridBag = new GridBagLayout();
 			Container contentPane = getContentPane();
 			contentPane.setLayout(gridBag);
-			contentPane.setPreferredSize(new Dimension(400, 200));
+			contentPane.setPreferredSize(new Dimension(500, 200));
 //			contentPane.setSize(new Dimension(400, 300));
 			GridBagConstraints gridCons1 = new GridBagConstraints();
 			gridCons1.gridx=2;
@@ -158,6 +158,11 @@ public class Login extends JFrame  {
 			gridCons1.gridx=2;
 			gridCons1.gridy=1;
 			contentPane.add(jlbTitle, gridCons1);
+			
+			gridCons1.gridx=4;
+			gridCons1.gridy=4;
+			contentPane.add(jbnTest, gridCons1);
+			
 	}
 
 	
