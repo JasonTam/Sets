@@ -41,6 +41,7 @@ public class Lobby extends JPanel
 	 
     public Lobby()
     {
+    	InitGame.setTheme();
         test = new JButton("Click me to view an output of data structurs in teh server's error console.");
         chat = new ChatPanel();
         lobbyRooms = new RoomsPanel();
