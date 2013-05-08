@@ -56,26 +56,24 @@ public class Lobby extends JPanel
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         
+        
+        // Create a scrollpane to hold the lobby rooms
+        JScrollPane thePane = new JScrollPane(lobbyRooms);
         c.gridx = 0;
         c.gridy = 0;
         c.gridheight = 1;
-        add(lobbyRooms, c);
-        
-//        c.gridx = 1;
-//        c.gridy = 0;
-//        add(chat, c);
-        
-//        c.gridx = 0;
-//        c.gridy = 1;
-//        c.gridwidth = 1;
-//        add(test, c);
+        add(thePane, c);
         
         c.gridx = 0;
         c.gridy = 1;
         c.weighty = 0.25;
-        
-//        createRoom.setPreferredSize(new Dimension(100, 100));
         add(createRoom, c);
+        
+        /*
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        add(test, c);
         
         test.addActionListener
         (
@@ -86,9 +84,12 @@ public class Lobby extends JPanel
 	                System.out.println(InitGame.topIsLobby());
 	                InitGame.out.println(JSONinterface.genericToJson("test", "setting up test button. REMOVE THIS CONDITION"));
 //	                InitGame.changeCards("GAME");
+	                roomArray.add(new GameRoom("dsad"));
+	                updateLobbyPanel();
 	            } 
 	        }
         );
+        */
         
     }
     
@@ -97,6 +98,8 @@ public class Lobby extends JPanel
         lobbyRooms.updateRoomListPanel();
         lobbyRooms.revalidate();
         lobbyRooms.repaint();
+        int width = (int) (400 * Math.ceil(roomArray.size() / 4));
+        lobbyRooms.setPreferredSize(new Dimension(width, 100));
     }
     
     
@@ -107,20 +110,14 @@ public class Lobby extends JPanel
 	    private GridLayout gLayout;
 	    private JButton[] roomButtons;
 	    
-	    private static final int width = 5;
+	    //private static final int width = 4;
 	    
         private RoomsPanel()
         {
             
-            /*
-            JPanel test = new JPanel();
-            JScrollPane scrollFrame = new JScrollPane(test);
-
-            add(scrollFrame);            
-            */
-            
-            height = (int) Math.ceil(numRooms / (width+ 0.0));
-            gLayout = new GridLayout(height, width);
+            //height = (int) Math.ceil(numRooms / (width+ 0.0));
+            //gLayout = new GridLayout(height, width);
+            gLayout = new GridLayout(4, 12);
             
             setLayout(gLayout);
             
@@ -196,7 +193,10 @@ public class Lobby extends JPanel
         private void updateRoomListPanel()
         {
             numRooms  = roomArray.size();
-            height = (int) Math.ceil(numRooms / (width+ 0.0));
+            //height = (int) Math.ceil(numRooms / (width+ 0.0));
+            //gLayout = new GridLayout(height, width);
+            
+            //setLayout(gLayout);
             
             
 //            gLayout.setColumns(width);
