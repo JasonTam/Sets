@@ -44,7 +44,16 @@ public class ChatPanel extends JPanel {
                 if (inputText.getText() != "")
                 {
 	                text = inputText.getText();
-                    InitGame.out.println(JSONinterface.genericToJson("chat", text));
+	                
+			        if (text.toLowerCase().matches(".*(fuck|shit|bitch|ass|damn|stupid|boob|penis).*"))
+			        {
+			            JOptionPane.showMessageDialog(InitGame.cardLayout, "Get that fowl language outta here, you chicken!");
+			        }
+			        else
+			        {
+	                    InitGame.out.println(JSONinterface.genericToJson("chat", text));
+			        }
+			        
 	                inputText.setText("");
                 }
             }
@@ -86,15 +95,8 @@ public class ChatPanel extends JPanel {
     
     public void displayMessage(String chatMessage)
     {
-        if (chatMessage.toLowerCase().matches(".*(fuck|shit|bitch|ass|damn|stupid).*"))
-        {
-            JOptionPane.showMessageDialog(InitGame.cardLayout, "Get that fowl language outta here, you chicken!");
-        }
-        else
-        {
-	        recievedText.append(chatMessage);
-	        recievedText.append("\n");
-        }
+        recievedText.append(chatMessage);
+        recievedText.append("\n");
     }
     
     
