@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -85,8 +86,15 @@ public class ChatPanel extends JPanel {
     
     public void displayMessage(String chatMessage)
     {
-        recievedText.append(chatMessage);
-        recievedText.append("\n");
+        if (chatMessage.toLowerCase().matches(".*(fuck|shit|bitch|ass|damn|stupid).*"))
+        {
+            JOptionPane.showMessageDialog(InitGame.cardLayout, "Get that fowl language outta here, you chicken!");
+        }
+        else
+        {
+	        recievedText.append(chatMessage);
+	        recievedText.append("\n");
+        }
     }
     
     
