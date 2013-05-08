@@ -41,7 +41,7 @@ public class ChatPanel extends JPanel {
         {
             public void actionPerformed(ActionEvent e)
             {
-                if (inputText.getText() != "")
+                if (!inputText.getText().equals(""))
                 {
 	                text = inputText.getText();
 	                
