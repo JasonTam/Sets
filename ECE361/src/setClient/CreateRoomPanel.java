@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -30,12 +31,17 @@ public class CreateRoomPanel extends JPanel {
 	                {
 		                InitGame.out.println(JSONinterface.genericToJson("create", roomName.getText()));
 	                }
+	                else
+	                {	            		
+	                    JOptionPane.showMessageDialog(InitGame.lobbyPanel, "Please enter a room name in the field to the left.  Then press this button.");
+	                    
+	                }
 	            } 
 	        }
         );
         
-        add(createButton);
         add(roomName);
+        add(createButton);
         
         
         

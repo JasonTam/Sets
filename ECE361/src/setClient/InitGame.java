@@ -298,33 +298,45 @@ public class InitGame {
 
 	            	String data="";
 	            	String winnerNames="";
+	            	int winnerCounter = 0;
 	            	int highScore=scoreData.get(0).getTotalScore();
 	            	for( User usr: scoreData)
 	            	{   
 	            		if(usr.getTotalScore()<highScore)
 	            		{
-	            		data=data+"<tr>";
-	            		data=data+"<td>"+usr.getName()+"</td>";
-	            		data=data+"<td>"+usr.getTotalScore()+"</td>";
-	            		data=data+"</tr>";
+	            		data += "<tr>";
+	            		data += "<td>"+usr.getName()+"</td>";
+	            		data += "<td>"+usr.getTotalScore()+"</td>";
+	            		data += "</tr>";
 	            		}else{
-	            			winnerNames=winnerNames+" "+usr.getName();
-	            			data=data+"<tr>";
-	            	    	data=data+"<td>"+usr.getName()+"</td>";
-	            	    	data=data+"<td>"+usr.getTotalScore()+"</td>";
-	            	    	data=data+"</tr>";
+	            			winnerNames += " " + usr.getName();
+	            			data += "<tr>";
+	            	    	data += "<td>"+usr.getName()+"</td>";
+	            	    	data += "<td>"+usr.getTotalScore()+"</td>";
+	            	    	data += "</tr>";
+	            	    	winnerCounter++;
 	            		}
 	            	}
 
-
-
-
-	            	JOptionPane.showMessageDialog(frame,
-	            	    "<html>" +
-	            	    	"<h3> The Winner is" + winnerNames +"!!!</h3>"+	                              
-	            	        "<table>"+data+"</table>"+	                     
-	            	    "</html>"
-	            	);
+	            	if (winnerCounter == 1)
+	            	{
+		            	JOptionPane.showMessageDialog(frame,
+		            	    "<html>" +
+		            	    	"<h3> The Winner is" + winnerNames +"!!!</h3>"+	                              
+		            	        "<table>"+data+"</table>"+	                     
+		            	    "</html>"
+		            	);
+	            	}
+	            	else
+	            	{
+		            	JOptionPane.showMessageDialog(frame,
+		            	    "<html>" +
+		            	    	"<h3> There is a tie between:" + winnerNames +"!!!</h3>"+	                              
+		            	        "<table>"+data+"</table>"+	                     
+		            	    "</html>"
+		            	);
+	            	    
+	            	}
                 
 	                
 	            }

@@ -31,7 +31,6 @@ public class SetServer {
 	public static ConcurrentHashMap<String, SetMultiThread> allThreads = new ConcurrentHashMap<String, SetMultiThread>();
 	public static ConcurrentHashMap<String, GameRoom> gameRooms = new ConcurrentHashMap<String, GameRoom>();
 	public static GameRoom lobby = new GameRoom("lobby");
-	public static int maxPlayers = 12;
 
 	public static void main(String[] args) throws IOException {
 		

@@ -195,7 +195,7 @@ public class SetProtocolAPI {
 				String roomName = JSONinterface.jsonGetData(theInput, String.class);
 				
 //	        	If a user tries to enter a room (that is not the lobby) and its full, don't let them in!
-	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).threadsInRoom.size() >= SetServer.maxPlayers) {
+	        	if (!roomName.equals(SetServer.lobby.getName()) && SetServer.gameRooms.containsKey(roomName) && SetServer.gameRooms.get(roomName).threadsInRoom.size() >= GameRoom.roomCapacity) {
 	        	    
         			sp.theOutput = JSONinterface.genericToJson("null", "Room is full");
         		}
@@ -301,6 +301,28 @@ public class SetProtocolAPI {
         		curGameRoom.getCurGame().print();
         		System.out.println("IS GAME OVER?");
         		System.out.println(curGameRoom.getCurGame().isGameOver());
+        		if (isSet==1) {
+        		    curThread.currentUser.correctSets++;
+        		    curThread.currentUser.updateScore();
+        		    // This is how you send to all threads in a room
+	        		for (SetMultiThread thread : roomThreads)
+	        		{
+	        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
+	        		}
+//		            	TODO
+//		            	May want to only send deltas rather than entire game
+//	        			TODO
+//	        			this might trigger other events
+        		}
+        		else if (isSet==0) {
+        			curThread.currentUser.incorrectSets++;
+        		    curThread.currentUser.updateScore();
+        		}
+        	    SetServer.sendRoomUsers();
+        		
+        	    // This should be the very last thing that gets done 
+        	    // ie it needs to wait for the last round of scores to 
+        	    // get updated
         		if(curGameRoom.getCurGame().isGameOver())
 /*        		
         		if(TESTINGONLY > 5)
@@ -339,24 +361,6 @@ public class SetProtocolAPI {
 	        		TESTINGONLY = 0;
 	    		    
         		}
-        		else if (isSet==1) {
-        		    curThread.currentUser.correctSets++;
-        		    curThread.currentUser.updateScore();
-        		    // This is how you send to all threads in a room
-	        		for (SetMultiThread thread : roomThreads)
-	        		{
-	        	        thread.out.println(JSONinterface.genericToJson("updateGame", curGameRoom.getCurGame()));
-	        		}
-//		            	TODO
-//		            	May want to only send deltas rather than entire game
-//	        			TODO
-//	        			this might trigger other events
-        		}
-        		else if (isSet==0) {
-        			curThread.currentUser.incorrectSets++;
-        		    curThread.currentUser.updateScore();
-        		}
-        	    SetServer.sendRoomUsers();
 	        		
 			}
 			
