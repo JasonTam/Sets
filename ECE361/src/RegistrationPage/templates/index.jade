@@ -2,16 +2,20 @@ doctype 5
 html
   head
     link(rel='stylesheet', href='/static/index.css')
+    link(rel='stylesheet',href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css')
     title ECE361 Set Game Project
   body
-    div#stylized.myform
-      h1 ECE361 Set Game
-        img(src='/static/Cooper-Union-Logo.gif')
-      p Andrew, Jason, Jordan, Nick, Victor
-      if (notify != "")
-        div(class="notify")= notify
-      if (error != "")
-        div(class="error")= error
-      include register
-      include changepassword
-      include highscores
+    div.row
+      div.span6
+        div#stylized.myform
+          h3 ECE361 Set Game
+            img(src='/static/Cooper-Union-Logo.gif')
+          p Andrew, Jason, Jordan, Nick, Victor
+          if (notify != "")
+            div(class="notify")= notify
+          if (error != "")
+            div(class="error")= error
+          include register
+          include changepassword
+      div.span6			
+        include highscores
