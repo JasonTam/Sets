@@ -183,7 +183,7 @@ public class GamePanel extends JPanel {
 		clearButton.setEnabled(true);
 		
 //		FOR CHEATING*****************************************
-		if (cheat) {cheatSet();}
+		if (cheat && !InitGame.runningFromJar) {cheatSet();}
 		
 	}
 
@@ -243,7 +243,7 @@ public class GamePanel extends JPanel {
 		}
 		
 //		FOR CHEATING*****************************************
-		if (cheat) {cheatSet();}
+		if (cheat && !InitGame.runningFromJar) {cheatSet();}
 	}
 	
 	public void endGame() {

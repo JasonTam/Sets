@@ -18,6 +18,8 @@ import com.google.gson.reflect.TypeToken;
  * port: 5122 
  * user: default
  * password: Gir(W8
+ * 
+ * ssh -p 5122 default@199.98.20.120
  */
 
 /**
