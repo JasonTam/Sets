@@ -72,6 +72,8 @@ public class InitGame {
     public static UserJList userJList = new UserJList();
     
     
+    public static boolean runningFromJar = false;
+    
     private static JFrame frame;
     private static Login login;
     
@@ -143,6 +145,11 @@ public class InitGame {
     }
     
     public static void main(String[] args) {
+        if (!InitGame.class.getResource("InitGame.class").toString().startsWith("file"))
+        {
+            runningFromJar = true;
+            
+        }
     	initServerConnection();
     	
         setTheme();

@@ -293,12 +293,16 @@ public class GamePanel extends JPanel {
 	}
 	
 	private ImageIcon getImg(Card c) {
-		// JOptionPane.showMessageDialog(this,
-		// getClass().getResource("/src/resources/images_cards/"+c.toString()+".gif"));
-		// Use this config for the runnable jar
-		// (getClass().getResource("/resources/images_cards/"+c.toString()+".gif"));
-		ImageIcon card_img = new ImageIcon(getClass().getResource(
-				"/resources/images_cards/" + c.toString() + ".gif"));
+	    ImageIcon card_img;
+	    if (InitGame.runningFromJar)
+	    {
+	        card_img = new ImageIcon(getClass().getResource( "/src/resources/images_cards/" + c.toString() + ".gif"));
+	    }
+	    else
+	    {
+	        card_img = new ImageIcon(getClass().getResource( "/resources/images_cards/" + c.toString() + ".gif"));
+	    }
+            
 		return card_img;
 	}
 	
