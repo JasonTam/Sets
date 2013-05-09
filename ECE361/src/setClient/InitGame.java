@@ -152,7 +152,6 @@ public class InitGame {
         }
     	initServerConnection();
     	
-        setTheme();
     	
     	login = new Login();
     	login.pack();
@@ -171,6 +170,7 @@ public class InitGame {
         
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {            	
+                setTheme();
             	createAndShowGUI();
                 
 //              Notify the server that you have quit.
