@@ -11,6 +11,8 @@ html
           h3 ECE361 Set Game
             img(src='/static/Cooper-Union-Logo.gif')
           p Andrew, Jason, Jordan, Nick, Victor
+          a(href='/static/setGameJAVNJ.jar')
+            button.btn.btn-inverse(type='submit') Download
           if (notify != "")
             div(class="notify")= notify
           if (error != "")
@@ -19,3 +21,4 @@ html
           include changepassword
       div.span6			
         include highscores
+     
