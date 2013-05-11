@@ -52,18 +52,23 @@ public class SetMultiThread extends Thread {
 	        
 //	        Waiting for input from the client
 	        while ((inputLine = in.readLine()) != null) {
-//	        	Whatever the client says is automatically piped into the SetProtocol.
-//	        	The protocol then handles the request and decides what to do with it,
-//	        	and what response to spit back out
-		        outputLine = sp.processInput(inputLine, this);
-		        
-		        System.out.println("Sending output from main loop: " + outputLine);
-	
-	            
-		        if (outputLine.equals("Bye."))
-	        		break;
-		        out.println(outputLine);
-	        
+	        	synchronized (SetServer.allThreads)
+	        	{
+	//	        	Whatever the client says is automatically piped into the SetProtocol.
+	//	        	The protocol then handles the request and decides what to do with it,
+	//	        	and what response to spit back out
+		        	
+		        	
+	        		outputLine = sp.processInput(inputLine, this);
+			        
+			        
+			        System.out.println("Sending output from main loop: " + outputLine);
+		
+		            
+			        if (outputLine.equals("Bye."))
+		        		break;
+			        out.println(outputLine);
+	        	}
 	        }
 	        
 	        

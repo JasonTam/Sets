@@ -26,8 +26,8 @@ This, the best solution might be to start the game ONLY after ALL players have c
 We need to address this.
 
 
-
-
+- fOR andrew: 
+- Add room capacities to the room names.
 
 
 
