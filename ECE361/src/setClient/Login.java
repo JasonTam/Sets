@@ -170,7 +170,7 @@ public class Login extends JFrame  {
 	private void openRegisterPage(){
 		
     	try {
-			Desktop.getDesktop().browse(new URI("http://localhost:8080"));
+			Desktop.getDesktop().browse(new URI("http://199.98.20.120:8080"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		} catch (URISyntaxException e1) {
