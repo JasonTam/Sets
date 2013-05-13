@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken;
  * Instead of copying back and forth from the repo... just do this, its faster.
  * 
  * scp -P 5122 /cygdrive/c/Users/Andrew/Desktop/registrationServer.jar default@199.98.20.120:/home/default/ECE361
+ * scp -P 5122 /cygdrive/c/Users/Andrew/Desktop/setGame.jar default@199.98.20.120:/home/default/ECE361/ECE361/src/RegistrationPage/static/setGameJAVNJ.jar
  */
 
 /**
