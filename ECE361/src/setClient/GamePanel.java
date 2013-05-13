@@ -53,7 +53,7 @@ public class GamePanel extends JPanel {
 	private Collection<Card> selectedCards;
 	private Map<Card, JToggleButton> cardButtons;
 	private Map<Card, Integer> cardInd;
-	private boolean cheat = true;
+	private boolean cheat = false;
 
 	public GamePanel(String rName) {
 		roomName = rName;

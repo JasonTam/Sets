@@ -159,9 +159,11 @@ public class Login extends JFrame  {
 			gridCons1.gridy=1;
 			contentPane.add(jlbTitle, gridCons1);
 			
+			/*
 			gridCons1.gridx=4;
 			gridCons1.gridy=4;
 			contentPane.add(jbnTest, gridCons1);
+			*/
 			
 	}
 
